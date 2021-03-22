@@ -1,0 +1,67 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.Product>
+@{
+    var rd = new Random();
+}
+<section class="section wow fadeInUp outer-top-vs block-white">
+    <div class="block">
+        <h3 class="section-title heading-title ud-line">DEAL ĐÃ XEM</h3>
+    </div>
+    <div class="owl-carousel product-viewed-carousel custom-carousel owl-theme m-t-15" data-item="4">
+        @foreach (OnChotto.Models.Entities.Product p in Model)
+        {
+            var tukhoa = ViewBag.tukhoa;
+            <div class="item item-carousel">
+                <div class="products">
+                    <div class="product">
+                        <div class="product-image">
+                            <div class="image">
+                                <a href="/san-pham/@p.Name.ToAscii()-@p.Id" title="@Html.Raw(p.Name)">
+                                    <img src="@p.FeaturedImage" data-echo="@p.FeaturedImage" alt="@Html.Raw(p.Name)" class="img-responsive" id="@p.Id">
+                                </a>
+                            </div><!-- /.Image -->
+                            @if (p.Discount > 0)
+                            {
+                                <div class="tag sale"><span>-@p.Discount%</span></div>
+
+                            }
+
+                            <div class="cart text-center animate-effect">
+                                <div class="action">
+                                    <a class="btn btn-success" href="/san-pham/@p.Name.ToAscii()-@p.Id" title="Xem ngay"><i class="icon fa fa-eye"></i> XEM NGAY</a>
+                                    <a class="btn btn-warning" href="/danh-dau-yeu-thich/@p.Id" title="Wishlist"><i class="icon fa fa-heart"></i> YÊU THÍCH</a>
+                                </div><!-- /.action -->
+                            </div><!-- /.cart -->
+
+                        </div><!-- /.product-image -->
+
+                        <div class="product-info">
+                            <div class="info-header">
+                                <h3 class="name"><a href="/san-pham/@p.Name.ToAscii()-@p.Id">@Html.Raw(p.Name)</a></h3>
+                                @*<div class="rating rateit-small"></div>*@
+                            </div>
+                            <div class="product-price">
+                                <meta itemprop="priceCurrency" content="VND">
+                                <span class="price">
+                                    <span class="price_value" itemprop="price">@Html.FormatValue(p.PriceAfter, "{0:0,0}") <span class="price_symbol">đ</span></span>
+                                    @*<span class="price_discount">-@p.Discount%</span>*@
+                                </span>
+                                <div class="price-before-discount"> @Html.FormatValue(p.Price, "{0:0,0}") <span class="price_symbol">đ</span></div>
+                            </div><!-- /.product-price -->
+                            <div class="product_views">
+                                <i class="fa fa-user"></i> @rd.Next(p.Views, 100 + p.Views) đã mua
+                            </div>
+                        </div><!-- /.product-info -->
+
+                        @if (p.EndDate != null)
+                        {
+                            var unixTimestamp = (Int32)(p.EndDate.Value.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                            <div class="countdown">
+                                <i class="fa fa-clock-o"></i> Còn <span data-time="@unixTimestamp" class="kkcountdown"></span>
+                            </div>
+                        }
+                    </div><!-- /.product -->
+                </div><!-- /.products -->
+            </div><!-- /.item -->
+        }
+    </div>
+</section>

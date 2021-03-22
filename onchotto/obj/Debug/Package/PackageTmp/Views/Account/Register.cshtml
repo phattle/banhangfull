@@ -1,0 +1,73 @@
+﻿@model OnChotto.Models.RegisterViewModel
+
+@using OnChotto.Models
+@{
+    ViewBag.Title = "Đăng ký tài khoản Smua";
+    Layout = "~/Views/Shared/_ClearLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <section id="loginForm">
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <h1 class="page-title">Đăng ký tài khoản Smua.</h1>
+
+                @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control unicase-form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-6">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control unicase-form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-6">
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control unicase-form-control" })
+                    </div>
+                </div>
+                 <!--View rCAPTCHA-->
+                <div class="form-group">
+                    Bạn xác nhận reCAPTCHA đăng ký tài khoản!
+                </div>
+                <div class="form-group">
+                    @Html.reCaptcha()
+                </div>
+                <!--End View rCAPTCHA-->
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-6">
+                        <input type="submit" class="btn btn-success" value="Đăng ký" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        Bạn đã có tài khoản, @Html.ActionLink("Đăng nhập", "Login") |
+                        @Html.ActionLink("Quên mật khẩu ?", "ForgotPassword")
+                    </div>
+                </div>
+            }
+
+            
+        </section>
+    </div>
+    <div class="col-md-4">
+        <section id="socialLoginForm">
+            @{ Html.RenderPartial("Partials/_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl }); }
+        </section>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+}

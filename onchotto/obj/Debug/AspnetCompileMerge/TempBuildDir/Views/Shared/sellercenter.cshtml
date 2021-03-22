@@ -1,0 +1,32 @@
+﻿@using OnChotto.Models.Dao
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Html.Raw(ViewBag.Title)</title>
+    @RenderSection("HeaderMeta", false)
+    @Styles.Render("~/Assets/Frontend/css/css")
+    @Styles.Render("~/BootstrapValidator/css")
+    @Styles.Render("~/Content/css")
+    <!-- Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,700' rel='stylesheet' type='text/css'>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="@OptionDao.GetOption("FAVICON")">
+    @RenderSection("HeaderScripts", false)
+    @Html.Partial("Partials/_HeaderScripts")
+</head>
+
+<body class="cnt-home">
+    @Html.Action("Header", "Home")
+    <div class="body-content outer-top-vs">
+        <div class="container">
+            @{ Html.RenderPartial("_Alerts"); }
+            @RenderBody()
+        </div>
+    </div>
+    @Html.Action("Footer", "Home")
+    @RenderSection("Scripts", false)
+</body>
+</html>
+

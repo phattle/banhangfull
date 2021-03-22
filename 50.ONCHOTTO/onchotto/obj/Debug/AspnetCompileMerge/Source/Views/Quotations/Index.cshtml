@@ -1,0 +1,487 @@
+﻿@using System.Web.UI.WebControls
+@using OnChotto.Models.Dao
+@model OnChotto.Models.Entities.Quotation
+
+@{
+    ViewBag.Title = "Yêu cầu báo giá";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section BreadCrumbs{
+    <li><a href="#" class="active">@ViewBag.Title</a></li>
+}
+
+<div class="wizard">
+    <div class="wizard-inner">
+        <div class="connecting-line"></div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="@QuotationDao.activeClass("step1", Model)">
+                <p class="step-label">Bước 1</p>
+                <a href="javascript:void(0);" data-toggle="tab" aria-controls="step1" role="tab" title="Step 1">
+                    <span class="round-tab">
+                        <i class="fa fa-check"></i>
+                    </span>
+                </a>
+                <p class="step-desc">Nhập thông tin sản phẩm</p>
+            </li>
+            <li role="presentation" class="@QuotationDao.activeClass("step2", Model)">
+                <p class="step-label">Bước 2</p>
+                <a href="javascript:void(0);" data-toggle="tab" aria-controls="step2" role="tab" title="Step 2">
+
+                    <span class="round-tab">
+                        <i class="fa fa-check"></i>
+                    </span>
+
+                </a>
+                <p class="step-desc">Báo giá trong 10 phút</p>
+            </li>
+            <li role="presentation" class="@QuotationDao.activeClass("step3", Model)">
+                <p class="step-label">Bước 3</p>
+                <a href="javascript:void(0);" data-toggle="tab" aria-controls="step3" role="tab" title="Step 3">
+                    <span class="round-tab">
+                        <i class="fa fa-check"></i>
+                    </span>
+                </a>
+                <p class="step-desc">Thanh toán đơn hàng</p>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane @QuotationDao.activeClass("step1", Model)" role="tabpanel" id="step1">
+            <div class="step1">
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-horizontal">
+                        <fieldset>
+                            <legend>1. Thông tin cá nhân</legend>
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", Placeholder = "Họ và tên (*)" } })
+                                    @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.CustomerPhone, new { htmlAttributes = new { @class = "form-control", Placeholder = "Số điện thoại (*)" } })
+                                    @Html.ValidationMessageFor(model => model.CustomerPhone, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.CustomerEmail, new { htmlAttributes = new { @class = "form-control", Placeholder = "Email (*)" } })
+                                    @Html.ValidationMessageFor(model => model.CustomerEmail, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>2. Thông tin sản phẩm</legend>
+                            <div id="ProductLinks">
+                                <div class="form-group">
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-globe"></i></div>
+                                            @Html.Editor("ProductLinks[]", new { htmlAttributes = new { @class = "form-control", PlaceHolder = "http://...", @type = "url", @required = "true" } })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.ProductLinks, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-1">
+                                        @Html.Editor("ProductNumbers[]", new { htmlAttributes = new { @class = "form-control", @type = "number", @Value = "1", @Min = "1" } })
+                                    </div>
+                                    <a class="btn btn-danger remove" href="#"><i class="fa fa-times"></i> Xoá</a>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <a class="btn btn-default btn-add-more-link" href="#"><i class="fa fa-plus"></i> Thêm link</a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.TextAreaFor(model => model.AdditionalInformation, new { @class = "form-control", @Rows = "8", Placeholder = "Thông tin bổ sung (Màu sắc, kích thước, số lượng...)" })
+                                    <span class="help-block"><span class="text-warning">(*)</span> Thông tin của Quý khách sẽ được bảo mật tuyệt đối.</span>
+                                    @Html.ValidationMessageFor(model => model.AdditionalInformation, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <button type="submit" class="btn btn-lg btn-danger"><i class="fa fa-paper-plane"></i> Gửi yêu cầu</button>
+
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="tab-pane @QuotationDao.activeClass("step2", Model)" role="tabpanel" id="step2">
+            <div class="step2">
+                <div class="well">
+                    <p>Chúng tôi đã nhận được yêu cầu của bạn, chúng tôi sẽ gửi báo giá cho bạn sớm qua email, vui lòng kiểm tra Email để xem chi tiết</p>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane @QuotationDao.activeClass("step3", Model)" role="tabpanel" id="step3">
+
+        </div>
+    </div>
+</div>
+
+<div class="hidden" id="productLinkTemplate">
+    <div class="form-group">
+        <div class="col-md-8">
+            <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-globe"></i></div>
+                @Html.Editor("ProductLinks[]", new { htmlAttributes = new { @class = "form-control", PlaceHolder = "http://...", @type = "url", @required = "true" } })
+            </div>
+            @Html.ValidationMessageFor(model => model.ProductLinks, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-1">
+            @Html.Editor("ProductNumbers[]", new { htmlAttributes = new { @class = "form-control", @type = "number", @Value = "1", @Min = "1" } })
+        </div>
+        <a class="btn btn-danger remove" href="#"><i class="fa fa-times"></i> Xoá</a>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+
+        $(document).ready(function(){
+            $('.btn-add-more-link').click(function(event) {
+                event.preventDefault();
+                $('#ProductLinks').append($("#productLinkTemplate").html());
+            });
+
+            $(document).on("click", "a.remove", function (event) {
+                event.preventDefault();
+                $(this).parent().remove();
+            });
+
+            $("li.disabled a").click(function() {
+                return false;
+            });
+        });
+
+    </script>
+}
+
+@*<style>
+    .wizard {
+        margin: 20px auto;
+        background: #fff;
+        padding: 30px;
+    }
+
+        .wizard .nav-tabs {
+            position: relative;
+            margin: 0 auto;
+            margin-bottom: 0;
+            border-bottom-color: transparent;
+        }
+
+        .wizard > div.wizard-inner {
+            position: relative;
+        }
+
+    .connecting-line {
+        height: 2px;
+        background: #e0e0e0;
+        position: absolute;
+        width: 66%;
+        margin: 0 auto;
+        margin-top: -12px;
+        left: 0;
+        right: 0;
+        top: 50%;
+        z-index: 1;
+    }
+
+    .wizard fieldset {
+        margin-bottom: 15px;
+    }
+
+    .wizard legend {
+        border-bottom: 0;
+        border-left: 5px solid #D10200;/*red orange*/
+        padding-left: 5px;
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    .wizard input,
+    .wizard textarea,
+    .wizard .btn {
+        border-radius: 0;
+    }
+
+    .wizard a.btn.btn-default.btn-add-more-link {
+        background: transparent;
+        color: #555;
+    }
+
+    .wizard .nav-tabs > li {
+        text-align: center;
+    }
+
+        .active > a, .wizard .nav-tabs > li.active > a:hover, .wizard .nav-tabs > li.active > a:focus {
+            color: #555555;
+            cursor: default;
+            border: 0;
+            border-bottom-color: transparent;
+        }
+
+    span.round-tab {
+        width: 32px;
+        height: 32px;
+        line-height: 32px;
+        display: inline-block;
+        border-radius: 50%;
+        background: #ddd;
+        border: 2px solid #e0e0e0;
+        z-index: 2;
+        position: absolute;
+        left: 0;
+        text-align: center;
+        font-size: 18px;
+        color: #fff;
+    }
+
+        span.round-tab i {
+            color: #fff;
+        }
+
+    .wizard li.active span.round-tab {
+        background: #D10200; /*//orange;*/
+    }
+
+    .wizard .nav-tabs > li {
+        width: 33.33%;
+    }
+
+    .wizard .nav-tabs .step-label {
+        font-weight: bold;
+    }
+
+    .wizard .nav-tabs .step-desc {
+        color: #999;
+        margin-bottom: 30px;
+    }
+
+    .wizard .nav-tabs li.active .step-desc {
+        color: #1a1a1a;
+    }
+
+
+
+    .wizard li:after {
+        content: " ";
+        position: absolute;
+        left: 46%;
+        opacity: 0;
+        margin: 0 auto;
+        bottom: 0px;
+        border: 5px solid transparent;
+        border-bottom-color: #5bc0de;
+        transition: 0.1s ease-in-out;
+    }
+
+    .wizard li.active:after {
+        content: " ";
+        position: absolute;
+        left: 46%;
+        opacity: 1;
+        margin: 0 auto;
+        bottom: 0px;
+        border: 10px solid transparent;
+        border-bottom-color: #D10200;/*orange;*/
+    }
+
+    .wizard .nav-tabs > li a {
+        width: 32px;
+        height: 32px;
+        margin: 10px auto;
+        border-radius: 100%;
+        padding: 0;
+    }
+
+        .wizard .nav-tabs > li a:hover {
+            background: transparent;
+        }
+
+    .wizard .tab-content {
+        border: 1px solid #ddd;
+        padding: 30px;
+    }
+
+    .wizard .tab-pane {
+        position: relative;
+        padding-top: 30px;
+    }
+
+    .wizard h3 {
+        margin-top: 0;
+    }
+
+    .step1 .row {
+        margin-bottom: 10px;
+    }
+
+    .step_21 {
+        border: 1px solid #eee;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .step33 {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding-left: 10px;
+        margin-bottom: 10px;
+    }
+
+    .dropselectsec {
+        width: 68%;
+        padding: 6px 5px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        color: #333;
+        margin-left: 10px;
+        outline: none;
+        font-weight: normal;
+    }
+
+    .dropselectsec1 {
+        width: 74%;
+        padding: 6px 5px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        color: #333;
+        margin-left: 10px;
+        outline: none;
+        font-weight: normal;
+    }
+
+    .mar_ned {
+        margin-bottom: 10px;
+    }
+
+    .wdth {
+        width: 25%;
+    }
+
+    .birthdrop {
+        padding: 6px 5px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        color: #333;
+        margin-left: 10px;
+        width: 16%;
+        outline: 0;
+        font-weight: normal;
+    }
+
+
+    /* according menu */
+    #accordion-container {
+        font-size: 13px;
+    }
+
+    .accordion-header {
+        font-size: 13px;
+        background: #ebebeb;
+        margin: 5px 0 0;
+        padding: 7px 20px;
+        cursor: pointer;
+        color: #fff;
+        font-weight: 400;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+    }
+
+    .unselect_img {
+        width: 18px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    .active-header {
+        -moz-border-radius: 5px 5px 0 0;
+        -webkit-border-radius: 5px 5px 0 0;
+        border-radius: 5px 5px 0 0;
+        background: #F53B27;
+    }
+
+        .active-header:after {
+            content: "\f068";
+            font-family: 'FontAwesome';
+            float: right;
+            margin: 5px;
+            font-weight: 400;
+        }
+
+    .inactive-header {
+        background: #333;
+    }
+
+        .inactive-header:after {
+            content: "\f067";
+            font-family: 'FontAwesome';
+            float: right;
+            margin: 4px 5px;
+            font-weight: 400;
+        }
+
+    .accordion-content {
+        display: none;
+        padding: 20px;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-top: 0;
+        -moz-border-radius: 0 0 5px 5px;
+        -webkit-border-radius: 0 0 5px 5px;
+        border-radius: 0 0 5px 5px;
+    }
+
+        .accordion-content a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .accordion-content td {
+            border-bottom: 1px solid #dcdcdc;
+        }
+
+
+
+    @@media( max-width : 585px ) {
+
+        .wizard {
+            width: 90%;
+            height: auto !important;
+        }
+
+        span.round-tab {
+            font-size: 16px;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+        }
+
+        .wizard .nav-tabs > li a {
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+        }
+
+        .wizard li.active:after {
+            content: " ";
+            position: absolute;
+            left: 35%;
+        }
+    }
+</style>*@

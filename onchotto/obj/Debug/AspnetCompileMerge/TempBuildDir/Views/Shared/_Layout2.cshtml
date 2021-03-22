@@ -1,0 +1,76 @@
+﻿@using OnChotto.Models.Dao
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script> var amzn_ps_tracking_id = "smuavn08-20"; </script>
+    <script async="true" type="text/javascript" src="//ps-us.amazon-adsystem.com/scripts/US/studio.js"></script>
+
+    <title>@Html.Raw(ViewBag.Title)</title>
+
+    @RenderSection("HeaderMeta", false)
+
+    @Styles.Render("~/Assets/Frontend/css/css")
+    @Styles.Render("~/BootstrapValidator/css")
+    @Styles.Render("~/Content/css")
+
+    <!-- Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,700' rel='stylesheet' type='text/css'>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="@OptionDao.GetOption("FAVICON")">
+
+    @RenderSection("HeaderScripts", false)
+
+    @Html.Partial("Partials/_HeaderScripts")
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            height: 100%;
+            width: 100%;
+            background: rgba( 255, 255, 255, .8 ) url('../../../Assets/Frontend/images/Loading.svg') 50% 50% no-repeat;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+        }
+    </style>
+</head>
+
+<body class="cnt-home">
+
+    @Html.Action("Header", "Home")
+
+    <div class="breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-inner">
+                <ul class="list-inline list-unstyled">
+                    <li><a href="/"><i class="fa fa-home"></i>Trang chủ</a></li>
+                    @RenderSection("BreadCrumbs", false)
+                </ul>
+            </div><!-- /.breadcrumb-inner -->
+        </div><!-- /.container -->
+    </div>
+
+    <div class="body-content" id="top-banner-and-menu">
+        <div class="container">
+
+            @{ Html.RenderPartial("_Alerts"); }
+
+            @RenderBody()
+
+        </div>
+    </div>
+
+    @Html.Action("Footer", "Home")
+
+    @RenderSection("Scripts", false)
+    <div id="wait" class="modal">
+
+    </div>
+</body>
+
+
+</html>

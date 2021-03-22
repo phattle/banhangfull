@@ -1,0 +1,140 @@
+D:\ASPNET\Zdeal\Commons\bin\Release\Commons.dll.config
+D:\ASPNET\Zdeal\Commons\bin\Release\Commons.dll
+D:\ASPNET\Zdeal\Commons\bin\Release\Commons.pdb
+D:\ASPNET\Zdeal\Commons\bin\Release\vi\Commons.resources.dll
+D:\ASPNET\Zdeal\Commons\bin\Release\Antlr3.Runtime.dll
+D:\ASPNET\Zdeal\Commons\bin\Release\EntityFramework.dll
+D:\ASPNET\Zdeal\Commons\bin\Release\EntityFramework.SqlServer.dll
+D:\ASPNET\Zdeal\Commons\bin\Release\Microsoft.Web.Infrastructure.dll
+D:\ASPNET\Zdeal\Commons\bin\Release\Newtonsoft.Json.dll
+D:\ASPNET\Zdeal\Commons\bin\Release\System.Web.Helpers.dll
+D:\ASPNET\Zdeal\Commons\bin\Release\System.Web.Mvc.dll
+D:\ASPNET\Zdeal\Commons\bin\Release\System.Web.Optimization.dll
+D:\ASPNET\Zdeal\Commons\bin\Release\System.Web.Razor.dll
+D:\ASPNET\Zdeal\Commons\bin\Release\System.Web.WebPages.Deployment.dll
+D:\ASPNET\Zdeal\Commons\bin\Release\System.Web.WebPages.dll
+D:\ASPNET\Zdeal\Commons\bin\Release\System.Web.WebPages.Razor.dll
+D:\ASPNET\Zdeal\Commons\bin\Release\WebGrease.dll
+D:\ASPNET\Zdeal\Commons\bin\Release\Antlr3.Runtime.pdb
+D:\ASPNET\Zdeal\Commons\bin\Release\EntityFramework.xml
+D:\ASPNET\Zdeal\Commons\bin\Release\EntityFramework.SqlServer.xml
+D:\ASPNET\Zdeal\Commons\bin\Release\Newtonsoft.Json.xml
+D:\ASPNET\Zdeal\Commons\bin\Release\System.Web.Helpers.xml
+D:\ASPNET\Zdeal\Commons\bin\Release\System.Web.Mvc.xml
+D:\ASPNET\Zdeal\Commons\bin\Release\System.Web.Optimization.xml
+D:\ASPNET\Zdeal\Commons\bin\Release\System.Web.Razor.xml
+D:\ASPNET\Zdeal\Commons\bin\Release\System.Web.WebPages.xml
+D:\ASPNET\Zdeal\Commons\bin\Release\System.Web.WebPages.Deployment.xml
+D:\ASPNET\Zdeal\Commons\bin\Release\System.Web.WebPages.Razor.xml
+D:\ASPNET\Zdeal\Commons\obj\Release\Commons.I18N.Global.resources
+D:\ASPNET\Zdeal\Commons\obj\Release\Commons.I18N.Global.vi.resources
+D:\ASPNET\Zdeal\Commons\obj\Release\Commons.csproj.GenerateResource.Cache
+D:\ASPNET\Zdeal\Commons\obj\Release\vi\Commons.resources.dll
+D:\ASPNET\Zdeal\Commons\obj\Release\Commons.dll
+D:\ASPNET\Zdeal\Commons\obj\Release\Commons.pdb
+D:\ASPNET\Zdeal\Commons\obj\Release\Commons.csprojResolveAssemblyReference.cache
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\Commons.dll.config
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\Commons.dll
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\Commons.pdb
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\vi\Commons.resources.dll
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\Antlr3.Runtime.dll
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\EntityFramework.dll
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\EntityFramework.SqlServer.dll
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\Microsoft.Web.Infrastructure.dll
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\Newtonsoft.Json.dll
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\System.Web.Helpers.dll
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\System.Web.Mvc.dll
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\System.Web.Optimization.dll
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\System.Web.Razor.dll
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\System.Web.WebPages.Deployment.dll
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\System.Web.WebPages.dll
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\System.Web.WebPages.Razor.dll
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\WebGrease.dll
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\Antlr3.Runtime.pdb
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\EntityFramework.xml
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\EntityFramework.SqlServer.xml
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\Newtonsoft.Json.xml
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\System.Web.Helpers.xml
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\System.Web.Mvc.xml
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\System.Web.Optimization.xml
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\System.Web.Razor.xml
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\System.Web.WebPages.xml
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\System.Web.WebPages.Deployment.xml
+E:\PROJECTS\ASPNET\Zdeal\Commons\bin\Release\System.Web.WebPages.Razor.xml
+E:\PROJECTS\ASPNET\Zdeal\Commons\obj\Release\Commons.csprojResolveAssemblyReference.cache
+E:\PROJECTS\ASPNET\Zdeal\Commons\obj\Release\Commons.I18N.Global.resources
+E:\PROJECTS\ASPNET\Zdeal\Commons\obj\Release\Commons.I18N.Global.vi.resources
+E:\PROJECTS\ASPNET\Zdeal\Commons\obj\Release\Commons.csproj.GenerateResource.Cache
+E:\PROJECTS\ASPNET\Zdeal\Commons\obj\Release\vi\Commons.resources.dll
+E:\PROJECTS\ASPNET\Zdeal\Commons\obj\Release\Commons.dll
+E:\PROJECTS\ASPNET\Zdeal\Commons\obj\Release\Commons.pdb
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\Commons.dll.config
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\Commons.dll
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\Commons.pdb
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\vi\Commons.resources.dll
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\Antlr3.Runtime.dll
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\EntityFramework.dll
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\EntityFramework.SqlServer.dll
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\Microsoft.Web.Infrastructure.dll
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\Newtonsoft.Json.dll
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\System.Web.Helpers.dll
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\System.Web.Mvc.dll
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\System.Web.Optimization.dll
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\System.Web.Razor.dll
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\System.Web.WebPages.Deployment.dll
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\System.Web.WebPages.dll
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\System.Web.WebPages.Razor.dll
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\WebGrease.dll
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\Antlr3.Runtime.pdb
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\EntityFramework.xml
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\EntityFramework.SqlServer.xml
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\Newtonsoft.Json.xml
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\System.Web.Helpers.xml
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\System.Web.Mvc.xml
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\System.Web.Optimization.xml
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\System.Web.Razor.xml
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\System.Web.WebPages.xml
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\System.Web.WebPages.Deployment.xml
+C:\My Store\0.Checkout\SmuaVN\Commons\bin\Release\System.Web.WebPages.Razor.xml
+C:\My Store\0.Checkout\SmuaVN\Commons\obj\Release\Commons.csprojResolveAssemblyReference.cache
+C:\My Store\0.Checkout\SmuaVN\Commons\obj\Release\Commons.I18N.Global.resources
+C:\My Store\0.Checkout\SmuaVN\Commons\obj\Release\Commons.I18N.Global.vi.resources
+C:\My Store\0.Checkout\SmuaVN\Commons\obj\Release\Commons.csproj.GenerateResource.Cache
+C:\My Store\0.Checkout\SmuaVN\Commons\obj\Release\vi\Commons.resources.dll
+C:\My Store\0.Checkout\SmuaVN\Commons\obj\Release\Commons.dll
+C:\My Store\0.Checkout\SmuaVN\Commons\obj\Release\Commons.pdb
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\Commons.dll.config
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\Commons.dll
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\Commons.pdb
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\vi\Commons.resources.dll
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\Antlr3.Runtime.dll
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\EntityFramework.dll
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\EntityFramework.SqlServer.dll
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\Microsoft.Web.Infrastructure.dll
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\Newtonsoft.Json.dll
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\System.Web.Helpers.dll
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\System.Web.Mvc.dll
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\System.Web.Optimization.dll
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\System.Web.Razor.dll
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\System.Web.WebPages.Deployment.dll
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\System.Web.WebPages.dll
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\System.Web.WebPages.Razor.dll
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\WebGrease.dll
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\Antlr3.Runtime.pdb
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\EntityFramework.xml
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\EntityFramework.SqlServer.xml
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\Newtonsoft.Json.xml
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\System.Web.Helpers.xml
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\System.Web.Mvc.xml
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\System.Web.Optimization.xml
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\System.Web.Razor.xml
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\System.Web.WebPages.xml
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\System.Web.WebPages.Deployment.xml
+C:\My Store\2.Project\SmuaVN\Commons\bin\Release\System.Web.WebPages.Razor.xml
+C:\My Store\2.Project\SmuaVN\Commons\obj\Release\Commons.csprojResolveAssemblyReference.cache
+C:\My Store\2.Project\SmuaVN\Commons\obj\Release\Commons.I18N.Global.resources
+C:\My Store\2.Project\SmuaVN\Commons\obj\Release\Commons.I18N.Global.vi.resources
+C:\My Store\2.Project\SmuaVN\Commons\obj\Release\Commons.csproj.GenerateResource.Cache
+C:\My Store\2.Project\SmuaVN\Commons\obj\Release\vi\Commons.resources.dll
+C:\My Store\2.Project\SmuaVN\Commons\obj\Release\Commons.dll
+C:\My Store\2.Project\SmuaVN\Commons\obj\Release\Commons.pdb

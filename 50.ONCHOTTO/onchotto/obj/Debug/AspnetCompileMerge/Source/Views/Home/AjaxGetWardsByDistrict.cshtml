@@ -1,0 +1,5 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.Wards>
+@foreach (var item in Model)
+{
+    <option value="@item.WardId">@item.type @item.Name</option>
+}

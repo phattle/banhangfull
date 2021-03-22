@@ -1,0 +1,726 @@
+﻿@using OnChotto.Models
+@using OnChotto.Models.Dao
+@model OnChotto.Models.ViewModel.OrderDiffViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_ClearLayout.cshtml";
+}
+
+<div id="checkoutPage">
+    @using (Html.BeginForm("Index", "StoreDiff", FormMethod.Post, new { id = "Index" }))
+    {
+        @Html.HiddenFor(model => model.UserId)
+
+        @Html.AntiForgeryToken()
+
+        <div id="cart-detail" class="col-md-12">
+            <h1 class="block-title"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i> THÔNG TIN SẢN PHẨM</h1>
+            <div class="block block-white block-bordered">
+                <table id="ProductLinks" class="table table-bordered table-responsive mycart">
+                    
+                    <tbody>
+                        <tr>
+                            
+                            <td colspan="12"> 
+                                <div class="col-md-3">
+                                    Mã Tracking @Html.EditorFor(model => model.OrderTrackingNo, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.OrderTrackingNo, "", new { @class = "text-danger" })
+                                     
+                                </div>
+                                <div class="col-md-4">
+                                    Mã đơn hàng  @Html.EditorFor(model => model.OrderNo, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.OrderNo, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-5">  
+                                    Store Name  @Html.EditorFor(model => model.StoreName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.StoreName, "", new { @class = "text-danger" })                                
+                                </div>
+                                <!---->
+                                    <div class="col-md-7">
+                                        Sản phẩm :  @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+                                    </div>                                   
+                                    <div class="col-md-5">
+                                        Link :   @Html.EditorFor(model => model.ProductLink, new { htmlAttributes = new { @class = "form-control", PlaceHolder = "http://...", @type = "url", @required = "true" } })
+                                        @Html.ValidationMessageFor(model => model.ProductLink, "", new { @class = "text-danger" })
+                                    </div>      
+                                <!---->                                        
+                                    <div class="col-md-1">
+                                        Size : @Html.EditorFor(model => model.Size, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Size, "", new { @class = "text-danger" })
+                                    </div>
+                                <div class="col-md-1">
+                                    Số lượng  @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", @type = "number", @step = "1" } })
+                                    @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                                </div>
+                                    <div class="col-md-2">
+                                        Trọng lượng  @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control", @type = "number", @step = "0.1" } })
+                                        @Html.ValidationMessageFor(model => model.Weight, "", new { @class = "text-danger" })
+                                    </div>
+                                <div class="col-md-1">
+                                    Đơn vị @Html.DropDownListFor(model => model.WeightUnit, new List<SelectListItem>{ new SelectListItem{Text="lbs"},new SelectListItem{Text="kg"}}, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.WeightUnit, "", new { @class = "text-danger" })
+                                </div>
+
+                                    <div class="col-md-2">
+                                        Giá @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", @type = "number", @step = "1000" } })
+                                        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                                    </div>
+                                <div class="col-md-1">
+                                    Tiền tệ @Html.DropDownListFor(model => model.Currency, new List<SelectListItem> { new SelectListItem { Text = "USD" }, new SelectListItem { Text = "VND" }, new SelectListItem { Text = "UAD" }, new SelectListItem { Text = "JYP" } }, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Currency, "", new { @class = "text-danger" })
+                                </div>
+                                    <div class="col-md-2">
+                                        Giảm giá Off  @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control", @type = "number", @step = ".01" } })
+                                        @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        Giá bán Off  @Html.EditorFor(model => model.PriceAfter, new { htmlAttributes = new { @class = "form-control", @type = "number", @step = ".01" } })
+                                        @Html.ValidationMessageFor(model => model.PriceAfter, "", new { @class = "text-danger" })
+                                    </div>     
+                                <!---->
+                                <div class="col-md-12">
+                                    Loại giao dịch @Html.DropDownListFor(model => model.TransType, new List<SelectListItem> { new SelectListItem { Text = "Mua hộ" }, new SelectListItem { Text = "Ship hộ" } }, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.TransType, "", new { @class = "text-danger" })
+                                </div>
+                                <!---->                          
+                            </td>
+                            <td><a class="btn btn-danger remove" href="#"><i class="fa fa-times"></i> Xoá</a></td>
+
+                        </tr>
+
+
+                        <tr id="productLinkTemplate" class="hidden">
+                            <td colspan="12">
+                                <div class="col-md-3">
+                                    Mã Tracking @Html.EditorFor(model => model.OrderTrackingNo, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.OrderTrackingNo, "", new { @class = "text-danger" })
+
+                                </div>
+                                <div class="col-md-4">
+                                    Mã đơn hàng  @Html.EditorFor(model => model.OrderNo, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.OrderNo, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-5">
+                                    Store Name  @Html.EditorFor(model => model.StoreName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.StoreName, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-7">
+                                    Sản phẩm :  @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-5">
+                                    Link :   @Html.EditorFor(model => model.ProductLink, new { htmlAttributes = new { @class = "form-control", PlaceHolder = "http://...", @type = "url", @required = "true" } })
+                                    @Html.ValidationMessageFor(model => model.ProductLink, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-1">
+                                    Size : @Html.EditorFor(model => model.Size, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Size, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-1">
+                                    Số lượng  @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", @type = "number", @step = "1" } })
+                                    @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-2">
+                                    Trọng lượng  @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control", @type = "number", @step = "0.1" } })
+                                    @Html.ValidationMessageFor(model => model.Weight, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-1">
+                                    Đơn vị @Html.DropDownListFor(model => model.WeightUnit, new List<SelectListItem> { new SelectListItem { Text = "lbs" }, new SelectListItem { Text = "kg" } }, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.WeightUnit, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="col-md-2">
+                                    Giá @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", @type = "number", @step = "1000" } })
+                                    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-1">
+                                    Tiền tệ @Html.DropDownListFor(model => model.Currency, new List<SelectListItem> { new SelectListItem { Text = "USD" }, new SelectListItem { Text = "VND" }, new SelectListItem { Text = "UAD" }, new SelectListItem { Text = "JYP" } }, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.WeightUnit, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-2">
+                                    Giảm giá Off  @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control", @type = "number", @step = ".01" } })
+                                    @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-2">
+                                    Giá bán Off  @Html.EditorFor(model => model.PriceAfter, new { htmlAttributes = new { @class = "form-control", @type = "number", @step = ".01" } })
+                                    @Html.ValidationMessageFor(model => model.PriceAfter, "", new { @class = "text-danger" })
+                                </div>
+                            </td>
+                            <td><a class="btn btn-danger remove" href="#"><i class="fa fa-times"></i> Xoá</a></td>
+
+
+                        </tr>
+
+
+                    </tbody>
+                    @*<tfoot>
+                            <tr>
+                                <th colspan="11" class="text-right">Tổng giá sản phẩm:</th>
+                                <th class="text-right">
+                                    <span id="cart_total" class="nn-cart-total">0.00</span>
+                            </tr>
+                        </tfoot>*@
+                </table>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <a class="btn btn-default btn-add-more-link" href="#"><i class="fa fa-plus"></i> Thêm link</a>
+                    </div>
+                </div>
+                <hr />
+
+
+                @*Ghi Chú Đơn Hàng*@
+                @*<div class="form-group">
+                        <div class="col-md-12">
+                            <label class="control-label">Ghi chú đơn hàng</label>
+                            @Html.TextAreaFor(model => model.Note, new { @class = "form-control unicase-form-control", rows = "3" })
+                            @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
+
+                @*<div class="actions">
+                        <button class="btn btn-warning btn-lg btn-checkout" type="submit">
+                            <i class="fa fa-hand-o-right" aria-hidden="true"></i> Gửi Đơn Hàng
+                        </button>
+                        <a href="/" class="btn btn-info  btn-lg">
+                                <i class="fa fa-cart-plus" aria-hidden="true"></i> Thêm sản phẩm khác
+                            </a>
+                    </div>*@
+            </div>
+        </div>
+
+        <div class="row outer-bottom-xs">
+            <div class="col-md-6">
+                <h4 class="block-title"><i class="fa fa-user" aria-hidden="true"></i> THÔNG TIN NGƯỜI MUA SHIP HỘ</h4>
+                <div class="block block-white  block-bordered">
+
+                    @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+                    @if (Request.IsAuthenticated == false)
+                    {
+                        <p class="alert alert-info">Bạn đã có tài khoản <i class="fa fa-hand-o-right" aria-hidden="true"></i> <a href="#loginform" class="btn-toggle text-danger" data-toggle="toggle" title="đăng nhập tại đây">đăng nhập tại đây. </a>Nếu chưa có tài khoản vui lòng điền thông tin của bạn vào form dưới đây.</p>
+
+                        <div id="loginform" class="alert alert-info" style="display: none;">
+                            <a href="#loginform" class="close btn-toggle" data-dismiss="alert" aria-hidden="true">&times;</a>
+
+                            <div class="form-inline">
+                                <p id="status" style="color: orangered; font-weight:bold;"></p>
+
+                                <div class="form-group">
+                                    @Html.TextBox("UserName", null, new { @class = "form-control unicase-form-control", placeholder = "Địa chỉ email..." })
+                                </div>
+                                <div class="form-group">
+                                    @Html.Password("Password", null, new { @class = "form-control unicase-form-control", placeholder = "Mật khẩu..." })
+                                </div>
+                                <div class="form-group">
+                                    <a id="btnLogin" class="btn btn-success"><i class="fa fa-sign-in"></i> Đăng nhập</a>
+                                </div>
+                            </div>
+                            <hr />
+                            @Html.Partial("Partials/_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = Context.Request.RawUrl })
+                        </div>
+                    }
+
+                    <!-- Thông tin người nhận -->
+                    <div class="form-horizontal">
+                        @if (Request.IsAuthenticated)
+                        {
+                            <div class="form-group">
+                                <div class="col-md-8">
+                                    <label class="control-label">Họ và tên</label>
+                                    @Html.TextBoxFor(model => model.ReceiveName, new { @class = "form-control unicase-form-control", placeholder = "Họ và tên...", @readonly = "readonly" })
+                                    @Html.ValidationMessageFor(model => model.ReceiveName, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label">Số điện thoại</label>
+                                    @Html.TextBoxFor(model => model.ReceivePhone, new { @class = "form-control unicase-form-control", placeholder = "Số điện thoại...", @readonly = "readonly" })
+                                    @Html.ValidationMessageFor(model => model.ReceivePhone, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                <div class="col-md-8">
+                                    <label class="control-label">Họ và tên</label>
+                                    @Html.TextBoxFor(model => model.ReceiveName, new { @class = "form-control unicase-form-control", placeholder = "Họ và tên..." })
+                                    @Html.ValidationMessageFor(model => model.ReceiveName, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label">Số điện thoại</label>
+                                    @Html.TextBoxFor(model => model.ReceivePhone, new { @class = "form-control unicase-form-control", placeholder = "Số điện thoại..." })
+                                    @Html.ValidationMessageFor(model => model.ReceivePhone, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        }
+
+
+                        @if (Request.IsAuthenticated)
+                        {
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label class="control-label" for="ReceiveEmail">Địa chỉ Email</label>
+                                    @Html.TextBoxFor(model => model.ReceiveEmail, new { @class = "form-control unicase-form-control", placeholder = "Địa chỉ email có thực để nhận thông tin đơn hàng...", @readonly = "readonly" })
+                                    @Html.ValidationMessageFor(model => model.ReceiveEmail, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label class="control-label" for="ReceiveEmail">Địa chỉ Email</label>
+                                    @Html.TextBoxFor(model => model.ReceiveEmail, new { @class = "form-control unicase-form-control", placeholder = "Địa chỉ email có thực để nhận thông tin đơn hàng..." })
+                                    @Html.ValidationMessageFor(model => model.ReceiveEmail, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        }
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label">Địa chỉ</label>
+                                @Html.TextBoxFor(model => model.ReceiveAddress, new { @class = "form-control unicase-form-control", placeholder = "Địa chỉ nhận hàng..." })
+                                @Html.ValidationMessageFor(model => model.ReceiveAddress, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label class="control-label">Tỉnh/Thành phố</label>
+                                @Html.DropDownList("ProvinceId", null, "Chọn Tỉnh thành", htmlAttributes: new { @class = "form-control unicase-form-control select2" })
+                                @Html.ValidationMessage("ProvinceId", "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Quận/Huyện</label>
+                                @Html.DropDownList("DistrictId", null, "Chọn Quận huyện", htmlAttributes: new { @class = "form-control unicase-form-control" })
+                                @Html.ValidationMessage("DistrictId", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="checkbox">
+                                    <label>@Html.CheckBoxFor(model => model.OtherAddress, false) Thông tin nhận hàng khác với địa chỉ trên</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="otherAddressBox" style="display: none">
+                            <div class="form-group">
+                                <div class="col-md-8">
+                                    <label class="control-label">Họ và tên</label>
+                                    @Html.TextBoxFor(model => model.OtherReceiveName, new { @class = "form-control unicase-form-control", placeholder = "Tên người nhận hàng..." })
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label">Số điện thoại</label>
+                                    @Html.TextBoxFor(model => model.OtherReceivePhone, new { @class = "form-control unicase-form-control", placeholder = "Số điện thoại..." })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label class="control-label" for="OtherEmail">Địa chỉ Email</label>
+                                    @Html.TextBoxFor(model => model.OtherEmail, new { @class = "form-control unicase-form-control", Type = "email", placeholder = "Địa chỉ email nhận thông tin đơn hàng..." })
+                                    @Html.ValidationMessageFor(model => model.OtherEmail, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label class="control-label">Địa chỉ</label>
+                                    @Html.TextBox("OtherReceiveAddress", "", new { @class = "form-control unicase-form-control", placeholder = "Địa chỉ nhận hàng..." })
+                                    @Html.ValidationMessage("OtherReceiveAddress", "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            @*<div class="form-group">
+                                    <div class="col-md-6">
+                                        <label class="control-label">Tỉnh/Thành phố</label>
+                                        @Html.DropDownList("OtherProvinceId", null, "Chọn Tỉnh thành", htmlAttributes: new { @class = "form-control unicase-form-control select2", @style = "width:100%" })
+                                        @Html.ValidationMessage("OtherProvinceId", "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="control-label">Quận/Huyện</label>
+                                        @Html.DropDownList("OtherDistrictId", null, "Chọn Quận huyện", htmlAttributes: new { @class = "form-control unicase-form-control" })
+                                        @Html.ValidationMessage("OtherDistrictId", "", new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chọn nhà vận chuyển -->
+                @*<h3 class="block-title"><i class="fa fa-truck" aria-hidden="true"></i> CHỌN NHÀ VẬN CHUYỂN</h3>
+                    <div id="transport-table" class="block block-white  block-bordered" style="margin-bottom: 20px;">
+                        <p class="alert alert-info">
+                            Vui lòng chọn Tỉnh thành > Quận huyện để tìm nhà vận chuyển cho bạn.
+                        </p>
+                    </div>*@
+
+            </div>
+            <div id="cart-detail" class="col-md-6">
+                <h4 class="block-title"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i> PHƯƠNG THỨC THANH TOÁN</h4>
+                <div class="block block-white block-bordered">
+
+                    <hr />
+
+                    <div class="form-horizontal">
+                        @*<fieldset>
+                                <h4>Chọn mức tạm ứng</h4>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <select id="Deposit" name="Deposit" class="form-control unicase-form-control">
+                                            <option value="50">Tạm ứng trước 50% đơn hàng</option>
+                                            <option value="80">Tạm ứng trước 80% đơn hàng</option>
+                                            <option value="100">Thanh toán đủ 100% đơn hàng</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>*@
+
+                        @{
+                            //Phương Thức Thanh Toán
+                            OrderDao dao = new OrderDao();
+                            var paymentMethods = dao.GetAllPaymentMethods();
+                            if (paymentMethods.Count > 0)
+                            {
+                                int i = 0;
+                                <fieldset>
+                                    <h4>Chọn phương thức thanh toán</h4>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+
+                                            @foreach (var method in paymentMethods)
+                                            {
+
+                                                <div class="radio-checkout-unicase">
+                                                    <label>
+                                                        @if (i == 0)
+                                                        {
+                                                            @Html.RadioButtonFor(model => model.PaymentMethodId, method.Id, new { Checked = "checked" }) @method.Name
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.RadioButtonFor(model => model.PaymentMethodId, method.Id) @method.Name
+                                                        }
+                                                    </label>
+                                                </div>
+                                                i++;
+                                            }
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            }
+
+                        }
+                        @*Ghi Chú Đơn Hàng*@
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label">Ghi chú đơn hàng</label>
+                                @Html.TextAreaFor(model => model.Note, new { @class = "form-control unicase-form-control", rows = "3" })
+                                @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="actions">
+                            <button class="btn btn-warning btn-lg btn-checkout" type="submit">
+                                <i class="fa fa-hand-o-right" aria-hidden="true"></i> Gửi Đơn Hàng
+                            </button>
+                            @*<a href="/" class="btn btn-info  btn-lg">
+                                    <i class="fa fa-cart-plus" aria-hidden="true"></i> Thêm sản phẩm khác
+                                </a>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $('.btn-add-more-link').click(function (event) {
+                event.preventDefault();
+                $('#ProductLinks > tbody:last-child').append($('<tr>').append($("#productLinkTemplate").html()));
+            });
+
+            $(document).on("click", "a.remove", function (event) {
+                event.preventDefault();
+                $(this).closest('tr').remove();
+            });
+
+            $("li.disabled a").click(function () {
+                return false;
+            });
+        });
+        $('.btn-toggle').click(function (event) {
+            event.preventDefault();
+            var to = $(this).attr('href');
+            $(to).slideToggle();
+
+            return false;
+        });
+
+        // Hàm Ajax login
+        $("#btnLogin").click(function (e) {
+            e.preventDefault();
+            var data = {
+                Email: $("#UserName").val(),
+                Password: $("#Password").val()
+            };
+
+            var btn = $(this);
+
+            $.ajax({
+                url: '/Account/AjaxLogin',
+                type: 'POST',
+                dataType: 'json',
+                data: data,
+                beforeSend: function () {
+                    btn.find('i.fa').removeClass('fa-sign-in').addClass('fa-spinner fa-pulse fa-fw');
+                },
+                success: function (response) {
+
+                    btn.find('i.fa').addClass('fa-sign-in').removeClass('fa-spinner fa-pulse fa-fw');
+
+                    $('#status').text(response.Message);
+
+                    if (response.Status == 1) {
+                        location.href = "/Order/Checkout";
+                    }
+                },
+                error: function (err) {
+                    alert("Lỗi hệ thống, ấn F5 để refresh lại trình duyệt để tiếp tục.");
+                }
+            });
+        });
+
+        //Bật nhập địa chỉ nhận hàng khác
+        checkOtherAddressBox();
+        $('#OtherAddress').change(function () {
+            checkOtherAddressBox();
+        });
+
+        function checkOtherAddressBox() {
+            if ($('#OtherAddress')[0].checked === true) {
+                $("#otherAddressBox").slideDown();
+                getTransport('OtherDistrictId');
+            } else {
+                $("#otherAddressBox").slideUp();
+                getTransport('DistrictId');
+            }
+        }
+        // Hàm Ajax Lấy District
+        $("#ProvinceId, #OtherProvinceId").change(function (e) {
+            e.preventDefault();
+            var data = {
+                provinceId: $(this).val()
+            };
+
+            var thisctrl = $(this);
+
+            $.ajax({
+                url: '/Home/AjaxGetDistrictByProvice',
+                type: 'POST',
+                dataType: 'html',
+                data: data,
+                success: function (html) {
+
+                    if (thisctrl.attr('id') === "ProvinceId") {
+                        $('#DistrictId').html(html);
+
+                    }
+                    else {
+                        $('#OtherDistrictId').html(html);
+                    }
+                },
+                complete: function () {
+                    //Lay danh sach nha van chuyen
+                    if (thisctrl.attr('id') === "OtherProvinceId") {
+                        getTransport("OtherProvinceId");
+                    }
+                    else if ($('#OtherAddress')[0].checked !== true) {
+                        getTransport('DistrictId');
+                    }
+                },
+                error: function (err) {
+                    alert("Lỗi hệ thống, ấn F5 để refresh lại trình duyệt để tiếp tục.");
+                }
+            });
+        });
+
+        //Lấy và cập nhật nhà vận chuyển nhận hàng khác
+        getTransport('OtherDistrictId');
+        $('#OtherDistrictId').change(function (e) {
+            e.preventDefault();
+            getTransport($(this).attr('id'));
+        });
+
+        //Lấy và cập nhật nhà vận chuyển
+        getTransport('DistrictId');
+        $('#DistrictId').change(function (e) {
+            e.preventDefault();
+            getTransport($(this).attr('id'));
+        });
+
+        //Lấy bảng nhà vận chuyển
+        function getTransport(id) {
+            var districtId = $('#' + id).val();
+            //alert(districtId);
+            if (districtId == undefined || districtId === "") return false;
+            //lấy bảng vận chuyển
+            var data = {
+                districtId: districtId
+            };
+
+            $.ajax({
+                url: '/Order/AjaxGetTransport',
+                type: 'GET',
+                dataType: 'html',
+                data: data,
+                beforeSend: function () {
+                    $("#transport-table").html('<i class="fa-spinner fa-pulse fa-fw"></i>');
+                },
+                success: function (html) {
+                    $("#transport-table").html(html);
+                },
+                complete: function () {
+                    updateOrderSummary();
+                },
+                error: function (err) {
+                    alert("Lỗi hệ thống, ấn F5 để refresh lại trình duyệt để tiếp tục.");
+                }
+            });
+        }
+
+        $("#FormPurchase").change(function () {
+            updateTransport();
+        });
+
+        function updateTransport() {
+            var transportid = $("input[name='TransportId']:checked").val();
+            //alert("TransportId: " + transportid);
+            if (transportid == undefined || transportid == "") return false;
+            //lấy bảng vận chuyển
+            var data = {
+                transportId: transportid,
+            };
+
+            $.ajax({
+                url: '/Order/UpdateTransport',
+                type: 'get',
+                dataType: 'text',
+                data: data,
+                success: function (result) {
+                    //alert(result);
+                },
+                error: function (err) {
+
+                }
+            });
+
+            updateOrderSummary();
+        }
+
+        //Tinh lai tam ung
+        $('#Deposit').change(function (e) {
+            e.preventDefault();
+            updateOrderSummary();
+        });
+
+        updateOrderSummary();
+        function updateOrderSummary() {
+
+            $.ajax({
+                url: '/Order/getOrderInfo',
+                type: 'Get',
+                dataType: 'json',
+                success: function (response) {
+                    $("#orderTransportCost").text($.number(response.TransportCost) + "đ");
+                    $("#orderTotalWeight").text(response.TotalWeight.toFixed(2) + "kg");
+                    $("#orderDiscount").text($.number(response.Discount) + "đ");
+                    $("#totalOrder").text($.number(response.OrderTotal) + "đ");
+                    $("#discountDescription").html(response.DiscountDescription);
+
+
+                    //Tinh tiền tạm ứng, tiền thanh toán sau
+                    var deposit = $("#Deposit").val();
+                    console.log(deposit);
+                    var depositPay = response.OrderTotal * (deposit / 100);
+                    var secondPay = response.OrderTotal - depositPay;
+                    $("#totalOrderDepositPay").text($.number(depositPay) + "đ");
+                    $("#totalOrderSeconPay").text($.number(secondPay) + "đ");
+                },
+                error: function (err) {
+                    alert("Lỗi hệ thống, ấn F5 để refresh lại trình duyệt để tiếp tục.");
+                }
+            });
+        }
+
+        $("#applyCoupon").click(function (event) {
+            event.preventDefault();
+
+            var data = {
+                code: $("#couponCode").val(),
+            };
+
+            $.ajax({
+                url: '/Order/UpdateCoupon',
+                type: 'Get',
+                dataType: 'text',
+                data: data,
+                beforeSend: function () {
+                    $("#applyCoupon i.fa").addClass("fa-spinner fa-pulse fa-fw");
+                },
+                success: function (response) {
+                    //alert(response);
+                    $("#applyCoupon i.fa").removeClass("fa-spinner fa-pulse fa-fw");
+
+                    if ($("#couponbox .status").hasClass("alert")) {
+                        $("#couponbox .status").removeClass("alert").removeClass("alert-danger").removeClass("alert-success");
+                    }
+
+                    if (response == "True") {
+                        $("#couponbox .status").text("Nhập mã KM thành công!").addClass('alert alert-success');
+                        updateOrderSummary();
+                    } else {
+                        $("#couponbox .status").text("Nhập mã KM không tồn tại!").addClass('alert alert-danger');
+                    }
+                },
+                error: function (err) {
+                    alert("Lỗi hệ thống, ấn F5 để refresh lại trình duyệt để tiếp tục.");
+                }
+            });
+
+        });
+        $(document).delegate(".Amount,.Weight", "change", function () {
+        })
+    </script>
+
+}
+
+<style>
+    .select2-container--default .select2-selection--single {
+        border: 1px solid #eee;
+    }
+
+    .select2-container .select2-selection--single {
+        height: 34px;
+        line-height: 34px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 31px;
+        position: absolute;
+        top: 1px;
+        right: 1px;
+        width: 20px;
+    }
+</style>

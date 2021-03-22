@@ -1,0 +1,39 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.ProductSite>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductSiteName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IdCode)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductSiteName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IdCode)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ProductSiteId }) |          
+            @Html.ActionLink("Delete", "Delete", new { id=item.ProductSiteId })
+        </td>
+    </tr>
+}
+
+</table>

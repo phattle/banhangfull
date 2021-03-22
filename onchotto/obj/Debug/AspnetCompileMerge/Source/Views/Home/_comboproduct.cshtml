@@ -1,0 +1,37 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.Product>
+@{
+    int langid = SessionManager.CurrentCulture;
+
+}
+
+<div id="fh5co-product">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
+                <strong>Công Ty May Đồng Phục OnChotto Tự Hào Top 1000 Doanh Nghiệp May Mặc Toàn Quốc</strong>
+                <h2>Combo Đồng Phục Siêu Tiết Kiệm</h2>
+                <p>Thời đại cách mạng công nghiệp 4.0, kinh tế thị trường phát triển, làm chủ doanh nghiệp ai cũng đau đầu vì chi phí bỏ ra. Thấu hiểu và đồng hành cùng chủ doanh nghiệp, chúng tôi đưa ra combo may đồng phục tiết kiệm được nhiều chi phí giúp khách hàng an tâm phát triển thương hiệu.</p>
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var p in Model)
+            {
+                <div class="col-md-4 text-center animate-box">
+                    <div class="product">
+
+                        <div class="product-grid">
+                            <a href="/san-pham/@p.Name.ToAscii()-@p.Id"><img src="@p.FeaturedImage" alt="@p.Name" /></a>
+                        </div>
+
+                        <div class="desc">
+                            <h3><a href="/san-pham/@p.Name.ToAscii()-@p.Id">@p.Name</a></h3>
+                            <span class="price">@p.Description</span>
+                        </div>
+                    </div>
+                </div>
+            }
+            
+        </div>
+
+    </div>
+</div>

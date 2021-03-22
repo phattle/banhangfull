@@ -1,0 +1,82 @@
+﻿@model OnChotto.Models.ApplicationUser
+@using OnChotto.Models.Dao
+
+@{
+    ViewBag.Title = "Sửa quyền của thành viên";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+
+<div class="row">
+
+    <div class="col-sm-6">
+
+        <div class="box">
+            <div class="box-header">
+                <h5><strong>Các quyền hiện tại của thành viên @Model.Email:</strong> </h5>
+            </div>
+            <div class="box-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Quyền</th>
+                            <th>Xoá</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @if (Model.Roles.Count > 0)
+                        {
+                            foreach (var item in Model.Roles)
+                            {
+                                <tr>
+                                    <td>@item.RoleId</td>
+                                    <td>@item.Role().Name</td>
+                                    <td>
+                                        <form action="@Url.Action("DeleteRoleFromUser", new { UserId = item.UserId, RoleId = item.RoleId })" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-xs btn-danger">Gỡ bỏ</button>
+                                        </form>
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="2">
+                                    <p>Thành viên chưa có quyền nào</p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="box">
+            <div class="box-header">
+                <h5><strong>Thêm quyền cho thành viên này:</strong></h5>
+            </div>
+            <div class="box-body">
+                <form action="@Url.Action("AddToRole")" method="post">
+
+                    <input type="hidden" name="UserId" value="@Url.RequestContext.RouteData.Values["Id"]" />
+
+                    @Html.AntiForgeryToken()
+
+                    @Html.ListBox("RoleId", null, new { @class = "form-control", multiple = "multiple" })
+
+                    <div class="form-group">
+                        <br />
+                        <button type="submit" class="btn btn-primary">Thêm </button>
+                        <a href="@Url.Action("Index")" class="btn btn-default">Danh sách thành viên</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

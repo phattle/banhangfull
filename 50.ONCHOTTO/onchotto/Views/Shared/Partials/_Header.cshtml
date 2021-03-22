@@ -1,0 +1,53 @@
+﻿@using OnChotto.Models.Entities
+@using OnChotto.Models
+@using OnChotto.Models.Dao
+@model IEnumerable<OnChotto.Models.Entities.Product>
+ 
+
+<nav class="fh5co-nav" role="navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-xs-2">
+                <div id="fh5co-logo">
+                    <a href="/">
+                        <img src="~/Uploads/images/Logo/logo.png" alt="áo thun đồng phục logo" />
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-7 col-xs-6 text-center menu-1">
+                <ul>
+                    <li>
+                        <a href="/">Trang Chủ</a>
+                    </li>
+
+
+                    @Html.Action("Category", "Home")
+                   
+
+                    <li><a href="/khach-hang">Khách Hàng</a></li>
+                    <li class="has-dropdown">
+                        <a href="/gioi-thieu">Giới Thiệu</a>
+                        @*<ul class="dropdown">
+                            <li><a href="/gioi-thieu">Giới Thiệu</a></li>
+                            <li><a href="/profile">Profile </a></li>
+
+                        </ul>*@
+                    </li>
+                    <li><a href="/bang-gia">Bảng Giá</a></li>
+                    <li><a href="/lien-he">Liên Hệ </a></li>
+                </ul>
+            </div>
+            <div class="col-md-2 col-xs-3 text-right hidden-xs menu-2">
+                <div class="search">
+                    <div class="input-group">
+                        <input id="keyPT" type="text" placeholder="Tìm kiếm.." onkeypress="return runScript(event)" />
+                        <span class="input-group-btn">
+                            <button id="searchPT" class="btn btn-primary" type="button" onclick="searchKeyword()"><i class="icon-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</nav>

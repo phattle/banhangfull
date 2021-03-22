@@ -1,0 +1,160 @@
+D:\4.SBP\SMUAVN\Hotdeal\bin\roslyn\csc.exe
+D:\4.SBP\SMUAVN\Hotdeal\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\4.SBP\SMUAVN\Hotdeal\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\4.SBP\SMUAVN\Hotdeal\bin\roslyn\System.Collections.Immutable.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\roslyn\System.Reflection.Metadata.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\roslyn\vbc.exe
+D:\4.SBP\SMUAVN\Hotdeal\bin\roslyn\VBCSCompiler.exe
+D:\4.SBP\SMUAVN\Hotdeal\bin\roslyn\VBCSCompiler.exe.config
+D:\4.SBP\SMUAVN\Hotdeal\bin\Smuavn.dll.config
+D:\4.SBP\SMUAVN\Hotdeal\bin\Smuavn.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\Smuavn.pdb
+D:\4.SBP\SMUAVN\Hotdeal\bin\Antlr3.Runtime.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\Commons.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\EntityFramework.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\EntityFramework.SqlServer.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\HtmlAgilityPack.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.AspNet.Identity.Core.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.AspNet.Identity.Owin.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.Owin.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.Owin.Security.Cookies.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.Owin.Security.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.Owin.Security.Facebook.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.Owin.Security.Google.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.Owin.Security.OAuth.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.Owin.Security.Twitter.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.Web.Infrastructure.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\Newtonsoft.Json.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\Owin.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\PagedList.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\PagedList.Mvc.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\System.Web.Helpers.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\System.Web.Mvc.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\System.Web.Optimization.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\System.Web.Razor.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\System.Web.WebPages.Deployment.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\System.Web.WebPages.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\System.Web.WebPages.Razor.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\WebGrease.dll
+D:\4.SBP\SMUAVN\Hotdeal\bin\Commons.pdb
+D:\4.SBP\SMUAVN\Hotdeal\bin\HtmlAgilityPack.pdb
+D:\4.SBP\SMUAVN\Hotdeal\bin\HtmlAgilityPack.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\PagedList.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\PagedList.Mvc.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\System.Web.Helpers.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\System.Web.Mvc.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\System.Web.Optimization.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\System.Web.Razor.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\System.Web.WebPages.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\System.Web.WebPages.Deployment.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\System.Web.WebPages.Razor.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\Antlr3.Runtime.pdb
+D:\4.SBP\SMUAVN\Hotdeal\bin\Newtonsoft.Json.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\EntityFramework.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\EntityFramework.SqlServer.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.AspNet.Identity.Core.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.AspNet.Identity.Owin.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.Owin.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.Owin.Security.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.Owin.Security.Facebook.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.Owin.Security.Cookies.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.Owin.Security.OAuth.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.Owin.Security.Google.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.Owin.Security.Twitter.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+D:\4.SBP\SMUAVN\Hotdeal\bin\vi\Commons.resources.dll
+D:\4.SBP\SMUAVN\Hotdeal\obj\Debug\Smuavn.dll
+D:\4.SBP\SMUAVN\Hotdeal\obj\Debug\Smuavn.pdb
+D:\4.SBP\SMUAVN\Hotdeal\obj\Debug\Smuavn.csprojResolveAssemblyReference.cache
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\roslyn\csc.exe
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\roslyn\System.Collections.Immutable.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\roslyn\System.Reflection.Metadata.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\roslyn\vbc.exe
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\roslyn\VBCSCompiler.exe
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\roslyn\VBCSCompiler.exe.config
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Smuavn.dll.config
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Smuavn.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Smuavn.pdb
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Antlr3.Runtime.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Commons.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\EntityFramework.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\EntityFramework.SqlServer.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\HtmlAgilityPack.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.AspNet.Identity.Core.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.AspNet.Identity.Owin.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.Owin.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.Owin.Security.Cookies.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.Owin.Security.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.Owin.Security.Facebook.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.Owin.Security.Google.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.Owin.Security.OAuth.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.Owin.Security.Twitter.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.Web.Infrastructure.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Newtonsoft.Json.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Owin.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\PagedList.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\PagedList.Mvc.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\System.Web.Helpers.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\System.Web.Mvc.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\System.Web.Optimization.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\System.Web.Razor.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\System.Web.WebPages.Deployment.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\System.Web.WebPages.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\System.Web.WebPages.Razor.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\WebGrease.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Commons.pdb
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\HtmlAgilityPack.pdb
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\HtmlAgilityPack.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\PagedList.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\PagedList.Mvc.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\System.Web.Helpers.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\System.Web.Mvc.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\System.Web.Optimization.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\System.Web.Razor.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\System.Web.WebPages.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\System.Web.WebPages.Deployment.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\System.Web.WebPages.Razor.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Antlr3.Runtime.pdb
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Newtonsoft.Json.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\EntityFramework.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\EntityFramework.SqlServer.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.AspNet.Identity.Core.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.AspNet.Identity.Owin.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.Owin.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.Owin.Security.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.Owin.Security.Facebook.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.Owin.Security.Cookies.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.Owin.Security.OAuth.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.Owin.Security.Google.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.Owin.Security.Twitter.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\bin\vi\Commons.resources.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\obj\Debug\Smuavn.csprojResolveAssemblyReference.cache
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\obj\Debug\Smuavn.dll
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\obj\Debug\Smuavn.pdb
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\obj\Debug\Smuavn.Properties.Resources.resources
+D:\0.DTGSOFT\1.KIEN DO\2.LUUTRU_KH\50.ONCHOTTO\onchotto\obj\Debug\Smuavn.csproj.GenerateResource.Cache

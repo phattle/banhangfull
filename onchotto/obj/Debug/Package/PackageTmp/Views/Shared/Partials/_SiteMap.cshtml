@@ -1,0 +1,122 @@
+﻿@{
+    MvcHelpers hp = new MvcHelpers();
+    var controllernames = hp.GetControllerNames();
+}
+<ul class="dropdown-menu pages">
+    <li>
+        <div class="yamm-content">
+            <div class="row">
+
+
+                @foreach (var cn in controllernames)
+                {
+                    <div class='col-xs-12 col-sm-4 col-md-4'>
+                        <ul class='links'>
+                            <li style="font:bold;color:red;">@cn</li>
+                            @foreach (var an in hp.GetActionName(cn))
+                            {
+                            <li><a href="/@cn/@an">@an</a></li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+
+
+
+
+
+            </div>
+
+        </div>
+    </li>
+
+
+</ul>
+                               
+
+@*@{
+    MvcHelpers hp = new MvcHelpers();
+    var controllernames = hp.GetControllerNames();
+    <ul class="dropdown-menu">
+    
+            
+                @foreach (var m in controllernames)
+                {
+                   
+                    <li>@m</li>
+                    
+                        foreach(var n in hp.GetActionName(m))
+                        {
+                        <li><a href="/@m/@n">@n</a></li>
+                        }
+                    
+                }
+     
+        
+                       
+</ul>
+}*@
+
+
+
+
+
+
+
+@*<ul class="dropdown-menu">
+    @{
+        var allTypes =
+                from asm
+                in AppDomain.CurrentDomain.GetAssemblies()
+                let types = (
+                    from type
+                    in asm.GetTypes()
+                    let contname = type.Name.Replace("Controller", "")
+                    let methods = (
+                        from method
+                        in type.GetMethods()
+                        let hasHttpPost =
+                            method.GetCustomAttributes(
+                                typeof(HttpPostAttribute),
+                                false).Length > 0
+                        where (method.ReturnType.IsSubclassOf(
+                                        typeof(ActionResult))
+                        || method.ReturnType == typeof(ActionResult))
+                        && !hasHttpPost
+                        select new
+                        {
+                            Controller = contname,
+                            Action = method.Name
+                        }
+                    )
+                    where type.IsSubclassOf(typeof(Controller))
+                    select new { Name = contname, Controllers = methods }
+                    )
+                select new { asm.FullName, AllControllers = types };
+
+
+        foreach (var controllers in allTypes)
+        {
+            foreach (var controller in controllers.AllControllers)
+            {
+                <li>
+                    @controller.Name
+                    <ul>
+                        @{
+                foreach (var controlleraction in controller.Controllers)
+                {
+                    <li>
+                        <a href="@controlleraction.Controller/@controlleraction.Action">
+                            @controlleraction.Action
+                        </a>
+                    </li>
+                }
+                        }
+                    </ul>
+                </li>
+            }
+        }
+    }
+</ul>*@
+

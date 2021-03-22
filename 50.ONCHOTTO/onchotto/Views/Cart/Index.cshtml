@@ -1,0 +1,57 @@
+﻿@using OnChotto.Models.Entities
+@using OnChotto.Models
+@model IEnumerable<Product>
+@{
+    ViewBag.Title = "Giỏ hàng của bạn";
+}
+
+@section BreadCrumbs{
+    <li><a href="#" class="active">@ViewBag.Title</a></li>
+}
+
+<table class="table table-striped table-bordered">
+    <tr>
+        <th>#</th>
+        <th>Sản phẩm</th>
+        <th>Giá gốc</th>
+        <th>Giá bán</th>
+        <th>Giảm (%)</th>
+        <th>Số lượng</th>
+        <th>Thành tiền</th>
+        <th></th>
+    </tr>
+    @foreach (Product p in Model)
+    {
+        <tr>
+            <td><img src="@p.FeaturedImage" width="48" /></td>
+            <td>@p.Name</td>
+            <td>@Html.FormatValue(p.Price, "{0:0,0}")<sup>đ</sup></td>
+            <td>@Html.FormatValue(p.PriceAfter, "{0:0,0}")<sup>đ</sup></td>
+            <td>@p.Discount%</td>
+            <td><input class="quantity text-center" value="@p.Amount" data-id="@p.Id" size="5" id="@p.Id-ss"/></td>
+            <td id="Amount-@p.Id">@Html.FormatValue(p.PriceAfter * p.Amount, "{0:0,0}")<sup>đ</sup></td>
+            <td>
+                <i class="fa fa-trash remove-from-cart" data-id="@p.Id"></i>
+            </td>
+        </tr>
+    }
+    <tr>
+        <th colspan="6" style="text-align:right">Total:</th>
+        <th class="nn-cart-total">@Html.FormatValue(ShoppingCart.Cart.Total, "{0:0,0}") <sup>đ</sup></th>
+        <th></th>
+    </tr>
+</table>
+<form action="/Cart/Clear" method="post">
+    <button class="btn btn-danger" onclick="return confirm('Bạn có chắc muốn xóa giỏ hàng?');">
+        <i class="fa fa-trash"></i>
+        Xóa giỏ hàng
+    </button>
+    <a href="/Home/Index" class="btn btn-success">
+        <i class="fa fa-eye"></i>
+        Tiếp tục mua hàng
+    </a>
+    <a href="/Order/Checkout" class="btn btn-warning">
+        <i class="fa fa-cart-arrow-down"></i>
+        Đặt Hàng
+    </a>
+</form>

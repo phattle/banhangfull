@@ -1,0 +1,76 @@
+﻿@model PagedList.IPagedList<OnChotto.Models.Entities.Product>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = Html.Raw(ViewBag.label);
+    Layout = "~/Views/Shared/_ClearLayout.cshtml";
+    Random rd = new Random();
+}
+
+<div class="row">
+    <div class="col col-sm-6 col-md-6">
+        <div class="category-title">
+            <h3 class="heading-title ud-line">@ViewBag.Title</h3>
+        </div>
+    </div><!-- /.col -->
+    <div class="col col-sm-6 col-md-6 text-right">
+        @Html.PagedListPager(Model, page => Url.HttpRouteUrl("BestSaler product", new { page }))
+    </div><!-- /.col -->
+</div><!-- /.row -->
+
+<div class="row">
+    @foreach (var p in Model)
+    {
+        <div class="col-sm-4 col-md-3 wow fadeInUp animated" style="visibility: visible; animation-name: fadeInUp;">
+            <div class="products">
+                <div class="product no-margin">
+                    <div class="product-image">
+                        <div class="image">
+                            <a href="/san-pham/@p.Name.ToAscii()-@p.Id" title="@Html.Raw(p.Name)">
+                                <img src="@p.FeaturedImage" data-echo="@p.FeaturedImage" alt="@Html.Raw(p.Name)" class="imgFull" id="@p.Id">
+                            </a>
+                        </div><!-- /.Image -->
+
+                        <div class="cart text-center animate-effect">
+                            <div class="action">
+                                <a class="btn btn-success" href="/san-pham/@p.Name.ToAscii()-@p.Id" title="Xem ngay"><i class="icon fa fa-eye"></i> XEM NGAY</a>
+                                <a class="btn btn-warning" href="/danh-dau-yeu-thich/@p.Id" title="Wishlist"><i class="icon fa fa-heart"></i> YÊU THÍCH</a>
+                            </div><!-- /.action -->
+                        </div><!-- /.cart -->
+
+                    </div><!-- /.product-image -->
+
+                    <div class="product-info">
+                        <div class="info-header">
+                            <h3 class="name"><a href="/san-pham/@p.Name.ToAscii()-@p.Id" title="@Html.Raw(p.Name)">@Html.Raw(p.Name)</a></h3>
+                        </div>
+                        <div class="product-price">
+                            <meta itemprop="priceCurrency" content="VND">
+                            <span class="price">
+                                <span class="price_value" itemprop="price">@Html.FormatValue(p.PriceAfter, "{0:0,0}") <span class="price_symbol">đ</span></span>
+                                <span class="price_discount">-@p.Discount%</span>
+                            </span>
+                            <div class="price-before-discount"> @Html.FormatValue(p.Price, "{0:0,0}") <span class="price_symbol">đ</span></div>
+                        </div><!-- /.product-price -->
+                        <div class="product_views">
+
+                            <i class="fa fa-user"></i> @rd.Next(p.Views, 100 + p.Views)
+                        </div>
+                    </div><!-- /.product-info -->
+
+                    @if (p.EndDate != null)
+                    {
+                        var unixTimestamp = (Int32)(p.EndDate.Value.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                        <div class="countdown">
+                            <i class="fa fa-clock-o"></i> Còn <span data-time="@unixTimestamp" class="kkcountdown"></span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div><!-- /.item -->
+    }
+</div>
+
+<div class="text-center">
+    @Html.PagedListPager(Model, page => Url.HttpRouteUrl("BestSaler product", new { page }))
+</div>
+

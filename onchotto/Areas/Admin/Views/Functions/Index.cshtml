@@ -1,0 +1,71 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.Function>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model=>model.FunctionId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TitleName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ViewName)
+        </th>       
+        <th>
+            @Html.DisplayNameFor(model => model.ClassId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OnclickId)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem =>item.FunctionId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TitleName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ViewName)
+        </td>       
+        <td>
+            @Html.DisplayFor(modelItem => item.ClassId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OnclickId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.FunctionId },new { @class = "btn btn-xs btn-warning" })
+            
+            @Html.ActionLink("Delete", "Delete", new { id=item.FunctionId }, new { @class = "btn btn-xs btn-danger", onclick = "return confirm('Bạn có chắc muốn xóa chức năng " + item.TitleName+"')" })
+        </td>
+    </tr>
+}
+
+</table>

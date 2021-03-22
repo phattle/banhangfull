@@ -1,0 +1,88 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.Product>
+
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+
+<p>
+    @Html.ActionLink("Thêm mới", "Create", null, new { @class = "btn btn-primary" })
+</p>
+<div class="box">
+    <div class="box-body">
+        <table class="table table-bordered table-striped datatable">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FeaturedImage)
+                    </th>
+                   
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductCategory.Name)
+                    </th>
+                    
+                    <th>
+                        @Html.DisplayNameFor(model => model.Amount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Price)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Discount)
+                    </th>
+                   
+                    
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsFeatured)
+                    </th>
+                    
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center">
+                            <img src="@item.FeaturedImage" style="max-width:36px;" /> <br /> @item.Id <br />  
+                        </td>
+                        
+                        <td>
+                            <a href="@item.DetailPageURL" target="_blank">@Html.DisplayFor(modelItem => item.Name)</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProductCategory.Name)
+                        </td>
+                        
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Discount)
+                        </td>
+                      
+                         
+                        <td>
+                            @if ( item.IsFeatured.HasValue && item.IsFeatured.Value)
+                            {
+                                <span class="label label-warning"><i class="fa fa-star-o"></i></span>
+                            }
+                        </td>
+                        
+                        <td>
+                            @Html.ActionLink("Xem", "Details", new { id = item.Id }, new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Sửa", "Edit", new { id = item.Id }, new { @class = "btn btn-warning" })
+                            @Html.ActionLink("Xoá", "Delete", new { id = item.Id}, new { @onclick = "return prompt('Nhap chua XOA de xac nhan?') === 'XOA';", @class = "btn btn-danger" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

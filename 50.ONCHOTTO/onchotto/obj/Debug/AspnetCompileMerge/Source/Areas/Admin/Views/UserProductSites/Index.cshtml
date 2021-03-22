@@ -1,0 +1,38 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.UserProductSite>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+
+<p>
+    @Html.ActionLink("Thêm", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UsersId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductSiteId)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UsersId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductSiteId)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-xs btn-warning" })
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-xs btn-danger", onclick = "return confirm('Bạn có chắc muốn xóa ')" })
+            </td>
+        </tr>
+    }
+
+</table>

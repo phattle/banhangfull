@@ -1,0 +1,73 @@
+﻿@using OnChotto.Models.Dao
+
+@{
+    ViewBag.Title = "Cài đặt mạng xã hội";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+
+@using (Html.BeginForm("SaveOption", "Options"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <div class="box box-default">
+            <h4 class="box-header with-border">Nhập đường link các mạng xã hội liên kết hiển thị ở header và footer của website</h4>
+            <div class="box-body">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.Hidden("return_url", "Socials")
+                
+                <div class="form-group">
+                    <label for="link_facebook" class="control-label col-md-2">Facebook</label>
+                    <div class="col-md-6">
+                        <input type="text" name="link_facebook" id="link_facebook" value="@OptionDao.GetOption("LINK_FACEBOOK", "")" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="link_google_plus" class="control-label col-md-2">Google +</label>
+                    <div class="col-md-6">
+                        <input type="text" name="link_google_plus" id="link_google_plus" value="@OptionDao.GetOption("LINK_GOOGLE_PLUS", "")" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="link_twitter" class="control-label col-md-2">Twitter</label>
+                    <div class="col-md-6">
+                        <input type="text" name="link_twitter" id="link_twitter" value="@OptionDao.GetOption("LINK_TWITTER", "")" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="link_instagram" class="control-label col-md-2">Instagram</label>
+                    <div class="col-md-6">
+                        <input type="text" name="link_instagram" id="link_instagram" value="@OptionDao.GetOption("LINK_INSTAGRAM", "")" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="link_rss" class="control-label col-md-2">RSS</label>
+                    <div class="col-md-6">
+                        <input type="text" name="link_rss" id="link_rss" value="@OptionDao.GetOption("LINK_RSS", "")" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="box-header with-border">Facebook Likebox ở footer</h4>
+
+            <div class="box-body">
+                <div class="form-group">
+                    <label for="facebook_likebox" class="control-label col-md-2">Code Likebox</label>
+                    <div class="col-md-6">
+                        <textarea name="facebook_likebox" id="facebook_likebox" class="form-control" rows="5">@OptionDao.GetOption("FACEBOOK_LIKEBOX", "")</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-footer">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-6">
+                        <input type="submit" value="Lưu lại" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}

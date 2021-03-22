@@ -1,0 +1,30 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.Post>
+
+@{
+    ViewBag.Title = Html.Raw("Blog - Thông tin khuyến mãi quà tặng");
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+
+@section HeaderMeta{
+    <meta name="description" content="Thông tin khuyến mãi quà tặng, và hướng dẫn sử dụng sản phẩm của OnChotto">
+    <meta name="keywords" content="Bài viết, Khuyến mãi, quà tặng, Hướng dẫn sử dụng, Hướng dẫn sản phẩm">
+    <meta property="og:type" content="News" />
+    <meta property="og:title" content="Blog - Thông tin khuyến mãi quà tặng" />
+    <meta property="og:description" content="Thông tin khuyến mãi quà tặng, và hướng dẫn sử dụng sản phẩm của OnChotto" />
+}
+
+@section BreadCrumbs{
+    <li><a href="#" class="active">Blog - Thông tin khuyến mãi quà tặng</a></li>
+}
+
+@foreach (var m in Model)
+{
+    <div class="blog-post  wow fadeInUp animated outer-bottom-xs" style="visibility: visible; animation-name: fadeInUp;">
+        <a href="/blog/@m.Category.Slug/@m.Slug"><img class="img-responsive" src="@m.Image" alt="@Html.Raw(m.Title)"></a>
+        <h1><a href="/blog/@m.Category.Slug/@m.Slug">@Html.Raw(m.Title)</a></h1>
+        <span class="author">@m.Category.Name</span>
+        <span class="date-time">@m.createDate.ToString()</span>
+        <p>@Html.Raw(m.Content.Remove_Html_Tags().LimitLength(180, "..."))</p>
+        <a href="/blog/@m.Category.Slug/@m.Slug" class="btn btn-upper btn-success read-more">Đọc thêm</a>
+    </div>
+}

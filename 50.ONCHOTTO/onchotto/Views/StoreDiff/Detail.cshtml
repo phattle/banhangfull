@@ -1,0 +1,168 @@
+﻿@model List<OnChotto.Models.ViewModel.OrderDiffViewModel>
+@*@model OnChotto.Models.Entities.OrderDiff*@
+@using OnChotto.Models.Entities
+@using OnChotto.Models
+
+@{
+    ViewBag.Title = "Thông tin đơn hàng!";
+    Layout = "~/Views/Shared/_ClearLayout.cshtml";
+}
+<div class="visible-print-inline-block">
+    <a href="#"><img src="~/Uploads/images/Logo/logo-smua-final.png" alt=""></a>
+</div>
+<div class="block block-white outer-bottom-xs">
+    <div class="row">
+        <div class="col-xs-3">
+            <h4 class="section-title">Thông tin khách hàng</h4>
+            <table class="table table-hover">
+                <tr>
+                    <td>Tên Người nhận: @Model.FirstOrDefault().OtherReceiveName</td>
+                </tr>
+                <tr>
+                    <td>Số điện thoại: @Model.FirstOrDefault().OtherReceivePhone</td>
+                </tr>
+                <tr>
+                    <td>Địa chỉ nhận: @Model.FirstOrDefault().OtherReceiveAddress</td>
+                </tr>
+                
+                <tr>
+                    <td>Ngày đặt hàng: @Html.FormatValue(Model.FirstOrDefault().OrderDate, "{0:dd/MM/yyyy}")</td>
+                </tr>
+                @*<tr>
+                        <td>Tổng tiền: @Html.FormatValue(Model.TotalOrder, "{0:0,0}")<sup>đ</sup></td>
+                    </tr>*@
+                @*<tr>
+                        <td>Phương thức TT: @Model.PaymentMethod.Name</td>
+                    </tr>*@
+                <tr>
+                    <td>Ghi chú: @Model.FirstOrDefault().Note</td>
+                </tr>
+                @*<tr>
+                        <td>Nhà vận chuyển: @Model.Transport.Transporter.Name</td>
+                    </tr>*@
+                @*<tr>
+                        <td>Thời gian vận chuyển (dự tính): @Model.Transport.TransportTime (ngày)</td>
+                    </tr>*@
+                <tr>
+                    <td>
+                        Trạng thái thanh toán:
+                        @if (Model.FirstOrDefault().IsDeposit.HasValue && Model.FirstOrDefault().IsDeposit.Value)
+                        {
+                            <span class="label label-success">Đã thanh toán</span>
+                        }
+                        else
+                        {
+                            <span class="label label-danger">Chưa thanh toán</span>
+                        }
+                    </td>
+                </tr>
+            </table>
+            @if (Model.FirstOrDefault().ReceiveEmail != Model.FirstOrDefault().OtherEmail)
+            {
+                <h4 class="section-title">Thông tin người nhận</h4>
+                <table class="table table-hover">
+                    <tr>
+                        <td>Tên Người nhận: @Model.FirstOrDefault().ReceiveName</td>
+                    </tr>
+                    <tr>
+                        <td>Số điện thoại: @Model.FirstOrDefault().ReceivePhone</td>
+                    </tr>
+                    <tr>
+                        <td>Địa chỉ nhận: @Model.FirstOrDefault().ReceiveAddress</td>
+                    </tr>
+                </table>
+            }
+            <hr />
+            <p class="hidden-print left-right">
+                <a href="/" class="btn btn-success">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i> Về trang chủ
+                </a>
+                <a>
+                    <i class="btn btn-danger" href='#' onclick='window.print();return false;'><i class="fa fa-print"></i> In đơn hàng</i>
+                </a>
+            </p>
+        </div>
+        <div id="cart-detail" class="col-xs-9">
+            <h4 class="section-title">Chi tiết đơn hàng</h4>
+            <table class="table mycart">
+                <thead>
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th>Đơn giá</th>
+                        <th>Số lượng</th>
+                        @*<th>Đơn vị</th>*@
+                        @*<th>Tiền tệ</th>*@
+                        <th class="text-center">Trọng lượng</th>
+                        <th>Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in @Model)
+                    {
+                        <tr>
+                            @*<td><img src="@item.Product.FeaturedImage" width="100" height="100" class="img-thumbnail" /></td>*@
+                            <td>
+                                @item.ProductLink
+                                <br />
+                                <span><font color="red">(Đơn vị: @item.WeightUnit, Tiền tệ: @item.Currency</font>)</span>
+                            </td>
+                            <td class="text-center">@Html.FormatValue(item.PriceAfter, "{0:0,0.00}")<sup>@item.Currency</sup></td>
+                            <td class="text-center">@item.Amount</td>
+                            @*<td class="text-center">@item.WeightUnit</td>*@
+                            @*<td class="text-center">@item.Currency</td>*@
+                            <td class="text-center">@item.Weight</td>
+                            @*<td class="text-center">
+                                    @Html.FormatValue(item.Product.WeightLbs * item.Amount, "{0:0,0.00}") @item.Product.WeightUnit
+                                </td>*@
+
+                            <td>@Html.FormatValue(Convert.ToDecimal(item.PriceAfter) * item.Amount, "{0:0,0.00}")<sup>@item.Currency</sup></td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="4" class="text-right">Tổng giá sp:</th>
+                        <th class="text-right">
+                            <span class="nn-cart-total">@Html.FormatValue(@Model.FirstOrDefault().TotalAmount, "{0:0,0.00}")<sup>@Model.FirstOrDefault().Currency</sup></span>
+                            @*<span class="nn-cart-total">@Model.FirstOrDefault().TotalAmount đ</span>*@
+                        </th>
+                    </tr>
+                    <tr class="text-right">
+                        <td colspan="4">Tổng trọng lương :</td>
+                        <td class="text-right">@Html.FormatValue(@Model.FirstOrDefault().TotalWeight, "{0:0,0.00}") <sup>lbs</sup></td>
+                        @*<td class="text-right">@Model.FirstOrDefault().TotalWeight kg</td>*@
+                    </tr>
+                    @*<tr class="text-right">
+                            <td colspan="5">Phí vận chuyển:</td>
+                            <td id="orderTransportCost" class="text-right">@Html.FormatValue(Model.Transport.Cost, "{0:0,0}")đ</td>
+                        </tr>*@
+                    @*<tr class="text-right">
+                            <td colspan="5">Giảm giá: <span id="discountDescription">@Html.Raw(ShoppingCart.Cart.discountDescription)</span></td>
+                            <td id="orderDiscount" class="text-right">-@Html.FormatValue(Model.Discount, "{0:0,0}")đ</td>
+                        </tr>*@
+
+                    @*<tr style="font-weight: 700; color: orangered">
+                            <td colspan="5" class="text-right">Tổng đơn hàng:</td>
+                            <th class="text-right">
+                                <span id="totalOrder"> @Html.FormatValue(Model.TotalOrder, "{0:0,0}")đ</span>
+                            </th>
+                        </tr>*@
+                    @*<tr style="font-weight: 700; color: orangered">
+                            <td colspan="5" class="text-right">Số tiền tạm ứng(@Model.Deposit<i>%</i>): </td>
+                            <th class="text-right">
+                                <span id="totalOrderDepositPay"> @Html.FormatValue(Model.TotalOrder * Model.Deposit / 100, "{0:0,0}")đ</span>
+                            </th>
+                        </tr>
+                        <tr style="font-weight: 700; color: orangered">
+                            <td colspan="5" class="text-right">Số tiền thanh toán sau:</td>
+                            <th class="text-right">
+                                <span id="totalOrderSecondPay"> @Html.FormatValue(Model.TotalOrder * (1 - Model.Deposit / 100), "{0:0,0}")đ</span>
+                            </th>
+                        </tr>*@
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+@Html.Action("Special", "Home")

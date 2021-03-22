@@ -1,0 +1,236 @@
+﻿@model List<OnChotto.Models.ViewModel.OrderDiffViewModel>
+@{
+    ViewBag.Title = "Cập nhật đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+
+<div class="box">
+    <div class="box-body">
+        @using (Html.BeginForm())
+        {
+            <div class="box">
+                <h3 class="block-title">
+                    <i class="fa fa-user" aria-hidden="true"></i> THÔNG TIN KHÁCH HÀNG
+                </h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="hidden-print">
+                                @Html.DisplayNameFor(model => model.FirstOrDefault().OrderStatusName)
+                            </th>
+                            <th>
+                                Họ và tên
+                            </th>
+                            <th>
+                                Số điện thoại
+                            </th>
+                            <th>
+                                Địa Email
+                            </th>
+                            <th>Ngày đặt</th>
+                            <th>
+                                Địa chỉ nhận hàng
+                            </th>
+                            <th>
+                                Ghi chú đơn hàng
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="hidden-print">
+                                <p class="label label-success">@Model.FirstOrDefault().OrderStatusName</p>
+                            </td>
+                            <td>@Model.FirstOrDefault().ReceiveName</td>
+                            <td>@Model.FirstOrDefault().ReceivePhone</td>
+                            <td>@Model.FirstOrDefault().ReceiveEmail</td>
+                            <td>
+                                @if (Model.FirstOrDefault().OrderDate.HasValue)
+                                {
+                                    @Model.FirstOrDefault().OrderDate.Value.ToString("d");
+                                }
+                            </td>
+                            <td>@Model.FirstOrDefault().ReceiveAddress</td>
+                            @*<td>@Model.ReceiveAddress, @Model.Transport.District.Type @Model.Transport.District.Name, @Model.Transport.District.Province.Type @Model.Transport.District.Province.Name</td>*@
+                            <td>
+                                @if (Model.FirstOrDefault().PaymentMethodId != null)
+                                {
+                                    @Model.FirstOrDefault().PaymentMethodsName
+                                    <br />
+                                }
+                                @Model.FirstOrDefault().Note
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+            @Html.AntiForgeryToken()
+
+            <div class="col-md-12">
+                <div class="col-md-6">
+                    <div class="form-horizontal">
+                        <h3 class="block-title"><i class="fa fa-sliders" aria-hidden="true"></i> Thông tin người nhận hàng</h3>
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.FirstOrDefault().OrderDiffId)
+
+                        <div class="form-group">
+                            <div class="col-md-8">
+                                @Html.LabelFor(model => model.FirstOrDefault().ReceiveName, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.FirstOrDefault().ReceiveName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.FirstOrDefault().ReceiveName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4">
+                                @Html.LabelFor(model => model.FirstOrDefault().ReceivePhone, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.FirstOrDefault().ReceivePhone, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.FirstOrDefault().ReceivePhone, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-12">
+                                @Html.LabelFor(model => model.FirstOrDefault().ReceiveAddress, htmlAttributes: new { @class = "control-label" })
+                                @Html.TextAreaFor(model => model.FirstOrDefault().ReceiveAddress, new { @class = "form-control", @rows = 2 })
+                                @Html.ValidationMessageFor(model => model.FirstOrDefault().ReceiveAddress, "", new { @class = "text-danger" })
+
+                            </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(model => model.FirstOrDefault().ProvinceId, htmlAttributes: new { @class = "control-label" })
+                                @Html.DropDownList("ProvinceId", null, "Chọn Tỉnh thành", htmlAttributes: new { @class = "form-control unicase-form-control select2" })
+                                @Html.ValidationMessage("ProvinceId", "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(model => model.FirstOrDefault().DistrictId, htmlAttributes: new { @class = "control-label" })
+                                @Html.DropDownList("DistrictId", null, "Chọn Quận huyện", htmlAttributes: new { @class = "form-control unicase-form-control" })
+                                @Html.ValidationMessage("DistrictId", "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(model => model.FirstOrDefault().ReceiveEmail, htmlAttributes: new { @class = "control-label" })
+                                @Html.TextAreaFor(model => model.FirstOrDefault().ReceiveEmail, new { @class = "form-control", @rows = 2 })
+                                @Html.ValidationMessageFor(model => model.FirstOrDefault().ReceiveEmail, "", new { @class = "text-danger" })
+
+                            </div>
+                            @*<div class="col-md-5">
+                                    @Html.LabelFor(model => model.TransportId, htmlAttributes: new { @class = "control-label" })
+                                    @Html.DropDownList("TransportId", null, "Chọn nha van chuyen", htmlAttributes: new { @class = "form-control unicase-form-control" })
+                                    @Html.ValidationMessage("TransportId", "", new { @class = "text-danger" })
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-horizontal">
+                        <h3 class="block-title"><i class="fa fa-bullhorn" aria-hidden="true"></i> Trạng thái đơn hàng</h3>
+                        <hr />
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                @Html.LabelFor(model => model.FirstOrDefault().StatusId, "Trạng thái đơn", htmlAttributes: new { @class = "control-label" })
+                                @Html.DropDownList("StatusId", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.FirstOrDefault().StatusId, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-7">
+                                @Html.LabelFor(model => model.FirstOrDefault().PaymentMethodId, "PT thanh toán", htmlAttributes: new { @class = "control-label" })
+                                @Html.DropDownList("PaymentMethodId", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.FirstOrDefault().PaymentMethodId, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-5">
+                                @Html.LabelFor(model => model.FirstOrDefault().MAWB, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.FirstOrDefault().MAWB, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.FirstOrDefault().MAWB, "", new { @class = "text-danger" })
+                            </div>
+                            @*<div class="col-md-5">
+                                @Html.LabelFor(model => model.FirstOrDefault().Deposit, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.FirstOrDefault().Deposit, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.FirstOrDefault().Deposit, "", new { @class = "text-danger" })
+                            </div>*@
+                            <div class="col-md-5">
+                                    @Html.LabelFor(model => model.FirstOrDefault().RequireDate, htmlAttributes: new { @class = "control-label" }) 
+
+                                    @Html.EditorFor(model => model.FirstOrDefault().RequireDate, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FirstOrDefault().RequireDate, "", new { @class = "text-danger" })
+                                </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                @Html.LabelFor(model => model.FirstOrDefault().Note, htmlAttributes: new { @class = "control-label" })
+                                @Html.TextAreaFor(model => model.FirstOrDefault().Note, new { @class = "form-control", @rows = 3 })
+                                @Html.ValidationMessageFor(model => model.FirstOrDefault().Note, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-10 col-md-8">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script>
+        // Hàm Ajax Lấy District
+        $("#ProvinceId").change(function (e) {
+            e.preventDefault();
+            var data = {
+                provinceId: $(this).val()
+            };
+
+            var thisctrl = $(this);
+
+            $.ajax({
+                url: '/Home/AjaxGetDistrictByProvice',
+                type: 'POST',
+                dataType: 'html',
+                data: data,
+                success: function (html) {
+                    $('#DistrictId').html(html);
+                },
+                complete: function () {
+                    getTransport('DistrictId');
+                },
+                error: function (err) {
+                    alert("Lỗi hệ thống, ấn F5 để refresh lại trình duyệt để tiếp tục.");
+                }
+            });
+        });
+
+        //Lấy và cập nhật nhà vận chuyển
+        $('#DistrictId').change(function (e) {
+            e.preventDefault();
+            getTransport('DistrictId');
+        });
+
+        //Lấy bảng nhà vận chuyển
+        function getTransport(id) {
+            var districtId = $('#' + id).val();
+            //alert(districtId);
+            if (districtId == undefined || districtId === "") return false;
+            //lấy bảng vận chuyển
+            var data = {
+                districtId: districtId
+            };
+
+            $.ajax({
+                url: '/Admin/Orders/AjaxGetTransportToSelect',
+                type: 'GET',
+                dataType: 'html',
+                data: data,
+                success: function (html) {
+                    $("#TransportId").html(html);
+                },
+                error: function (err) {
+                    alert("Lỗi hệ thống, ấn F5 để refresh lại trình duyệt để tiếp tục.");
+                }
+            });
+        }
+    </script>
+
+}

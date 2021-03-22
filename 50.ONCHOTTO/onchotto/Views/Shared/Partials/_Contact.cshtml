@@ -1,0 +1,32 @@
+﻿
+@*<script type='text/javascript'>window._sbzq||function(e){e._sbzq=[];var t=e._sbzq;t.push(["_setAccount",41872]);var n=e.location.protocol=="https:"?"https:":"http:";var r=document.createElement("script");r.type="text/javascript";r.async=true;r.src=n+"//static.subiz.com/public/js/loader.js";var i=document.getElementsByTagName("script")[0];i.parentNode.insertBefore(r,i)}(window);</script>*@
+@*<link href="~/Content/contact-popup.css" rel="stylesheet" />
+<script src="~/Scripts/popup.js"></script>
+<div id="contact_popup" class="" style="height: 240px; bottom: 0px;right:3px">
+    <div id="contact_header">Liên hệ!</div>
+    <div id="contact_message_sent">
+        Cảm ơn bạn đã liên hệ, chúng tôi sẽ trả lời bạn sớm!
+    </div>
+    <div id="contact_message_error">
+    </div>
+    <div id="contact_form_container">
+        <form method="post" action="/Mail/Send" class="contact_popup_form" id="contact_popup_form">
+            <input type="hidden" name="action" value="contact_popup_send">
+
+            <label for="name">Họ và tên:</label>
+            <input class="form-control" type="text" id="contact_form_name" name="name" value="" placeholder="" required><br>
+
+            <label for="name">Điện thoại:</label>
+            <input class="form-control" type="text" id="contact_form_phone" name="phone" value="" placeholder="" required><br>
+
+            <label for="email">Địa chỉ Email:</label>
+            <input class="form-control" type="email" id="contact_form_email" name="email" value="" placeholder="" required><br>
+            <label for="message">Tin nhắn:</label>
+            <textarea class="form-control" id="contact_form_message" name="message" placeholder="" required data-minlength=50"></textarea><br>
+
+            <input class="btn btn-success" type="submit" value="Gửi" id="popup-submit-button">
+
+        </form>
+    </div>
+</div>*@
+

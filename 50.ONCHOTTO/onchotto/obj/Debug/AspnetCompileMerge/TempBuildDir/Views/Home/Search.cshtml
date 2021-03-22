@@ -1,0 +1,187 @@
+﻿@model PagedList.IPagedList<OnChotto.Models.Entities.Product>
+
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = Html.Raw("Kết quả tìm kiếm cho từ khóa: \"" + ViewBag.tukhoa + "\"");
+    Layout = "~/Views/Shared/_layout.cshtml";
+    Random rd = new Random();
+}
+
+@section BreadCrumbs{
+    <li><a href="#" class="active">Tìm sản phẩm</a></li>
+}
+
+<!-- FEATURED PRODUCTS  -->
+<section class="section featured-product wow fadeInUp">
+    <div class="row">
+        <div class="col col-sm-6 col-md-6">
+            <h3 class="heading-title ud-line">@Html.Raw(ViewBag.notice)</h3>
+        </div><!-- /.col -->
+       
+    </div><!-- /.row -->
+
+    <div class="row">
+        <div class="col col-sm-6 col-md-6">
+            <div class="category-title">
+                <h3 class="heading-title">CÁC SẢN PHẦM ĐƯỢC ĐỀ XUẤT</h3>
+            </div>
+        </div><!-- /.col -->
+        <div class="col col-sm-6 col-md-6 text-right">
+           @ViewBag.SearchSucess;
+            @*@Html.PagedListPager(Model, page => Url.HttpRouteUrl("Search Product", new { @cat = ViewBag.cat, @keyword = ViewBag.tukhoa, page = page }))*@
+        </div><!-- /.col -->
+    </div>
+    <div>
+        @foreach (var p in Model)
+        {
+            var tukhoa = ViewBag.tukhoa;
+            if (p.ProductZone == "US")
+            {
+            <ul>
+                <li>
+                    <div>
+                        
+                       
+                        <div class="col-xs-12 col-sm-4 col-md-3">
+                            <div class="products" style="margin-bottom: 20px; margin-top: 10px;">
+                                <div class="product no-margin">
+                                    <div class="product-image">
+                                        <div class="image">
+                                            <a href="/chi-tiet-search/@p.Name.ToAscii()-@p.ASIN" title="@Html.Raw(p.Name)">
+                                                <img src="@p.FeaturedImage" data-echo="@p.FeaturedImage" alt="@Html.Raw(p.Name)" class="imgFull" id="@p.ASIN">
+                                            </a>
+                                        </div><!-- /.Image -->
+
+                                        @if (p.Discount > 0)
+                                        {
+                                            <div class="tag sale"><span>-@p.Discount%</span></div>
+                                        }
+
+                                        <div class="cart text-center animate-effect">
+                                            <div class="action">
+                                                <a class="btn btn-success" href="/chi-tiet-search/@p.Name.ToAscii()-@p.ASIN" title="Xem ngay"><i class="icon fa fa-eye"></i> XEM NGAY</a>
+                                                <a class="btn btn-warning" href="/danh-dau-yeu-thich/@p.Id" title="Wishlist"><i class="icon fa fa-heart"></i> YÊU THÍCH</a>
+                                            </div><!-- /.action -->
+                                        </div><!-- /.cart -->
+
+                                    </div><!-- /.product-image -->
+
+                                    <div class="product-info">
+                                        <div class="info-header">
+                                            <h3 class="name"><a href="/chi-tiet-search/@p.Name.ToAscii()-@p.ASIN">@Html.Raw(p.Name)</a></h3>
+                                        </div>
+                                        <div class="product-price">
+                                            <meta itemprop="priceCurrency" content="VND">
+                                            <span class="price">
+                                                <span class="price_value" itemprop="price">@Html.FormatValue(p.PriceAfter, "{0:0,0}") <span class="price_symbol">đ</span></span>
+                                                @*<span class="price_discount">- @p.Discount %</span>*@
+                                            </span>
+                                            <div class="price-before-discount"> @Html.FormatValue(p.Price, "{0:0,0}") <span class="price_symbol">đ</span></div>
+                                        </div><!-- /.product-price -->
+                                        <div class="product_views">
+                                            <i class="fa fa-user"></i> @rd.Next(p.Views, 100 + p.Views) đã mua
+                                        </div>
+                                    </div><!-- /.product-info -->
+
+
+                                    @if (p.EndDate != null)
+                                    {
+                                        var unixTimestamp = (Int32)(p.EndDate.Value.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                                        <div class="countdown">
+                                            <i class="fa fa-clock-o"></i> Còn <span data-time="@unixTimestamp" class="kkcountdown"></span>
+                                        </div>
+                                    }
+                                </div><!-- /.product -->
+
+                            </div><!-- /.products -->
+                        </div>
+                        
+                    </div>
+                </li>
+            </ul>
+            }
+        }
+    </div>
+    <div>
+        @foreach (var p in Model)
+        {
+            var tukhoa = ViewBag.tukhoa;
+            if (p.ProductZone == "VN")
+            {
+                <ul>
+                    <li>
+                        <div>
+
+
+                            <div class="col-xs-12 col-sm-4 col-md-3">
+                                <div class="products" style="margin-bottom: 20px; margin-top: 10px;">
+                                    <div class="product no-margin">
+                                        <div class="product-image">
+                                            <div class="image">
+                                                <a href="/chi-tiet-search/@p.Name.ToAscii()-@p.ASIN" title="@Html.Raw(p.Name)">
+                                                    <img src="@p.FeaturedImage" data-echo="@p.FeaturedImage" alt="@Html.Raw(p.Name)" class="imgFull" id="@p.ASIN">
+                                                </a>
+                                            </div><!-- /.Image -->
+
+                                            @if (p.Discount > 0)
+                                            {
+                                                <div class="tag sale"><span>-@p.Discount%</span></div>
+                                            }
+
+                                            <div class="cart text-center animate-effect">
+                                                <div class="action">
+                                                    <a class="btn btn-success" href="/chi-tiet-search/@p.Name.ToAscii()-@p.ASIN" title="Xem ngay"><i class="icon fa fa-eye"></i> XEM NGAY</a>
+                                                    <a class="btn btn-warning" href="/danh-dau-yeu-thich/@p.Id" title="Wishlist"><i class="icon fa fa-heart"></i> YÊU THÍCH</a>
+                                                </div><!-- /.action -->
+                                            </div><!-- /.cart -->
+
+                                        </div><!-- /.product-image -->
+
+                                        <div class="product-info">
+                                            <div class="info-header">
+                                                <h3 class="name"><a href="/chi-tiet-search/@p.Name.ToAscii()-@p.ASIN">@Html.Raw(p.Name)</a></h3>
+                                            </div>
+                                            <div class="product-price">
+                                                <meta itemprop="priceCurrency" content="VND">
+                                                <span class="price">
+                                                    <span class="price_value" itemprop="price">@Html.FormatValue(p.PriceAfter, "{0:0,0}") <span class="price_symbol">đ</span></span>
+                                                    @*<span class="price_discount">- @p.Discount %</span>*@
+                                                </span>
+                                                <div class="price-before-discount"> @Html.FormatValue(p.Price, "{0:0,0}") <span class="price_symbol">đ</span></div>
+                                            </div><!-- /.product-price -->
+                                            <div class="product_views">
+                                                <i class="fa fa-user"></i> @rd.Next(p.Views, 100 + p.Views) đã mua
+                                            </div>
+                                        </div><!-- /.product-info -->
+
+
+                                        @if (p.EndDate != null)
+                                        {
+                                            var unixTimestamp = (Int32)(p.EndDate.Value.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                                            <div class="countdown">
+                                                <i class="fa fa-clock-o"></i> Còn <span data-time="@unixTimestamp" class="kkcountdown"></span>
+                                            </div>
+                                        }
+                                    </div><!-- /.product -->
+
+                                </div><!-- /.products -->
+                            </div>
+
+                        </div>
+                    </li>
+                </ul>
+            }
+        }
+    </div>
+    <hr />
+
+    <div class="clearfix filters-container m-t-10 text-center">
+        @Html.PagedListPager(Model, page => Url.HttpRouteUrl("Search Product", new { @cat = ViewBag.cat, @keyword = ViewBag.tukhoa, page = page }))
+    </div>
+
+</section><!-- /.section -->
+<!-- END  -->
+
+
+

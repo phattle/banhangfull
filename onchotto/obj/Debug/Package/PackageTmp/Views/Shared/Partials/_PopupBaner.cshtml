@@ -1,0 +1,10 @@
+﻿@model OnChotto.Models.Entities.Banner
+    
+@if (Model != null)
+{
+    <div id="bannerPopup" class="bannerPopup">
+        <a class="bannerPopup_close popup_btn_close" href="#"><i class="fa fa-times-circle fa-2x" aria-hidden="true"></i></a>
+        <a href="@Model.Url" title="@Model.Description"><img src="@Model.Image" title="@Model.Name" class="img-responsive"/></a>
+    </div>
+}
+

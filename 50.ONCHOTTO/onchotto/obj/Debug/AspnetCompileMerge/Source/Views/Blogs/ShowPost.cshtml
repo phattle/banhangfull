@@ -1,0 +1,65 @@
+﻿@model OnChotto.Models.Entities.Post
+
+@{
+    ViewBag.Title = string.IsNullOrEmpty(Model.MetaTitle) ? Model.Title : Model.MetaTitle;
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+
+
+@section HeaderMeta
+{
+<meta name="description" content="@Html.Raw(Model.MetaDescription)">
+<meta name="keywords" content="@Html.Raw(Model.MetaKeyword)">
+<meta name="author" content="SieuVietGroup">
+<meta property="og:url" content="@Request.Url" />
+<meta property="og:type" content="Post" />
+<meta property="og:title" content="@Html.Raw(Model.MetaTitle)" />
+<meta property="og:description" content="@Html.Raw(Model.MetaDescription)" />
+<meta property="og:image" content="@Model.Image.ResolveServerUrl()" />
+}
+
+
+
+@section BreadCrumbs{
+    <li><a href="/blog/@Model.Category.Slug">@Html.Raw(Model.Category.Name)</a></li>
+    <li><a href="#" class="active">@Html.Raw(Model.Title)</a></li>
+}
+
+@section HeaderScripts{
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5728669d60870d14"></script>
+
+    <!-- facebook comments -->
+    <div id="fb-root"></div>
+    <script>
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.Id = id;
+      js.src = "https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.6&appId=964989690286521";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+    
+}
+
+<div class="blog-post wow fadeInUp animated" style="visibility: visible; animation-name: fadeInUp;">
+    <h1>@Model.Title</h1>
+
+    <span class="info"><i class="fa fa-tags" aria-hidden="true"></i> <a href="/blog/@Model.Category.Slug">@Model.Category.Name</a> | <i class="fa fa-calendar"></i> @Model.createDate.Value.Date.ToShortDateString()</span>
+
+    <img class="img-responsive hidden" rel="image-src" src="@Model.Image" alt="@Html.Raw(Model.Title)">
+    
+    @Html.Raw(Model.Content)
+
+    <div class="addthis_native_toolbox"></div>
+
+</div>
+
+<div class="blog-review wow fadeInUp animated" style="visibility: visible; animation-name: fadeInUp;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="fb-comments" data-href="@HttpContext.Current.Request.Url.AbsoluteUri" data-width="815" data-numposts="5"></div>
+        </div>
+    </div>
+</div>					
+

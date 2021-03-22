@@ -1,0 +1,40 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.RolesFunctionDetail>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.RolesId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FunctionId)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelitem=>item.RolesId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelitem => item.FunctionId)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {Id=item.Id }) |
+                @*@Html.ActionLink("Details", "Details", new { RolesId = item.RolesId, FunctionId = item.FunctionId }) |*@
+                @Html.ActionLink("Delete", "Delete", new { Id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>

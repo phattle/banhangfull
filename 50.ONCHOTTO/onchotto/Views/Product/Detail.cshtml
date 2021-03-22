@@ -1,0 +1,374 @@
+﻿@model OnChotto.Models.Entities.Product
+@using OnChotto.Models.Dao
+@using System.Web
+@{
+    ViewBag.Title = Html.Raw(string.IsNullOrEmpty(Model.MetaTitle) ? Model.Name : Model.MetaTitle);
+    Random rd = new Random();
+}
+
+@section HeaderMeta
+{
+    <meta name="description" content="@Html.Raw(Model.MetaDescription)">
+    <meta name="keywords" content="@Html.Raw(Model.MetaKeyword)">
+    <meta name="author" content="OnChotto.vn">
+
+    <meta property="og:url" content="@Request.Url" />
+    <meta property="og:type" content="Product" />
+    <meta property="og:title" content="@Html.Raw(Model.MetaTitle)" />
+    <meta property="og:description" content="@Html.Raw(Model.MetaDescription)" />
+    <meta property="og:image" content="@Model.FeaturedImage.ResolveServerUrl()" />
+}
+
+@section BreadCrumbs{
+    <li><a href="/danh-muc/@Model.ProductCategory.Name.ToAscii()-@Model.ProductCategory.CatId">@Html.Raw(Model.ProductCategory.Name)</a></li>
+    <li><a href="#" class="active">@Html.Raw(Model.Name)</a></li>
+}
+
+@section HeaderScripts{
+    <!-- facebook comments -->
+    <div id="fb-root"></div>
+    <script>
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.12';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5bacf69168f840f9"></script>
+}
+
+<div class="product single-product">
+    <div class="section block block-bordered block-white">
+        <div class="row  ">
+            <div class="col-xs-12 col-sm-6 col-md-5 gallery-holder">
+                <div class="product-item-holder size-big single-product-gallery small-gallery">
+                    <div id="owl-single-product">
+                        @{
+                            var stt = 0;
+                            var active = "";
+                            string[] images = null;
+                            if (Model.Images != null)
+                            {
+                                images = Model.Images.Split(',');
+                                foreach (string image in images)
+                                {
+                                    active = stt == 0 ? "active" : "";
+                                    <div class="single-product-gallery-item" id="slide-@stt">
+                                        <a data-lightbox="image-@stt" data-title="@Html.Raw(Model.Name)" href="@image" title="@Html.Raw(Model.Name)">
+                                            <img class="img-responsive" src="~/Assets/Frontend/images/blank.gif" data-echo="@image" alt="@Html.Raw(Model.Name)" />
+                                        </a>
+                                    </div><!-- /.single-product-gallery-item -->
+                                    stt = stt + 1;
+                                }
+                            }
+                        }
+                    </div>
+
+                    <div class="single-product-gallery-thumbs second-gallery-thumb gallery-thumbs">
+                        <div id="owl-single-product2-thumbnails">
+                            @{
+                                stt = 0;
+                                if (Model.Images != null)
+                                {
+                                    foreach (string image in images)
+                                    {
+                                        active = stt == 0 ? "active" : "";
+                                        <div class="item">
+                                            <a class="horizontal-thumb @active" data-target="#owl-single-product" data-slide="@stt" href="#slide-@stt">
+                                                <img class="img-responsive" width="85" alt="" src="~/Assets/Frontend/images/blank.gif" data-echo="@image.Replace("uploads/images", "uploads/_thumbs/images")" />
+                                            </a>
+                                        </div>
+                                        stt = stt + 1;
+                                    }
+                                }
+                            }
+
+                        </div>
+                        <!-- /#owl-single-product-thumbnails -->
+                        <div class="nav-holder left">
+                            <a class="prev-btn slider-prev" data-target="#owl-single-product2-thumbnails" href="#prev"></a>
+                        </div>
+                        <!-- /.nav-holder -->
+                        <div class="nav-holder right">
+                            <a class="next-btn slider-next" data-target="#owl-single-product2-thumbnails" href="#next"></a>
+                        </div>
+                        <!-- /.nav-holder -->
+
+                    </div>
+                    <!-- /.gallery-thumbs -->
+                </div>
+                <!-- /.single-product-gallery -->
+
+            </div>
+            <!-- /.gallery-holder -->
+            <div class='col-sm-6 col-md-7 product-info-block'>
+                <div class="product-info">
+                    <h2 class="name">@Html.Raw(Model.Name)</h2>
+                    <div class="meta-container  m-t-20">
+                        @*<div class="provider pull-left">Cung cấp bởi: <a href="nha-cung-cap/@Model.Manufact.Name.ToAscii()-@Model.Manufact.Id" title="Xem tất cả sản phẩm của @Model.Manufact.Name">@Model.Manufact.Name</a></div>*@
+                        <div class="share-this pull-left">
+                            <div class="addthis_inline_share_toolbox"></div>
+                        </div>
+                    </div>
+
+                    <div class="description-container">
+                        @Html.Raw(Model.Description)
+
+                    </div>
+                    <div class="description-container">
+                        Weight : @Model.WeightLbs &nbsp; @Model.WeightUnit <br />
+                        Size : @Model.Size
+                    </div>
+                    <!--Size-->
+
+                    <div>
+                        @{
+                            if (ViewBag.Size != null)
+                            {
+                                foreach (var size in ViewBag.Size)
+                                {
+                                    <div class="inline" style="font-size: 18px;" >
+                                        <a href="">@size</a>
+                                </div>
+                                }
+                            }
+                        }
+                    </div>
+                    <!---->
+                    <!-- /cOLOR -->
+                    <!-- /.single-product-slider -->
+
+                    <div id="owl-single-product2-thumbnails" class="owl-carousel owl-theme" style="opacity: 1; display: block;">
+                        <div class="owl-wrapper-outer" style="width: 730px; left: 0px; display: block;">
+                            @{
+                                stt = 0;
+                                string[] images2 = null;
+                                if (Model.Images != null)
+                                {
+                                    images2 = Model.Images.Split(',');
+                                    foreach (string image in images2)
+                                    {
+                                        active = stt == 0 ? "active" : "";
+                                        <div class="owl-item">
+                                            <a class="horizontal-thumb @active" data-target="#owl-single-product" data-slide="@stt" href="#slide-@stt">
+                                                <img class="img-responsive" width="85" alt="" src="~/Assets/Frontend/images/blank.gif" data-echo="@image.Replace("uploads/images", "uploads/_thumbs/images")" />
+                                            </a>
+                                        </div>
+                                        stt = stt + 1;
+                                    }
+                                }
+                            }
+
+                        </div>
+                    </div>
+                   
+                    <!-- /.Description-container -->
+
+                    <div class="price-container block block-bordered bg-gray">
+                        <div class="product-price price-box">
+                            <meta itemprop="priceCurrency" content="VND">
+                            <ul class="list-inline">
+                                <li class="price_value" itemprop="price" style="font-size: 36px;">@Html.FormatValue(Model.PriceAfter, "{0:0,0}")<span class="price_symbol">đ</span></li>
+                                <li class="price-strike">@Html.FormatValue(Model.Price, "{0:0,0}")đ</li>
+                                <li class="price_discount">-@Model.Discount%</li>
+                            </ul>
+                        </div><!-- /.product-price -->
+                        <div class="actions m-t-20 m-b-10">
+                            <div class="action animate-effect">
+                                <ul class="list-inline">
+                                    <li>
+                                        <select style="width: 60px;" name="soluong" id="soluong" class="soluong txt txt-qty unicase-form-control">
+                                            @for (var i = 1; i < 11; i++)
+                                            {
+                                                <option value="@i">@i</option>
+                                            }x
+                                        </select>
+                                    </li>
+                                    <li>
+                                        <button id="addToCart" class="btn btn-danger btn-lg addProduct" data-id=@Model.Id onclick="return addToCart();">
+                                            <i class="fa fa-shopping-cart inner-right-vs"></i> THÊM VÀO GIỎ
+                                        </button>
+                                        <a class="left btn btn-primary" href="/Product/AddToWishList/@Model.Id" title="Thêm vào danh sách yêu thích"><i class="icon fa fa-heart"></i></a>
+                                        <!-- /.action -->
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="statics">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="pull-left user-buy">
+                                    <p>@rd.Next(Model.Views, 100 + Model.Views) Người đã mua</p>
+                                </div>
+                                <div class="countdown-time pull-left">
+                                    @if (Model.EndDate != null)
+                                    {
+                                        var unixTimestamp = (Int32)(Model.EndDate.Value.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                                        <span class="label">Thời gian còn lại:</span><br /> <strong><span data-time="@unixTimestamp" class="kkcountdown"></span></strong>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bannerTransport">
+                        
+                    </div>
+                </div>
+
+
+                <!-- /.product-info -->
+            </div>
+            <!-- /.col-sm-5 -->
+        </div>
+    </div>
+
+    @*@Html.Action("Special", "Home")*@
+
+    @if (Model.Featured != null && Model.Condition != null)
+    {
+        <div class="additonInfo block block-white block-bordered outer-top-xs">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="uppercase heading-title ud-line">Điểm nổi bật</h3>
+                    <div class="text m-t-15 border-right">@Html.Raw(HttpUtility.HtmlDecode(Model.Featured))</div>
+                </div>
+                <div class="col-md-6">
+                    <h3 class="uppercase heading-title ud-line">Điều kiện sử dụng</h3>
+                    <div class="text m-t-15">@Html.Raw(HttpUtility.HtmlDecode(Model.Condition))</div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="row outer-top-xs">
+        <div class="col-xs-12 col-ms-8 col-md-9">
+            <section class="section mytab block block-bordered block-shadow block-white product-detail  outer-bottom-xs">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#description" aria-controls="description" role="tab" data-toggle="tab">
+                            THÔNG TIN SẢN PHẨM
+                        </a>
+                    </li>
+                    
+                   
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane in active" id="description">
+                        <div class="text m-t-15">
+                            @Html.Raw(HttpUtility.HtmlDecode(Model.Detail))
+                        </div>
+
+                        <div class="comments outer-top-bd">
+                            <h4 class="section-title uppercase">Nhận xét & thảo luận</h4>
+                            <div class="reviews">
+                                <div class="fb-comments" data-href="@HttpContext.Current.Request.Url.AbsoluteUri" data-width="815" data-numposts="5"></div>
+                            </div><!-- /.reviews -->
+                        </div>
+                    </div><!--/#description-->
+                   
+                </div><!-- /.tab-pane -->
+            </section><!--/.single-product-->
+
+            <div class="buy-box block block-white block-shadow">
+                <div class="row">
+                    <div class="col-md-2">
+                        <img class="img-bordered img-bordered-sm pull-left" src="@Model.FeaturedImage" style="width: 100%;" />
+                    </div>
+                    <div class="col-md-10 price-container">
+                        <h4 class="name m-tb-10">@Html.Raw(Model.Name)</h4>
+                        <div class="product-price price-box pull-left">
+                            <meta itemprop="priceCurrency" content="VND">
+                            <ul class="list-inline">
+                                <li class="price-strike">@Html.FormatValue(Model.Price, "{0:0,0}")đ</li>
+                                <li>Tiết kiệm: <span class="price"><small>@Html.FormatValue(Model.Price - Model.PriceAfter, "{0:0,0}")đ</small></span></li>
+                            </ul>
+                            <p class="price_value" itemprop="price" style="font-size: 36px;">@Html.FormatValue(Model.PriceAfter, "{0:0,0}")<span class="price_symbol">đ</span></p>
+                        </div><!-- /.product-price -->
+                        <div class="statics pull-left">
+                            <p class="user-buy"><strong>@rd.Next(Model.Views, 100 + Model.Views)</strong><br />Người đã mua </p>
+                        </div>
+                        <div class="col-md-3 pull-right">
+                            <button class="btn btn-danger btn-lg addProduct" data-id=@Model.Id onclick="return addToCart();"><i class="fa fa-shopping-cart inner-right-vs"></i> MUA NGAY</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-danger m-t-10 margin-bottom-none">
+                    <p>ĐỂ ĐẶT HÀNG NHANH, SỐ LƯỢNG LỚN, GIÁ THÀNH TỐT LIÊN HỆ NGAY HOTLINE: @OptionDao.GetOption("FOOTER_HOTLINE").</p>
+                </div>
+            </div>
+
+            @Html.Action("Viewed", "Product")
+
+        </div><!--/Col-8-->
+
+        <div class="col-xs-12 col-ms-4 col-md-3">
+            <section class="section block block-white block-bordered outer-bottom-xs ">
+                <h3 class="section-title heading-title ud-line">Hỗ trợ đặt hàng</h3>
+                <div class="support-box m-t-10">
+                    <p class="alert alert-success">Đặt hàng nhanh, giá tốt liên hệ: @OptionDao.GetOption("FOOTER_HOTLINE")</p>
+                    <p class="breakline"><strong>Mua hàng tại VP OnChotto</strong></p>
+                    <p><i class="fa fa-map-marker"></i> @OptionDao.GetOption("CONTACT_ADDRESS") <br><i class="fa fa-clock-o"></i> Thời gian làm việc: 8h-18h. Kể cả thứ 7.</p>
+                </div>
+            </section>
+            <section class="section hot-deals featured-product block-white">
+                <div class="block">
+                    <h3 class="section-title heading-title ud-line">DEAL LIÊN QUAN</h3>
+                </div>
+
+                <div class="owl-carousel sidebar-carousel custom-carousel owl-theme outer-top-xs">
+                    <div class="item">
+                        @foreach (OnChotto.Models.Entities.Product p in ViewBag.RelatedProducts)
+                        {
+                            <div class="products">
+                                <div class="product  block-bordered">
+                                    <div class="hot-deal-wrapper">
+                                        <div class="image">
+                                            <a href="/san-pham/@p.Name.ToAscii()-@p.ASIN" title="@Html.Raw(p.Name)">
+                                                <img src="@p.FeaturedImage" alt="@Html.Raw(p.Name)" class="img-responsive">
+                                            </a>
+                                        </div>
+                                        <div class="sale-offer-tag tag"><span>-@p.Discount%</span></div>
+                                    </div><!-- /.hot-deal-wrapper -->
+                                    <div class="product-info text-left m-t-20">
+                                        <h3 class="name"><a href="/san-pham/@p.Name.ToAscii()-@p.ASIN" title="@Html.Raw(p.Name)">@Html.Raw(p.Name)</a></h3>
+                                        <div class="product-price">
+                                            <span class="price">
+                                                @Html.FormatValue(p.PriceAfter, "{0:0,0}") <span class="price_symbol">đ</span>
+                                            </span>
+                                            <span class="price-before-discount">@Html.FormatValue(p.Price, "{0:0,0}") <span class="price_symbol">đ</span></span>
+                                        </div><!-- /.product-price -->
+                                    </div><!-- /.product-info -->
+                                    @if (p.EndDate != null)
+                                    {
+                                        var unixTimestamp = (Int32)(p.EndDate.Value.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                                        <div class="countdown">
+                                            <i class="fa fa-clock-o"></i> Còn <span data-time="@unixTimestamp" class="kkcountdown"></span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+@*<div id="fb-root"></div>
+    <script>
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.Id = id;
+            js.src = "https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.6&appId=964989690286521";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>*@

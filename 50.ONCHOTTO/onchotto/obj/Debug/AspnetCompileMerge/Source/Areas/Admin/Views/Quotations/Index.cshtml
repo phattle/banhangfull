@@ -1,0 +1,149 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.Quotation>
+
+@{
+    ViewBag.Module = "Yêu cầu báo giá";
+    ViewBag.Title = "Danh sách";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+
+<div class="box">
+    <div class="box-body">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CustomerName)
+                </th>
+                <th>
+                    Link sản phẩm x số lượng
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AdditionalInformation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedAt)
+                </th>
+                <th>
+                    Trạng thái
+                </th>
+                <th>Thao tác</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr id="table_row_@item.Id" class="table-row @item.Status">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CustomerName)
+                        <br />
+                        @Html.DisplayFor(modelItem => item.CustomerEmail)
+                        <br />
+                        @Html.DisplayFor(modelItem => item.CustomerPhone)
+                    </td>
+                    <td>
+                        @{
+                            var productLinks = item.ProductLinks.Split(',');
+                            foreach (string link in productLinks)
+                            {
+                                string[] linkarr = link.Split('|');
+
+                                <a href="@linkarr[0]" target="_blank">@linkarr[0]</a> <span>x @linkarr[1]</span><br />
+                            }
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AdditionalInformation)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    </td>
+                    <td>
+                        <span id="status_@item.Id" class="label label-default @item.Status">@item.Status</span>
+                    </td>
+                    <td>
+                        @if (item.Status == "New")
+                        {
+                            <a href="#" title="Đánh dấu đã báo giá" class="btn btn-xs btn-primary btn-update-status" update-to="Sent" data-id="@item.Id"><i class="fa fa-check"></i> <span>Đánh dấu Đã gửi báo giá</span></a>
+                        }
+                        else
+                        {
+                            <a href="#" title="Đánh dấu đã báo giá" class="btn btn-xs btn-primary btn-update-status" update-to="New" data-id="@item.Id"><i class="fa fa-times"></i> <span>Đánh dấu chưa gửi</span></a>
+                        }
+                        <br />
+
+                        @Html.ActionLink("Xóa", "Delete", new { id = item.Id }, new { @class = "btn btn-xs btn-danger", onclick = "return confirm('Bạn có chắc muốn xóa?');" })
+                    </td>
+                </tr>
+              }
+
+        </table>
+    </div>
+</div>
+
+
+<style>
+    .label.label-default.New {
+        background: green;
+        color: white;
+    }
+
+    tr.table-row.Sent {
+        font-weight: normal;
+        color: #888;
+    }
+
+    tr.table-row.New {
+        font-weight: bold;
+        color: cornflowerblue;
+    }
+</style>
+
+@section Scripts{
+    <script>
+        $(document).ready(function() {
+
+            $(".btn-update-status").click(function(event) {
+                event.preventDefault();
+
+                var id = $(this).attr("data-id");
+                var newStatus = $(this).attr("update-to");
+                var thisbtn = $(this);
+
+                $.ajax({
+                    url: '/admin/quotations/update',
+                    data: {
+                        id: id,
+                        newStatus: newStatus
+                    },
+                    type: "post",
+                    datatype: "json",
+                    success: function(data) {
+                        if (data.status == 1) {
+                            if (newStatus == "Sent") {
+                                thisbtn.attr('update-to', 'New');
+                                thisbtn.find('.fa').removeClass('fa-check').addClass('fa-times');
+                                thisbtn.find('span').text('Đánh dấu chưa gửi');
+
+                                $('#status_' + id).removeClass("New").addClass('Sent');
+                                $('#status_' + id).text("Sent");
+
+                                $('#table_row_' + id).removeClass("New").addClass('Sent');
+                            } else {
+                                thisbtn.attr('update-to', 'Sent');
+                                thisbtn.find('.fa').removeClass('fa-times').addClass('fa-check');
+                                thisbtn.find('span').text('Đánh dấu Đã gửi báo giá');
+
+                                $('#status_' + id).removeClass("Sent").addClass('New');
+                                $('#status_' + id).text("New");
+
+                                $('#table_row_' + id).removeClass("Sent").addClass('New');
+                            }
+                        }
+                    },
+                    error: function() {
+                        alert('error');
+                    }
+                });
+            });
+
+        });
+    </script>
+}

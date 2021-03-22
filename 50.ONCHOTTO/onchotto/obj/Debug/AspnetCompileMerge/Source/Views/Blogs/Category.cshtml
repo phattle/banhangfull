@@ -1,0 +1,34 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.Post>
+
+@using OnChotto.Models.Entities
+
+@{
+    ViewBag.Title = string.IsNullOrEmpty(ViewBag.Cat.MetaTitle) ? ViewBag.Cat.Name : ViewBag.Cat.MetaTitle;
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+
+@section HeaderMeta{
+    <meta name="description" content="@Html.Raw(ViewBag.Cat.MetaDescription)">
+    <meta name="keywords" content="@Html.Raw(ViewBag.Cat.MetaKeyword)">
+    <meta property="og:type" content="Category" />
+    <meta property="og:title" content="@Html.Raw(ViewBag.Cat.MetaTitle)" />
+    <meta property="og:description" content="@Html.Raw(ViewBag.Cat.MetaDescription)" />
+}
+
+
+
+@section BreadCrumbs{
+    <li><a href="#" class="active">@ViewBag.Title</a></li>
+}
+
+@foreach (var m in Model)
+{
+    <div class="blog-post  wow fadeInUp animated  outer-bottom-xs" style="visibility: visible; animation-name: fadeInUp;">
+        <a href="/blog/@m.Category.Slug/@m.Slug" title="@Html.Raw(m.Title)"><img class="img-responsive" src="@m.Image" alt="@Html.Raw(m.Title)" alt="@Html.Raw(m.Title)"></a>
+        <h1><a href="/blog/@m.Category.Slug/@m.Slug" title="@Html.Raw(m.Title)">@Html.Raw(m.Title)</a></h1>
+        <span class="date-time">@m.createDate.ToString()</span>
+        <p>@Html.Raw(m.Content.Remove_Html_Tags().LimitLength(180, "..."))</p>
+        <a href="/blog/@m.Category.Slug/@m.Slug" class="btn btn-upper btn-success read-more">Đọc thêm</a>
+    </div>
+}
+

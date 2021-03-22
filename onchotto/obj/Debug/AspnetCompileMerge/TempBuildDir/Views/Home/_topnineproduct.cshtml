@@ -1,0 +1,51 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.Product>
+@{
+    int langid = SessionManager.CurrentCulture;
+
+}
+
+<div id="fh5co-product">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
+                <strong>ONCHOTTO Uniform Là Thương Hiệu Cung Cấp Đồng Phục Uy Tín Tại Tp.HCM</strong>
+                <h2>Sản Phẩm</h2>
+                <p>
+                    <strong>Áo thun đồng phục</strong> là sản phẩm được nhiều doanh nghiệp, công ty, nhà hàng, siêu thị, spa, coffee shop quan tâm và đặt hàng nhiều nhất.
+                    Chúng tôi luôn chú trọng không những chất liệu mà còn form dáng, đường may kẽ chỉ để sản phẩm luôn hoàn hảo nhất.
+                    Ngoài ra in ấn và thêu thùa cũng là điểm mạnh của <strong>OnChotto</strong>.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var p in Model)
+            {
+                <div class="col-md-4 text-center animate-box">
+                    <div class="product">
+                        <div class="product-grid">
+                            @if (p.IsFeatured == true)
+                            {
+                                <span class="sale">Nổi bật</span>
+                            }
+                            @if (p.IsSpecial == true)
+                            {
+                                <span class="sale">Hot</span>
+                            }
+                           
+
+                            <a href="/san-pham/@p.Name.ToAscii()-@p.Id">
+                            <img src="@p.FeaturedImage" alt="@p.Name" /></a>
+                        </div>
+
+                        <div class="desc">
+                            <h3><a href="/san-pham/@p.Name.ToAscii()-@p.Id">@p.Name</a></h3>
+                            <span class="price">@p.Description</span>
+                        </div>
+                    </div>
+                </div>
+            }
+            
+        </div>
+
+    </div>
+</div>

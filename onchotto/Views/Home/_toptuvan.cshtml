@@ -1,0 +1,25 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.Post>
+@{
+    int langid = SessionManager.CurrentCulture;
+    int i = 0;
+}
+
+@foreach (var p in Model)
+            {
+
+    <div class="col-md-6" style="display: table;min-height:260px">
+        <h4 style="padding-left: 15px;">
+            <a href="/blog/tin-tuc/@p.Slug">@p.Title</a>
+        </h4>
+        <div class="col-md-3">
+            <a href="/blog/tin-tuc/@p.Slug">
+                <img src="@p.Image" alt="@p.Title" />
+            </a>
+        </div>
+        <div class="col-md-9">
+            @Html.Raw(@p.ContentSmall)    ...
+        </div>
+    </div>
+     
+}
+

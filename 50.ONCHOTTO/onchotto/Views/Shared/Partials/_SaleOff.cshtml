@@ -1,0 +1,61 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.Product> 
+<!-- ============================================== SPECIAL OFFER ============================================== -->
+
+    <div class="sidebar-widget outer-bottom-small wow fadeInUp">
+        <h3 class="section-title">SaleOff</h3>
+
+        <div class="sidebar-widget-body outer-top-xs">
+            @*<div class="owl-carousel sidebar-carousel special-offer custom-carousel owl-theme outer-top-xs">*@
+            @foreach (var p in Model)
+            {
+                <div class="item">
+                    <div class="products special-product">
+                        <div class="product">
+                            <div class="product-micro">
+                                <div class="row product-micro-row">
+                                    <div class="col col-xs-5">
+                                        <div class="product-image">
+                                            <div class="border-box">
+                                                <a href="/Content/img/products/images/@p.Image" data-lightbox="image-1" data-title="Nunc ullamcors">
+                                                    <img data-echo="/Content/img/products/images/@p.Image" src="/Content/img/products/images/@p.Image" alt="" class="img100x120" id="@p.Id">
+                                                    <div class="zoom-overlay"></div>
+                                                </a>
+                                            </div><!-- /.Image -->
+                                            <div class="tag tag-micro sale">
+                                                <span>sale</span>
+                                            </div>
+
+
+                                        </div><!-- /.product-image -->
+                                    </div><!-- /.col -->
+                                    <div class="col col-xs-7">
+                                        <div class="product-info">
+                                            <h3 class="name"><a href="/Product/Detail/@p.Id/@p.Name.ToAscii()">@p.Name</a></h3>
+                                            <div class="rating rateit-small"></div>
+                                            <div class="product-price">
+                                                <span class="price">
+                                                    @Html.FormatValue(p.UnitPrice * (1 - p.Discount), "{0:c}")
+
+                                                </span>
+                                                <span class="price-before-discount"> @Html.FormatValue(p.UnitPrice, "{0:c}") </span>
+                                            </div><!-- /.product-price -->
+                                            <div class="action"><a href="#" class="lnk btn btn-primary addProduct" data-id="@p.Id">Add To Cart</a></div>
+                                        </div>
+                                    </div><!-- /.col -->
+                                </div><!-- /.product-micro-row -->
+                            </div><!-- /.product-micro -->
+
+                        </div> <!--end of product-->
+
+                       
+                    </div>
+                </div>
+                }
+            @*</div>*@
+        
+        </div><!-- /.sidebar-widget-body -->
+
+    </div><!-- /.sidebar-widget -->
+    <!-- ============================================== SPECIAL OFFER : END ============================================== -->
+
+

@@ -1,0 +1,62 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.FunctionMenu>
+
+@{
+    ViewBag.Title = "Chức năng";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+<p>
+    @Html.ActionLink("Thêm", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MenuParentId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MenuChildId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TypeMenu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.STT)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MenuParentId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MenuChildId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TypeMenu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.STT)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-xs btn-warning" })                
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-xs btn-danger", onclick = "return confirm('Bạn có chắc muốn xóa ')" })
+            </td>
+        </tr>
+    }
+
+</table>
+

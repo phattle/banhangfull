@@ -1,0 +1,34 @@
+﻿@using OnChotto.Models.Entities.Onlinedeal;
+@model IEnumerable<Category>  
+<!-- ============================================== PRODUCT TAGS ============================================== -->
+<div class="sidebar-widget product-tag wow fadeInUp">
+    <h3 class="section-title">ProductTags</h3>
+    <div class="sidebar-widget-body outer-top-xs">
+        <div class="tag-list">
+        @foreach (var m in Model)
+        {
+            var Language = System.Threading.Thread.CurrentThread.CurrentCulture.DisplayName;
+            switch (Language)
+            {
+                case "English":
+                    <a class="item" title="Phone" href="/Product/Cat/@m.Id/@m.Name.ToAscii()">@m.Name</a>
+                    break;
+                default:
+                <a class="item" title="Phone" href="/Product/Cat/@m.Id/@m.NameVN.ToAscii()">@m.NameVN</a>
+                    break;
+
+            }
+
+        }
+            @*<a class="item active" title="Vest" href="index.php?page=category">Vest</a>
+            <a class="item" title="Smartphone" href="index.php?page=category">Smartphone</a>
+            <a class="item" title="Furniture" href="index.php?page=category">Furniture</a>
+            <a class="item" title="T-shirt" href="index.php?page=category">T-shirt</a>
+            <a class="item" title="Sweatpants" href="index.php?page=category">Sweatpants</a>
+            <a class="item" title="Sneaker" href="index.php?page=category">Sneaker</a>
+            <a class="item" title="Toys" href="index.php?page=category">Toys</a>
+            <a class="item" title="Rose" href="index.php?page=category">Rose</a>*@
+        </div><!-- /.tag-list -->
+    </div><!-- /.sidebar-widget-body -->
+</div><!-- /.sidebar-widget -->
+<!-- ============================================== PRODUCT TAGS : END ============================================== -->

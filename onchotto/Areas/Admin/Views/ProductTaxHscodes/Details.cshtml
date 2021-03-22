@@ -1,0 +1,139 @@
+﻿@model OnChotto.Models.Entities.ProductTaxHscode
+
+@{
+    ViewBag.Title = "Quản lý Thuế nhập khẩu";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+
+<h2>Xem chi tiết</h2>
+
+<div>
+    <h4>Thuế nhập khẩu</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.HsCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HsCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PoductName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PoductName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TaxPercentage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TaxPercentage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VATPercentage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VATPercentage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FederalTaxPercentage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FederalTaxPercentage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Pricehandling)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pricehandling)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ShippinglandPercentage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShippinglandPercentage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PriceClearanceFee)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PriceClearanceFee)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PriceAF)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PriceAF)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PriceTECSServicesFee)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PriceTECSServicesFee)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PriceCustomFee)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PriceCustomFee)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TransactionPercentage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransactionPercentage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VATFeeTransaction)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VATFeeTransaction)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Note)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Note)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreateDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreateDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Sửa", "Edit", new { id = Model.HsCodeId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

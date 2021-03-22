@@ -1,0 +1,1369 @@
+﻿@using OnChotto.Models
+@using OnChotto.Models.Dao
+@model OnChotto.Models.ViewModel.OrderViewModel
+@{
+    ViewBag.Title = "Đặt hàng";
+    Layout = "~/Views/Shared/_ClearLayout.cshtml";
+}
+
+<div id="checkoutPage">
+    @using (Html.BeginForm("Checkout", "Order", FormMethod.Post, new { id = "Checkout" }))
+    {
+        @Html.HiddenFor(model => model.UserId)
+
+        @Html.AntiForgeryToken()
+
+        <div class="row outer-bottom-xs">
+            <div class="col-md-6">
+                <h3 class="block-title"><i class="fa fa-user" aria-hidden="true"></i> THÔNG TIN NGƯỜI MUA HÀNG</h3>
+                <div class="block block-white  block-bordered">
+
+                    @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+                    @if (Request.IsAuthenticated == false)
+                    {
+                        <p class="alert alert-info">Bạn đã có tài khoản <i class="fa fa-hand-o-right" aria-hidden="true"></i> <a href="#loginform" class="btn-toggle text-danger" data-toggle="toggle" title="đăng nhập tại đây">đăng nhập tại đây. </a>Nếu chưa có tài khoản vui lòng điền thông tin của bạn vào form dưới đây.</p>
+
+                        <div id="loginform" class="alert alert-info" style="display: none;">
+                            <a href="#loginform" class="close btn-toggle" data-dismiss="alert" aria-hidden="true">&times;</a>
+
+                            <div class="form-inline">
+                                <p id="status" style="color: orangered; font-weight:bold;"></p>
+
+                                <div class="form-group">
+                                    @Html.TextBox("UserName", null, new { @class = "form-control unicase-form-control", placeholder = "Địa chỉ email..." })
+                                </div>
+                                <div class="form-group">
+                                    @Html.Password("Password", null, new { @class = "form-control unicase-form-control", placeholder = "Mật khẩu..." })
+                                </div>
+                                <div class="form-group">
+                                    <a id="btnLogin" class="btn btn-success"><i class="fa fa-sign-in"></i> Đăng nhập</a>
+                                </div>
+                            </div>
+                            <hr />
+                            @Html.Partial("Partials/_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = Context.Request.RawUrl })
+                        </div>
+                    }
+
+                    <!-- Thông tin người nhận -->
+                    <div class="form-horizontal">
+                        @if (Request.IsAuthenticated)
+                        {
+                            <div class="form-group">
+                                <div class="col-md-8">
+                                    <label class="control-label">Họ và tên</label>
+                                    @Html.TextBoxFor(model => model.ReceiveName, new { @class = "form-control unicase-form-control", placeholder = "Họ và tên..." })@*, @readonly = "readonly"*@
+                                    @Html.ValidationMessageFor(model => model.ReceiveName, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label">Số điện thoại</label>
+                                    @Html.TextBoxFor(model => model.ReceivePhone, new { @class = "form-control unicase-form-control", placeholder = "Số điện thoại..." })@*, @readonly = "readonly"*@
+                                    @Html.ValidationMessageFor(model => model.ReceivePhone, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                <div class="col-md-8">
+                                    <label class="control-label">Họ và tên</label>
+                                    @Html.TextBoxFor(model => model.ReceiveName, new { @class = "check-empty form-control unicase-form-control", placeholder = "Họ và tên..." })
+                                    @Html.ValidationMessageFor(model => model.ReceiveName, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label">Số điện thoại</label>
+                                    @Html.TextBoxFor(model => model.ReceivePhone, new { @class = "check-empty form-control unicase-form-control", placeholder = "Số điện thoại..." })
+                                    @Html.ValidationMessageFor(model => model.ReceivePhone, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        }
+
+
+                        @if (Request.IsAuthenticated)
+                        {
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label class="control-label" for="ReceiveEmail">Địa chỉ Email</label>
+                                    @Html.TextBoxFor(model => model.ReceiveEmail, new { @class = "check-empty form-control unicase-form-control", placeholder = "Địa chỉ email có thực để nhận thông tin đơn hàng...", @readonly = "readonly" })
+                                    @Html.ValidationMessageFor(model => model.ReceiveEmail, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label class="control-label" for="ReceiveEmail">Địa chỉ Email</label>
+                                    @Html.TextBoxFor(model => model.ReceiveEmail, new { @class = "check-empty form-control unicase-form-control", placeholder = "Địa chỉ email có thực để nhận thông tin đơn hàng..." })
+                                    @Html.ValidationMessageFor(model => model.ReceiveEmail, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        }
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label">Địa chỉ/Phường xã</label>
+                                @Html.TextBoxFor(model => model.ReceiveAddress, new { @class = "check-empty form-control unicase-form-control", placeholder = "Địa chỉ nhận hàng..." })
+                                @Html.ValidationMessageFor(model => model.ReceiveAddress, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label class="control-label">Tỉnh/Thành phố</label>
+                                @Html.DropDownList("ProvinceId", null, "Chọn Tỉnh thành", htmlAttributes: new { @class = "check-empty form-control unicase-form-control select2" })
+                                @Html.ValidationMessage("ProvinceId", "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Quận/Huyện</label>
+                                @Html.DropDownList("DistrictId", null, "Chọn Quận huyện", htmlAttributes: new { @class = "check-empty form-control unicase-form-control select2" })
+                                @Html.ValidationMessage("DistrictId", "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="control-label">Phường/Xã</label>
+                               @Html.DropDownList("WardId", null, "Chọn phường xã", htmlAttributes: new { @class = "check-empty form-control unicase-form-control" })
+                            @Html.ValidationMessage("WardId", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="checkbox">
+                                    <label>@Html.CheckBoxFor(model => model.OtherAddress, false) Thông tin nhận hàng khác với địa chỉ trên</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="otherAddressBox" style="display: none">
+                            <div class="form-group">
+                                <div class="col-md-8">
+                                    <label class="control-label">Họ và tên</label>
+                                    @Html.TextBoxFor(model => model.OtherReceiveName, new { @class = "form-control unicase-form-control", placeholder = "Tên người nhận hàng..." })
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label">Số điện thoại</label>
+                                    @Html.TextBoxFor(model => model.OtherReceivePhone, new { @class = "form-control unicase-form-control", placeholder = "Số điện thoại..." })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label class="control-label" for="OtherEmail">Địa chỉ Email</label>
+                                    @Html.TextBoxFor(model => model.OtherEmail, new { @class = "form-control unicase-form-control", Type = "email", placeholder = "Địa chỉ email nhận thông tin đơn hàng..." })
+                                    @Html.ValidationMessageFor(model => model.OtherEmail, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label class="control-label">Địa chỉ</label>
+                                    @Html.TextBox("OtherReceiveAddress", "", new { @class = "form-control unicase-form-control", placeholder = "Địa chỉ nhận hàng..." })
+                                    @Html.ValidationMessage("OtherReceiveAddress", "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <label class="control-label">Tỉnh/Thành phố</label>
+                                    @Html.DropDownList("OtherProvinceId", null, "Chọn Tỉnh thành", htmlAttributes: new { @class = "form-control unicase-form-control select2", @style = "width:100%" })
+                                    @Html.ValidationMessage("OtherProvinceId", "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label">Quận/Huyện</label>
+                                    @Html.DropDownList("OtherDistrictId", null, "Chọn Quận huyện", htmlAttributes: new { @class = "form-control unicase-form-control" })
+                                    @Html.ValidationMessage("OtherDistrictId", "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label">Phường/Xã</label>
+                                    @Html.DropDownList("OtherWardId", null, "Chọn phường xã", htmlAttributes: new { @class = "form-control unicase-form-control" })
+                                    @Html.ValidationMessage("OtherWardId", "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chọn nhà vận chuyển Đã ẩn-->
+                <h3 class="block-title" hidden><i class="fa fa-truck" aria-hidden="true"></i> PHƯƠNG THỨC GIAO NHẬN</h3>
+                <div hidden id="transport-table" class="block block-white  block-bordered" style="margin-bottom: 20px;">
+                    <p class="alert alert-info">
+                        Vui lòng chọn Tỉnh thành > Quận huyện để tìm nhà vận chuyển cho bạn.
+                    </p>
+                </div>
+
+            </div>
+
+            <div id="cart-detail" class="col-md-6">
+                <h3 class="block-title"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i> THÔNG TIN ĐƠN HÀNG</h3>
+                <div class="block block-white block-bordered">
+                    <table class="table mycart">
+                        <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th class="text-center">Xóa</th>
+                                <th class="text-center">Giá tiền</th>
+                                <th class="text-center">Số lượng</th>
+                                <th class="text-center">Trọng lượng</th>
+                                <th class="text-center">Tổng lượng</th>
+                                <th class="text-center">Thuế bang</th>
+                                <th class="text-center">Nhập khẩu</th>
+                                <th class="text-right">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var p in ShoppingCart.Cart.Items)
+                            {
+                                <tr class="start-item">
+                                    <td class="text-center" rowspan="2"><img src="@p.FeaturedImage" width="65" height="65" class="img-thumbnail" /> <br /> @p.Id</td>
+                                    <td class="action removeProduct text-center">
+                                        <a href="#" class="removeProduct">
+                                            <i class="removeProduct fa fa-close text-danger" data-id="@p.Id" data-id-remove="@p.Id"></i>
+                                        </a>
+                                    </td>
+                                    <td class="text-center">@Html.FormatValue(p.PriceAfter, "{0:0,0}")<sup>đ</sup></td>
+                                    <td class="text-center">
+                                        <select data-id="@p.Id" name="quantity" class="quantity spquantity">
+                                            @for (int i = 1; i < 10; i++)
+                                            {
+                                                var selected = p.Amount == i ? "selected" : "";
+                                                <option value="@i" @selected>@i</option>
+                                            }
+                                        </select>
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.FormatValue(p.WeightLbs, "{0:0,0.00}") @p.WeightUnit
+                                    </td>
+                                    <td id="Weightnet-@p.Id" class="text-center">@Html.FormatValue(p.WeightLbs * p.Amount, "{0:0,0.00}") @p.WeightUnit</td>
+                                    <td id="FederalTaxUS-@p.Id" class="text-right FederalTaxUSDetailt">@Html.FormatValue((p.PriceAfter * ShoppingCart.Cart.Federaltaxpercentage) * p.Amount, "{0:0,0}")</td>
+                                    <td id="TaxExportVN-@p.Id" class="text-right TaxExportVNDetailt">@Html.FormatValue(((p.PriceAfter * ShoppingCart.Cart.Taxpercentage) + ((p.PriceAfter + (p.PriceAfter * ShoppingCart.Cart.Taxpercentage)) * ShoppingCart.Cart.Vatpercentage)) * p.Amount, "{0:0,0}")</td>
+                                    @*<td class="text-right hidden">@p.ShippingInLand</td>*@
+                                    <td id="Amount-@p.Id" class="text-right">@Html.FormatValue((p.PriceAfter * p.Amount), "{0:0,0}")<sup>đ</sup></td>
+                                </tr>
+                                <tr class="end-item">
+                                    <td colspan="8"><a href="@p.DetailPageURL" target="_blank"> @p.Name</a> </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th id="couponbox" colspan="3" rowspan="7" style="vertical-align: top;">
+
+                                    <label class="control-label" for="couponcode">Mã giảm giá (nếu có)</label>
+
+                                    <div class="input-group">
+                                        <input type="text" name="couponCode" id="couponCode" class="form-control" value="@ShoppingCart.Cart.CouponCode">
+                                        <span class="input-group-btn">
+                                            <button id="applyCoupon" class="btn btn-danger" type="button">
+                                                Áp dụng <i class="fa fa-angle-right"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+
+                                    <p class="status"></p>
+
+                                </th>
+                                <th colspan="3" class="text-right">Tổng giá sản phẩm:</th>
+                                <th class="text-right">
+                                    <span class="nn-cart-total">@Html.FormatValue(ShoppingCart.Cart.Total, "{0:0,0}")đ</span>
+                            </tr>
+                            <tr class="text-right">
+                                <td colspan="3">Tổng trọng lượng (Kg):</td>
+                                <td id="orderTotalWeight" class="text-right">@Html.FormatValue(ShoppingCart.Cart.TotalWeight, "{0:0,0.00}")kg</td>
+                            </tr>
+
+                             
+                        </tfoot>
+                    </table>
+
+                    <hr />
+
+                    <div class="form-horizontal">
+                        <fieldset>
+                            <h4>Chọn mức tạm ứng</h4>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <select id="Deposit" name="Deposit" class="form-control unicase-form-control">
+                                        <option value="50">Tạm ứng trước 50% đơn hàng</option>
+                                        <option value="80">Tạm ứng trước 80% đơn hàng</option>
+                                        <option value="100">Thanh toán đủ 100% đơn hàng</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        @{
+                            OrderDao dao = new OrderDao();
+                            var paymentMethods = dao.GetAllPaymentMethods();
+                            if (paymentMethods.Count > 0)
+                            {
+                                int i = 0;
+                                <fieldset>
+                                    <h4>Chọn phương thức thanh toán</h4>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+
+                                            @foreach (var method in paymentMethods)
+                                            {
+
+                                                <div class="radio-checkout-unicase">
+                                                    <label>
+                                                        @if (i == 0)
+                                                        {
+                                                            @Html.RadioButtonFor(model => model.PaymentMethodId, method.Id, new { Checked = "checked" }) @method.Name
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.RadioButtonFor(model => model.PaymentMethodId, method.Id) @method.Name
+                                                        }
+                                                    </label>
+                                                </div>
+                                                i++;
+                                            }
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            }
+
+                        }
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label">Ghi chú đơn hàng</label>
+                                @Html.TextAreaFor(model => model.Note, new { @class = "form-control unicase-form-control", rows = "3" })
+                                @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="checkbox">
+                                    <label>@Html.CheckBoxFor(model => model.accept, false) Đồng ý với <a href="http://onchotto.com/quy-che-hoat-dong">điều khoản & điều kiện</a> giao dịch của chúng tôi</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button class="btn btn-warning btn-lg btn-checkout" type="submit">
+                                <i class="fa fa-hand-o-right" aria-hidden="true"></i> Đặt Hàng
+                            </button>
+                            <a href="/" class="btn btn-info  btn-lg">
+                                <i class="fa fa-cart-plus" aria-hidden="true"></i> Thêm sản phẩm khác
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>@*/row*@
+                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title" id="myModalLabel">Điều khoản & điều kiện</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row  outer-bottom-vs">
+                                                <div class="blog-page page">
+                                                    <div class="col-md-3 sidebar">
+                                                        <div class="sidebar-module-container">
+
+                                                            <!-- ============================================== HOT DEALS: END ============================================== -->
+                                                            <!-- ==============================================Giới thiệu============================================== -->
+                                                            <div class="sidebar-widget outer-bottom-xs wow fadeInUp animated animated" style="visibility: visible; animation-name: fadeInUp;">
+                                                                <h3 class="section-title heading-title ud-line">Giới thiệu</h3>
+                                                                <div class="sidebar-widget-body m-t-10">
+                                                                    <div class="accordion">
+                                                                        <div class="accordion-group">
+                                                                            <div class="accordion-heading">
+                                                                                <a href="/gioi-thieu" class="accordion-toggle collapsed" title="Giới thiệu Smua">
+                                                                                    Giới thiệu Smua
+                                                                                </a>
+                                                                            </div><!-- /.accordion-heading -->
+                                                                        </div><!-- /.accordion-group -->
+                                                                        <div class="accordion-group">
+                                                                            <div class="accordion-heading">
+                                                                                <a href="/quy-che-hoat-dong" class="accordion-toggle collapsed" title="Quy chế hoạt động">
+                                                                                    Quy chế hoạt động
+                                                                                </a>
+                                                                            </div><!-- /.accordion-heading -->
+                                                                        </div><!-- /.accordion-group -->
+                                                                        <div class="accordion-group">
+                                                                            <div class="accordion-heading">
+                                                                                <a href="/chinh-sach-bao-mat-thong-tin" class="accordion-toggle collapsed" title="Chính sách bảo mật thông tin">
+                                                                                    Chính sách bảo mật thông tin
+                                                                                </a>
+                                                                            </div><!-- /.accordion-heading -->
+                                                                        </div><!-- /.accordion-group -->
+                                                                        <div class="accordion-group">
+                                                                            <div class="accordion-heading">
+                                                                                <a href="/hop-tac-cung-smua" class="accordion-toggle collapsed" title="Hợp tác cùng  Smua">
+                                                                                    Hợp tác cùng  Smua
+                                                                                </a>
+                                                                            </div><!-- /.accordion-heading -->
+                                                                        </div><!-- /.accordion-group -->
+                                                                        <div class="accordion-group">
+                                                                            <div class="accordion-heading">
+                                                                                <a href="/blog/tuyen-dung" class="accordion-toggle collapsed" title="Tuyển dụng">
+                                                                                    Tuyển dụng
+                                                                                </a>
+                                                                            </div><!-- /.accordion-heading -->
+                                                                        </div><!-- /.accordion-group -->
+                                                                    </div><!-- /.accordion -->
+                                                                </div><!-- /.sidebar-widget-body -->
+                                                            </div><!-- /.sidebar-widget -->
+                                                            <!-- ============================================== CATEGORY : END ============================================== -->
+                                                            <!-- ============================================== Trợ giúp ============================================== -->
+                                                            <div class="sidebar-widget outer-bottom-xs wow fadeInUp animated animated" style="visibility: visible; animation-name: fadeInUp;">
+                                                                <h3 class="section-title heading-title ud-line">Hướng dẫn - Trợ giúp</h3>
+                                                                <div class="sidebar-widget-body m-t-10">
+                                                                    <div class="accordion">
+                                                                        <div class="accordion-group">
+                                                                            <div class="accordion-heading">
+                                                                                <a href="/huong-dan-mua-hang" class="accordion-toggle collapsed" title="Hướng dẫn mua, ship hộ">
+                                                                                    Hướng dẫn mua, ship hộ
+                                                                                </a>
+                                                                            </div><!-- /.accordion-heading -->
+                                                                        </div><!-- /.accordion-group -->
+                                                                        <div class="accordion-group">
+                                                                            <div class="accordion-heading">
+                                                                                <a href="/chinh-sach-bao-ve-quyen-loi-nguoi-mua-hang" class="accordion-toggle collapsed" title="Chính sách bảo vệ quyền lợi người mua hàng">
+                                                                                    Chính sách bảo vệ quyền lợi người mua hàng
+                                                                                </a>
+                                                                            </div><!-- /.accordion-heading -->
+                                                                        </div><!-- /.accordion-group -->
+                                                                        <div class="accordion-group">
+                                                                            <div class="accordion-heading">
+                                                                                <a href="/cach-thuc-thanh-toan" class="accordion-toggle collapsed" title="Cách thức thanh toán">
+                                                                                    Cách thức thanh toán
+                                                                                </a>
+                                                                            </div><!-- /.accordion-heading -->
+                                                                        </div><!-- /.accordion-group -->
+                                                                        <div class="accordion-group">
+                                                                            <div class="accordion-heading">
+                                                                                <a href="/chinh-sach-bao-hanh" class="accordion-toggle collapsed" title="Chính sách bảo hành">
+                                                                                    Chính sách bảo hành
+                                                                                </a>
+                                                                            </div><!-- /.accordion-heading -->
+                                                                        </div><!-- /.accordion-group -->
+                                                                        <div class="accordion-group">
+                                                                            <div class="accordion-heading">
+                                                                                <a href="/lien-he" class="accordion-toggle collapsed" title="Liên hệ">
+                                                                                    Liên hệ
+                                                                                </a>
+                                                                            </div><!-- /.accordion-heading -->
+                                                                        </div><!-- /.accordion-group -->
+                                                                    </div><!-- /.accordion -->
+                                                                </div><!-- /.sidebar-widget-body -->
+                                                            </div><!-- /.sidebar-widget -->
+                                                            <!-- ============================================== CATEGORY : END ============================================== -->
+                                                            <!-- ============================================== HOT DEALS ============================================== -->
+                                                            <section class="section  hot-deals featured-product wow fadeInUp animated" style="visibility: visible; animation-name: fadeInUp;">
+                                                                <h3 class="section-title heading-title ud-line"> DEAL NỔI BẬT</h3>
+                                                                <div class="owl-carousel sidebar-carousel custom-carousel owl-theme outer-top-xs" style="opacity: 1; display: block;">
+                                                                    <div class="owl-wrapper-outer">
+                                                                        <div class="owl-wrapper" style="width: 3060px; left: 0px; display: block;">
+                                                                            <div class="owl-item" style="width: 255px;">
+                                                                                <div class="item">
+                                                                                    <div class="products">
+                                                                                        <div class="product">
+                                                                                            <div class="hot-deal-wrapper">
+                                                                                                <div class="image">
+                                                                                                    <a href="/san-pham/dell-inspiron-i5378-4314gry-13-3-fhd-2-in-1-laptop-7th-generation-intel-core-i5-8gb-ram-256-ssd-hdd--4883" title="Dell Inspiron i5378-4314GRY 13.3" fhd="" 2-in-1="" laptop="" (7th="" generation="" intel="" core="" i5,="" 8gb="" ram,="" 256="" ssd="" hdd)"="">
+                                                                                                        <img src="https://images-na.ssl-images-amazon.com/images/I/31hfh0R1VJL.jpg" alt="Dell Inspiron i5378-4314GRY 13.3" fhd="" 2-in-1="" laptop="" (7th="" generation="" intel="" core="" i5,="" 8gb="" ram,="" 256="" ssd="" hdd)"="" class="img-responsive">
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                                <div class="sale-offer-tag tag"><span>-0,00%</span></div>
+                                                                                            </div><!-- /.hot-deal-wrapper -->
+                                                                                            <div class="product-info text-left m-t-20">
+                                                                                                <h3 class="name"><a href="/san-pham/dell-inspiron-i5378-4314gry-13-3-fhd-2-in-1-laptop-7th-generation-intel-core-i5-8gb-ram-256-ssd-hdd--4883" title="Dell Inspiron i5378-4314GRY 13.3" fhd="" 2-in-1="" laptop="" (7th="" generation="" intel="" core="" i5,="" 8gb="" ram,="" 256="" ssd="" hdd)"="">Dell Inspiron i5378-4314GRY 13.3" FHD 2-in-1 Laptop (7th Generation Intel Core i5, 8GB RAM, 256 SSD HDD)</a></h3>
+                                                                                                <div class="product-price">
+                                                                                                    <span class="price">
+
+                                                                                                        13.448.000 <span class="price_symbol">đ</span>
+                                                                                                    </span>
+                                                                                                    <span class="price-before-discount">13.448.600 <span class="price_symbol">đ</span></span>
+                                                                                                </div><!-- /.product-price -->
+                                                                                            </div><!-- /.product-info -->
+                                                                                            <div class="countdown">
+                                                                                                <i class="fa fa-clock-o"></i> Còn <span data-time="1539475200" class="kkcountdown"><span class="kkcountdown-box"><span class="kkc-days">17</span><span class="kkc-days-text"> ngày </span><span class="kkc-hours">09</span><span class="kkc-hours-text">:</span><span class="kkc-min">17</span><span class="kkc-min-text">:</span><span class="kkc-sec">56</span><span class="kkc-sec-text"></span></span></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div><div class="owl-item" style="width: 255px;">
+                                                                                <div class="item">
+                                                                                    <div class="products">
+                                                                                        <div class="product">
+                                                                                            <div class="hot-deal-wrapper">
+                                                                                                <div class="image">
+                                                                                                    <a href="/san-pham/2018-2-in-1-dell-inspiron-13-5000-13-3-inch-full-hd-touchscreen-flagship-backlit-keyboard-laptop-pc-intel-core-i7-8550u-quad-core-8gb-ddr4-256gb-ssd-waves-maxxaudio-pro-windows-10-4884" title="2018 2-in-1 Dell Inspiron 13 5000 13.3 inch Full HD Touchscreen Flagship Backlit Keyboard Laptop PC, Intel Core i7-8550U Quad-Core, 8GB DDR4, 256GB SSD, Waves MaxxAudio Pro, Windows 10">
+                                                                                                        <img src="https://images-na.ssl-images-amazon.com/images/I/41Y50CiHkFL.jpg" alt="2018 2-in-1 Dell Inspiron 13 5000 13.3 inch Full HD Touchscreen Flagship Backlit Keyboard Laptop PC, Intel Core i7-8550U Quad-Core, 8GB DDR4, 256GB SSD, Waves MaxxAudio Pro, Windows 10" class="img-responsive">
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                                <div class="sale-offer-tag tag"><span>-0,00%</span></div>
+                                                                                            </div><!-- /.hot-deal-wrapper -->
+                                                                                            <div class="product-info text-left m-t-20">
+                                                                                                <h3 class="name"><a href="/san-pham/2018-2-in-1-dell-inspiron-13-5000-13-3-inch-full-hd-touchscreen-flagship-backlit-keyboard-laptop-pc-intel-core-i7-8550u-quad-core-8gb-ddr4-256gb-ssd-waves-maxxaudio-pro-windows-10-4884" title="2018 2-in-1 Dell Inspiron 13 5000 13.3 inch Full HD Touchscreen Flagship Backlit Keyboard Laptop PC, Intel Core i7-8550U Quad-Core, 8GB DDR4, 256GB SSD, Waves MaxxAudio Pro, Windows 10">2018 2-in-1 Dell Inspiron 13 5000 13.3 inch Full HD Touchscreen Flagship Backlit Keyboard Laptop PC, Intel Core i7-8550U Quad-Core, 8GB DDR4, 256GB SSD, Waves MaxxAudio Pro, Windows 10</a></h3>
+                                                                                                <div class="product-price">
+                                                                                                    <span class="price">
+
+                                                                                                        16.478.000 <span class="price_symbol">đ</span>
+                                                                                                    </span>
+                                                                                                    <span class="price-before-discount">16.478.000 <span class="price_symbol">đ</span></span>
+                                                                                                </div><!-- /.product-price -->
+                                                                                            </div><!-- /.product-info -->
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div><div class="owl-item" style="width: 255px;">
+                                                                                <div class="item">
+                                                                                    <div class="products">
+                                                                                        <div class="product">
+                                                                                            <div class="hot-deal-wrapper">
+                                                                                                <div class="image">
+                                                                                                    <a href="/san-pham/dell-inspiron-13-5000-2-in-1-13-3-touch-display-8th-gen-intel-core-i7-8550u-8gb-memory-1tb-hard-drive-theoretical-gray-i5379-7909gry-pus--4885" title="Dell Inspiron 13 5000 2-in-1 - 13.3" touch="" display="" -="" 8th="" gen="" intel="" core="" i7-8550u="" 8gb="" memory="" 1tb="" hard="" drive="" theoretical="" gray="" (i5379-7909gry-pus)"="">
+                                                                                                        <img src="https://images-na.ssl-images-amazon.com/images/I/31hfh0R1VJL.jpg" alt="Dell Inspiron 13 5000 2-in-1 - 13.3" touch="" display="" -="" 8th="" gen="" intel="" core="" i7-8550u="" 8gb="" memory="" 1tb="" hard="" drive="" theoretical="" gray="" (i5379-7909gry-pus)"="" class="img-responsive">
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                                <div class="sale-offer-tag tag"><span>-0,00%</span></div>
+                                                                                            </div><!-- /.hot-deal-wrapper -->
+                                                                                            <div class="product-info text-left m-t-20">
+                                                                                                <h3 class="name"><a href="/san-pham/dell-inspiron-13-5000-2-in-1-13-3-touch-display-8th-gen-intel-core-i7-8550u-8gb-memory-1tb-hard-drive-theoretical-gray-i5379-7909gry-pus--4885" title="Dell Inspiron 13 5000 2-in-1 - 13.3" touch="" display="" -="" 8th="" gen="" intel="" core="" i7-8550u="" 8gb="" memory="" 1tb="" hard="" drive="" theoretical="" gray="" (i5379-7909gry-pus)"="">Dell Inspiron 13 5000 2-in-1 - 13.3" Touch Display - 8th Gen Intel Core i7-8550U - 8GB Memory - 1TB Hard Drive - Theoretical Gray (i5379-7909GRY-PUS)</a></h3>
+                                                                                                <div class="product-price">
+                                                                                                    <span class="price">
+
+                                                                                                        16.192.000 <span class="price_symbol">đ</span>
+                                                                                                    </span>
+                                                                                                    <span class="price-before-discount">16.192.220 <span class="price_symbol">đ</span></span>
+                                                                                                </div><!-- /.product-price -->
+                                                                                            </div><!-- /.product-info -->
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div><div class="owl-item" style="width: 255px;">
+                                                                                <div class="item">
+                                                                                    <div class="products">
+                                                                                        <div class="product">
+                                                                                            <div class="hot-deal-wrapper">
+                                                                                                <div class="image">
+                                                                                                    <a href="/san-pham/2018-2-in-1-dell-inspiron-13-5000-13-3-inch-full-hd-touchscreen-flagship-backlit-keyboard-laptop-pc-intel-core-i7-8550u-quad-core-8gb-ddr4-256gb-ssd-waves-maxxaudio-pro-windows-10-4886" title="2018 2-in-1 Dell Inspiron 13 5000 13.3 inch Full HD Touchscreen Flagship Backlit Keyboard Laptop PC, Intel Core i7-8550U Quad-Core, 8GB DDR4, 256GB SSD, Waves MaxxAudio Pro, Windows 10">
+                                                                                                        <img src="https://images-na.ssl-images-amazon.com/images/I/41btCphwnmL.jpg" alt="2018 2-in-1 Dell Inspiron 13 5000 13.3 inch Full HD Touchscreen Flagship Backlit Keyboard Laptop PC, Intel Core i7-8550U Quad-Core, 8GB DDR4, 256GB SSD, Waves MaxxAudio Pro, Windows 10" class="img-responsive">
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                                <div class="sale-offer-tag tag"><span>-0,00%</span></div>
+                                                                                            </div><!-- /.hot-deal-wrapper -->
+                                                                                            <div class="product-info text-left m-t-20">
+                                                                                                <h3 class="name"><a href="/san-pham/2018-2-in-1-dell-inspiron-13-5000-13-3-inch-full-hd-touchscreen-flagship-backlit-keyboard-laptop-pc-intel-core-i7-8550u-quad-core-8gb-ddr4-256gb-ssd-waves-maxxaudio-pro-windows-10-4886" title="2018 2-in-1 Dell Inspiron 13 5000 13.3 inch Full HD Touchscreen Flagship Backlit Keyboard Laptop PC, Intel Core i7-8550U Quad-Core, 8GB DDR4, 256GB SSD, Waves MaxxAudio Pro, Windows 10">2018 2-in-1 Dell Inspiron 13 5000 13.3 inch Full HD Touchscreen Flagship Backlit Keyboard Laptop PC, Intel Core i7-8550U Quad-Core, 8GB DDR4, 256GB SSD, Waves MaxxAudio Pro, Windows 10</a></h3>
+                                                                                                <div class="product-price">
+                                                                                                    <span class="price">
+
+                                                                                                        16.390.000 <span class="price_symbol">đ</span>
+                                                                                                    </span>
+                                                                                                    <span class="price-before-discount">16.390.000 <span class="price_symbol">đ</span></span>
+                                                                                                </div><!-- /.product-price -->
+                                                                                            </div><!-- /.product-info -->
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div><div class="owl-item" style="width: 255px;">
+                                                                                <div class="item">
+                                                                                    <div class="products">
+                                                                                        <div class="product">
+                                                                                            <div class="hot-deal-wrapper">
+                                                                                                <div class="image">
+                                                                                                    <a href="/san-pham/cyd-65w-19-5v-3-34a-power-fast-laptop-charger-for-dell-inspiron-15-5000-series-15-5568-5578-5758-11-3147-3148-3152-13-7368-7378-14-3451-3452-7437-17-5758-5759-7779-extra-8-2-ft-ac-adapter-power-cord-4887" title="Cyd 65w 19.5v 3.34a power-fast-laptop-charger for dell-inspiron 15-5000 series 15 5568 5578 5758 11 3147 3148 3152 13 7368 7378 14 3451 3452 7437 17 5758 5759 7779 extra 8.2 ft ac-adapter-power-cord">
+                                                                                                        <img src="https://images-na.ssl-images-amazon.com/images/I/51zm7PA6xqL.jpg" alt="Cyd 65w 19.5v 3.34a power-fast-laptop-charger for dell-inspiron 15-5000 series 15 5568 5578 5758 11 3147 3148 3152 13 7368 7378 14 3451 3452 7437 17 5758 5759 7779 extra 8.2 ft ac-adapter-power-cord" class="img-responsive">
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                                <div class="sale-offer-tag tag"><span>-0,00%</span></div>
+                                                                                            </div><!-- /.hot-deal-wrapper -->
+                                                                                            <div class="product-info text-left m-t-20">
+                                                                                                <h3 class="name"><a href="/san-pham/cyd-65w-19-5v-3-34a-power-fast-laptop-charger-for-dell-inspiron-15-5000-series-15-5568-5578-5758-11-3147-3148-3152-13-7368-7378-14-3451-3452-7437-17-5758-5759-7779-extra-8-2-ft-ac-adapter-power-cord-4887" title="Cyd 65w 19.5v 3.34a power-fast-laptop-charger for dell-inspiron 15-5000 series 15 5568 5578 5758 11 3147 3148 3152 13 7368 7378 14 3451 3452 7437 17 5758 5759 7779 extra 8.2 ft ac-adapter-power-cord">Cyd 65w 19.5v 3.34a power-fast-laptop-charger for dell-inspiron 15-5000 series 15 5568 5578 5758 11 3147 3148 3152 13 7368 7378 14 3451 3452 7437 17 5758 5759 7779 extra 8.2 ft ac-adapter-power-cord</a></h3>
+                                                                                                <div class="product-price">
+                                                                                                    <span class="price">
+
+                                                                                                        505.000 <span class="price_symbol">đ</span>
+                                                                                                    </span>
+                                                                                                    <span class="price-before-discount">505.780 <span class="price_symbol">đ</span></span>
+                                                                                                </div><!-- /.product-price -->
+                                                                                            </div><!-- /.product-info -->
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div><div class="owl-item" style="width: 255px;">
+                                                                                <div class="item">
+                                                                                    <div class="products">
+                                                                                        <div class="product">
+                                                                                            <div class="hot-deal-wrapper">
+                                                                                                <div class="image">
+                                                                                                    <a href="/san-pham/inspiron-13-2-in-1-i5379-i5378-i5368-case-2-in-1-accurately-designed-protective-pu-leather-cover-portable-carrying-bag-for-13-3-dell-inspiron-13-5000-series-2-in-1-5379-5378-5368-laptop-blue-4888" title="Inspiron 13 2-in-1 i5379 i5378 i5368 Case,2 in 1 Accurately Designed Protective PU Leather Cover + Portable Carrying Bag For 13.3" dell="" inspiron="" 13="" 5000="" series="" 2-in-1="" 5379="" 5378="" 5368="" laptop,blue"="">
+                                                                                                        <img src="https://images-na.ssl-images-amazon.com/images/I/517B6GmopSL.jpg" alt="Inspiron 13 2-in-1 i5379 i5378 i5368 Case,2 in 1 Accurately Designed Protective PU Leather Cover + Portable Carrying Bag For 13.3" dell="" inspiron="" 13="" 5000="" series="" 2-in-1="" 5379="" 5378="" 5368="" laptop,blue"="" class="img-responsive">
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                                <div class="sale-offer-tag tag"><span>-0,00%</span></div>
+                                                                                            </div><!-- /.hot-deal-wrapper -->
+                                                                                            <div class="product-info text-left m-t-20">
+                                                                                                <h3 class="name"><a href="/san-pham/inspiron-13-2-in-1-i5379-i5378-i5368-case-2-in-1-accurately-designed-protective-pu-leather-cover-portable-carrying-bag-for-13-3-dell-inspiron-13-5000-series-2-in-1-5379-5378-5368-laptop-blue-4888" title="Inspiron 13 2-in-1 i5379 i5378 i5368 Case,2 in 1 Accurately Designed Protective PU Leather Cover + Portable Carrying Bag For 13.3" dell="" inspiron="" 13="" 5000="" series="" 2-in-1="" 5379="" 5378="" 5368="" laptop,blue"="">Inspiron 13 2-in-1 i5379 i5378 i5368 Case,2 in 1 Accurately Designed Protective PU Leather Cover + Portable Carrying Bag For 13.3" Dell Inspiron 13 5000 series 2-in-1 5379 5378 5368 Laptop,Blue</a></h3>
+                                                                                                <div class="product-price">
+                                                                                                    <span class="price">
+
+                                                                                                        879.000 <span class="price_symbol">đ</span>
+                                                                                                    </span>
+                                                                                                    <span class="price-before-discount">879.780 <span class="price_symbol">đ</span></span>
+                                                                                                </div><!-- /.product-price -->
+                                                                                            </div><!-- /.product-info -->
+                                                                                            <div class="countdown">
+                                                                                                <i class="fa fa-clock-o"></i> Còn <span data-time="1535760000" class="kkcountdown">---</span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+
+
+
+
+                                                                    <div class="owl-controls"><div class="owl-buttons"><div class="owl-prev"></div><div class="owl-next"></div></div></div>
+                                                                </div>
+                                                            </section>
+                                                            <div class="sidebar-widget newsletter wow fadeInUp outer-bottom-small animated animated" style="visibility: visible; animation-name: fadeInUp;">
+                                                                <h3 class="section-title heading-title ud-line">NHẬN DEAL MỚI NHẤT</h3>
+                                                                <div class="sidebar-widget-body outer-top-xs">
+                                                                    <p>Nhập Email để nhận thông tin mới!</p>
+                                                                    <form role="form" action="https://sendmass.com/app/my_contacts/sign_add" class="form-horizontal" method="post">
+                                                                        <div class="form-group">
+                                                                            <div class="col-md-12">
+                                                                                <div class="input-group">
+                                                                                    <input type="email" class="form-control" name="email" id="email">
+                                                                                    <input type="hidden" name="my_sign_up_form_id" value="7cda6efbf35dcf414a7ab6af10e0a4d7">
+                                                                                    <span class="input-group-btn">
+                                                                                        <button class="btn btn-success" type="submit">Gửi!</button>
+                                                                                    </span>
+                                                                                </div><!-- /input-group -->
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </div><!-- /.sidebar-widget-body -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-9">
+
+
+
+                                                        <div class="blog-post  wow fadeInUp animated animated" style="visibility: visible; animation-name: fadeInUp;">
+                                                            <h2>Quy chế hoạt động.</h2>
+                                                            <div class="content">
+                                                                <p>&nbsp;</p>
+
+                                                                <p><strong>I. NGUYÊN TẮC CHUNG</strong></p>
+
+                                                                <p>- Đây là bảng quy chế được ban hành bởi <strong>Sàn Giao Dịch Thương Mại điện tử OnChotto ( </strong>gọi là Sàn giao dịch TMĐT) do <strong><em>Công Ty Cổ Phần Seabornes &amp; Partner</em></strong> thực hiện và vận hành. Theo đó, các quy định bắt buộc này sẽ được áp dụng đối với các Thành viên trên website Sàn Giao dịch TMĐT OnChotto với mục đích tạo ra một môi trường hoạt động mua bán hàng hóa, cung ứng dịch vụ linh hoạt thông qua website thương mại điện tử.</p>
+
+                                                                <p>- Các Thành viên bao gồm các thương nhân, tổ chức, cá nhân tham gia giao dịch trên Sàn Giao dịch thương mại điện tử OnChotto có trách nhiệm thực hiện đúng nội dung Quy chế.</p>
+
+                                                                <p>- Tất cả các nội dung trong Bản Quy chế này phải tuân thủ theo hệ thống pháp luật hiện hành của Việt Nam. Thành viên khi tham gia vào Sàn giao dịch OnChotto phải tự tìm hiểu trách nhiệm pháp lý của mình, và cam kết tuân thủ quy định pháp luật và nội dung Quy chế của Sàn giao dịch TMĐT.</p>
+
+                                                                <p><img alt="" src="/Uploads/images/tin-bai/dieu-khoan-su-dung-qcode-404x227.png" style="float:right; height:227px; width:404px"></p>
+
+                                                                <p><strong>II. QUI ĐỊNH CHUNG</strong></p>
+
+                                                                <p><strong>Tên Miền Sàn Giao dịch Thương mại Điện tử OnChotto do công ty </strong>Công Ty Cổ Phần Seabornes &amp; Partners vận hành với tên miền Website là www.smua.com.</p>
+
+                                                                <p><strong>Người bán</strong>: Thương nhân, tổ chức, cá nhân tham gia Sàn Giao dịch TMĐT và sử dụng trang website TMĐT OnChotto để đăng tin rao vặt trực tuyến, đăng tin giới thiệu sản phẩm/dịch vụ.</p>
+
+                                                                <p><strong>Người mua:&nbsp;</strong>là thương nhân, tổ chức, cá nhân có nhu cầu tìm hiểu thông tin về sản phẩm, dịch vụ được đăng tải trên trang website TMĐT OnChotto để mua sản phẩm</p>
+
+                                                                <p><strong>Thành viên:&nbsp;</strong>là tổ chức/ cá nhân (bao gồm người bán và người mua) đăng ký thành viên khi sử dụng trang website TMĐT OnChotto và được Ban Quản Lý Sàn TMĐT onchotto.com chính thức công nhận,</p>
+
+                                                                <p>- Thành viên có trách nhiệm thực hiện Quy chế này;</p>
+
+                                                                <p>- Thành viên được phép sử dụng dịch vụ do Sàn giao dịch TMĐT onchotto.com và các bên liên quan cung cấp.</p>
+
+                                                                <p>&nbsp;- Từ “dịch vụ” bao gồm việc mua hàng trên Amazon với đúng giá cả cam kết của nhà cung cấp và thuê sàn TMĐT onchotto.com vận chuyển về Việt Nam theo bảng giá đã được công bố trên website.</p>
+
+                                                                <p><strong>III. QUI ĐỊNH GIAO DỊCH</strong></p>
+
+                                                                <ol>
+                                                                    <li><strong>Quy trình dành cho người mua hàng: </strong></li>
+                                                                </ol>
+
+                                                                <p><strong>Bước 1:</strong>&nbsp;</p>
+
+                                                                <p>- Tìm kiếm, tham khảo thông tin sản phẩm, dịch vụ và các người bán mà người mua đang quan tâm</p>
+
+                                                                <p>- Dựa trên thông tin tham khảo được từ người bán sản phẩm, dịch vụ người mua tiến hành đặt hàng và cung cấp các thông tin địa chỉ nhận hàng và có liên hệ với người bán qua thông tin liên hệ đăng tải trong nội dung tin bán hàng hóa để hỏi về thêm thông tin sản phẩm, dịch vụ</p>
+
+                                                                <p><img alt="" src="https://uphinhnhanh.com/images/2018/01/16/rulesregulations52b5e.jpg" style="float:right; height:227px; width:450px"></p>
+
+                                                                <p><strong>Bước 2:</strong>&nbsp;Khách hàng tiến hành đặt hàng và lựa chọn hình thức thanh toán</p>
+
+                                                                <p><strong>Bước 3:</strong>&nbsp;OnChotto xác nhận thông tin mua hàng bằng hình thức gửi email xác nhận&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+
+                                                                <p><strong>Bước 4:</strong>&nbsp;OnChotto giao hàng cho khách</p>
+
+                                                                <p><strong>Bước 5:</strong>&nbsp;Khách hàng nhận hàng và kiểm tra</p>
+
+                                                                <p><strong>Bước 6:</strong>&nbsp;Khách hàng hài lòng và lên trang Quản lý đơn hàng của&nbsp;<a href="http://www.onchotto.com%20/"><strong>http://www.onchotto.com</strong>&nbsp;</a>để xác nhận Hoàn tất đơn hàng. Trong vòng 3 ngày sau khi hàng đã đến tay người mua, nếu khách hàng vẫn không xác nhận hoàn tất, hệ thống sẽ tự hoàn tất đơn hàng này.</p>
+
+                                                                <p><strong>2. Quy trình dành cho người bán hàng/đăng tin</strong></p>
+
+                                                                <ul>
+                                                                    <li>Người bán sẽ viết bài liên quan đến sản phẩm: mô tả chi tiết sản phẩm, hình ảnh, các chính sách liên quan như bảo hành, đổi trả, vận chuyển và thông tin liên hệ của người bán) theo đúng “Loại tin”, “Chuyên mục”.</li>
+                                                                    <li>Đăng nhập với thông tin tài khoản đã được đăng ký và được cấp bởi&nbsp;onchotto.com</li>
+                                                                    <li>Sau đó, click “Đăng Tin”</li>
+                                                                </ul>
+
+                                                                <p><strong>3. Quy trình giao nhận vận chuyển:</strong></p>
+
+                                                                <p>Khi hàng về đến Việt Nam, OnChotto sẽ gửi email thông báo cho khách về tình trạng hàng hóa và khách hàng có thể lựa chọn một trong những phương thức vận chuyển sau:</p>
+
+                                                                <p>3.1 Nhận hàng tại quầy</p>
+
+                                                                <p>3.2 Nhận hàng tại nhà/địa chỉ công ty</p>
+
+                                                                <p>Lưu ý:</p>
+
+                                                                <ul>
+                                                                    <li>OnChotto sẽ chỉ giao đến địa chỉ nhà riêng, tòa nhà, hoặc cơ quan làm việc; không giao đến những địa chỉ phải lên lầu hoặc nơi yêu cầu phải có giấy tờ vào cổng.</li>
+                                                                    <li>OnChotto có thể giao trực tiếp hoặc thông qua bưu điện hoặc bên thứ ba chuyển phát tùy thuộc vào 2 bên thỏa thuận với nhau về việc giao nhận.</li>
+                                                                </ul>
+
+                                                                <p><strong>4. Quy trình bảo hành/bảo trì sản phẩm</strong>:</p>
+
+                                                                <p>Khi tiến hành giao dịch người mua cần tìm hiểu về chính sách bảo hành/bảo trì hàng hóa của người bán. OnChotto sẽ hỗ trợ người mua trong khả năng để người mua có thể được bảo hành/bảo trì theo quy định của người bán.</p>
+
+                                                                <p><strong>5. Chính sách đổi trả</strong></p>
+
+                                                                <p>OnChotto khuyến khích người mua tìm hiểu kĩ về chính sách đổi trả sản phẩm trước khi đặt mua bằng cách email hỏi người bán hoặc đặt câu hỏi trực tiếp trên trang bán sản phẩm.. để có thể thực hiện được chính sách đổi trả từ người bán.</p>
+
+                                                                <p><strong>IV. QUY TRÌNH THANH TOÁN</strong></p>
+
+                                                                <p><strong>Bước 1:</strong>&nbsp;Khách hàng đặt hàng;</p>
+
+                                                                <p><strong>Bước 2:</strong>&nbsp;Khách hàng tiến hành thanh toán</p>
+
+                                                                <p><strong>Bước 3:</strong>&nbsp;OnChotto xác nhận thông tin hàng hóa</p>
+
+                                                                <p><strong>Bước 4:</strong>&nbsp;Người bán chuyển hàng</p>
+
+                                                                <p><strong>Bước 5:</strong>&nbsp;Khách hàng nhận hàng và kiểm tra</p>
+
+                                                                <p>Đối với sản phẩm mua từ các website nước ngoài, người mua phải tuân thủ theo Chính sách thanh toán của onchotto.com</p>
+
+                                                                <p><strong>V. ĐẢM BẢO AN TOÀN GIAO DỊCH</strong></p>
+
+                                                                <p>Để đảm bảo các giao dịch được tiến hành thành công, hạn chế tối đa rủi ro có thể phát sinh, yêu cầu các Thành viên tham gia Sàn giao dịch TMĐT lưu ý và tuân thủ các nội dung cam kết với khách hàng như sau:</p>
+
+                                                                <p>- Quý khách không nên đưa thông tin chi tiết về việc thanh toán với bất kỳ ai bằng e-mail, chúng tôi không chịu trách nhiệm về những mất mát quý khách có thể gánh chịu trong việc trao đổi thông tin của quý khách qua internet hoặc e-mail.</p>
+
+                                                                <p>- Quý khách tuyệt đối không sử dụng bất kỳ chương trình, công cụ hay hình thức nào khác để can thiệp vào hệ thống hay làm thay đổi cấu trúc dữ liệu. Nghiêm cấm việc phát tán, truyền bá hay cổ vũ cho bất kỳ hoạt động nào nhằm can thiệp, phá hoại hay xâm của hệ thống website. Mọi vi phạm sẽ bị xử lý theo Quy chế và quy định của pháp luật.</p>
+
+                                                                <p>- Mọi thông tin giao dịch được bảo mật, trừ trường hợp buộc phải cung cấp khi Cơ quan pháp luật yêu cầu.</p>
+
+                                                                <p><strong>VI. BẢO VỆ THÔNG TIN KHÁCH HÀNG:</strong></p>
+
+                                                                <p><strong>1. Mục đích và phạm vi thu thập thông tin cá nhân</strong></p>
+
+                                                                <p>Thông tin của thành viên cung cấp khi đăng ký bao gồm: Tên, địa chỉ, điện thoại, fax, địa chỉ email, số điện thoại di động, tên công ty, địa chỉ công ty, chức vụ, bí danh, ngày tháng năm sinh, giới tính, số thẻ tín dụng...</p>
+
+                                                                <p>- Thông tin này được sử dụng để xác nhận thành viên khi thành viên dùng thông tin để đăng nhập vào hệ thống của onchotto.com</p>
+
+                                                                <p>- Dùng để giao dịch trong khi mua hàng hóa chẳng hạn: mua hàng hóa, gửi hàng hóa, thanh toán tiền sau khi mua hàng hóa, dịch vụ ....</p>
+
+                                                                <p>- Dùng để liên lạc với thành viên khi OnChotto điều tra thông tin khách hàng, tổ chức khuyến mại, trao đổi ý kiến thông tin trên bảng đánh giá, bình luận.</p>
+
+                                                                <p>- Dùng để trả lời khi thành viên thắc mắc : công ty chúng tôi sẽ trả lời thành viên bằng email, điện thoại, hoặc gửi thư tới địa chỉ của thành viên, khi thành viên thắc mắc.</p>
+
+                                                                <p>Lưu ý:</p>
+
+                                                                <p>- Trong quá trình giao dịch thanh toán tại sàn giao dịch TMĐT onchotto.com&nbsp;, onchotto.com chỉ lưu giữ thông tin chi tiết về đơn hàng đã thanh toán của thành viên, các thông tin về số tài khoản ngân hàng của thành viên sẽ không được lưu giữ.</p>
+
+                                                                <p><strong>2. Phạm vi sử dụng thông tin cá nhân :</strong></p>
+
+                                                                <p>- onchotto.com sử dụng thông tin cá nhân của thành viên theo luật pháp của Việt Nam.</p>
+
+                                                                <p>- Dùng để liên lạc với thành viên khi OnChotto điều tra thông tin khách hàng, tổ chức khuyến mại, trao đổi ý kiến thông tin trên bảng đánh giá, bình luận.</p>
+
+                                                                <p>- Dùng để trả lời khi thành viên thắc mắc</p>
+
+                                                                <p>- Trong trường hợp có yêu cầu của pháp luật: Sàn giao dịch TMĐT onchotto.com có trách nhiệm hợp tác cung cấp thông tin cá nhân thành viên khi có yêu cầu từ cơ quan tư pháp bao gồm: Viện kiểm sát, tòa án, cơ quan công an điều tra liên quan đến hành vi vi phạm pháp luật nào đó của khách hàng. Ngoài ra, không ai có quyền xâm phạm vào thông tin cá nhân của thành viên</p>
+
+                                                                <p><strong>3. Xác nhận, chỉnh sửa thông tin cá nhân :</strong></p>
+
+                                                                <p>- Thành viên có thể xác nhận, chỉnh sửa, thêm, xóa, hủy bỏ tài khoản của mình bằng cách đăng nhập vào website <a href="http://www.onchotto.com/">www.onchotto.com</a></p>
+
+                                                                <p>- Trong trường hợp thành viên không đăng nhập vào để xem thông tin của mình, thì thành viên tiến hành làm các thủ tục theo quy định của onchotto.com để yêu cầu cấp lại thông tin về tài khoản.</p>
+
+                                                                <p><strong>VII. QUẢN LÝ THÔNG TIN XẤU:</strong></p>
+
+                                                                <p>1. Quy định đối với thành viên</p>
+
+                                                                <p>- Thành viên sẽ tự chịu trách nhiệm về bảo mật và lưu giữ mọi hoạt động sử dụng dịch vụ dưới tên đăng ký, mật khẩu và hộp thư điện tử của mình.</p>
+
+                                                                <p>- Thành viên có trách nhiệm thông báo kịp thời cho Sàn Giao dịch TMĐT onchotto.com về những hành vi sử dụng trái phép, lạm dụng, vi phạm bảo mật, lưu giữ tên đăng ký và mật khẩu của bên thứ ba để có biện pháp giải quyết phù hợp.</p>
+
+                                                                <p>- Thành viên không sử dụng dịch vụ của Sàn giao dịch TMĐT onchotto.com vào những mục đích bất hợp pháp, không hợp lý, lừa đảo, đe doạ, thăm dò thông tin bất hợp pháp, phá hoại, tạo ra và phát tán virus gây hư hại tới hệ thống, cấu hình, truyền tải thông tin của Sàn giao dịch TMĐT onchotto.com hay sử dụng dịch vụ của mình vào mục đích đầu cơ, lũng đoạn thị trường tạo những đơn đặt hàng, chào hàng giả, kể cả phục vụ cho việc phán đoán nhu cầu thị trường. Trong trường hợp vi phạm thì thành viên phải chịu trách nhiệm về các hành vi của mình trước pháp luật.</p>
+
+                                                                <p>- Thành viên không được hành động gây mất uy tín của Sàn giao dịch TMĐT onchotto.com dưới mọi hình thức như gây mất đoàn kết giữa các thành viên bằng cách sử dụng tên đăng ký thứ hai, thông qua một bên thứ ba hoặc tuyên truyền, phổ biến những thông tin không có lợi cho uy tín của Sàn giao dịch TMĐT onchotto.com</p>
+
+                                                                <p>2. Danh mục những sản phẩm cấm giao dịch trên website onchotto.com</p>
+
+                                                                <p>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Rượu các loại;</p>
+
+                                                                <p>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Súng săn và đạn súng săn, vũ khí thể thao, công cụ hỗ trợ;</p>
+
+                                                                <p>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Thuốc lá điếu, xì gà và các dạng thuốc lá thành phẩm khác;</p>
+
+                                                                <p>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Thực vật, động vật hoang dã quý hiếm, bao gồm cả vật sống và các bộ phận của chúng đã được chế biến;</p>
+
+                                                                <p>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mỹ phẩm ảnh hưởng trực tiếp đến da mà không có nhãn mác;</p>
+
+                                                                <p>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mặt hàng thuộc dạng cấm.</p>
+
+                                                                <p>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Băng đĩa, sách báo, vật phẩm có tính chất đồi trụy, ảnh hưởng đến thuần phong mỹ tục.</p>
+
+                                                                <p>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ma túy, chất kích thích và các loại chất gây nghiện khác.</p>
+
+                                                                <p>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Vũ khí, quân dụng, chất nổ, hóa chất độc hại.</p>
+
+                                                                <p>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tài liệu bí mật quốc gia, các loại mật mã chuyên dụng và chương trình bảo vệ phần mềm trong phạm vi bảo vệ bí mật nhà nước.</p>
+
+                                                                <p>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Con người hoặc các bộ phận của cơ thể người.</p>
+
+                                                                <p>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Sản phẩm/phần mềm bất hợp pháp hoặc dùng chương trình bẻ khóa.</p>
+
+                                                                <p>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Những mặt hàng mang tính chất phân biệt chủng tộc hay xúc phạm đến dân tộc hoặc một quốc gia nào đó.</p>
+
+                                                                <p>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Các sản phẩm vi phạm thương hiệu, bản quyền.</p>
+
+                                                                <p>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Đồ chơi tình dục, khiêu dâm.</p>
+
+                                                                <p>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Trò chơi điện tử ảnh hưởng đến sức khỏe và tâm lí trẻ.</p>
+
+                                                                <p>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Các hàng hóa hạn chế kinh doanh khác theo quy định của pháp luật.</p>
+
+                                                                <p><strong>VII. GIỚI HẠN TRÁCH NHIỆM TRONG TRƯỜNG HỢP PHÁT SINH LỖI KỸ THUẬT:</strong></p>
+
+                                                                <p>- Khi thực hiện các giao dịch trên Sàn, bắt buộc các thành viên phải thực hiện đúng theo các quy trình hướng dẫn.</p>
+
+                                                                <p>- Ban quản lý Sàn giao dịch TMĐT onchotto.com cam kết cung cấp chất lượng dịch vụ tốt nhất cho các thành viên tham gia giao dịch.</p>
+
+                                                                <p>- Trường hợp phát sinh lỗi kỹ thuật, các Thành viên thông báo cho Ban quản lý Sàn giao dịch TMĐT qua địa chỉ email: xxx@onchotto.com. Chúng tôi sẽ khắc phục lỗi trong thời gian sớm nhất, tạo điều kiện cho các Thành viên tham gia Sàn giao dịch TMĐT onchotto.com</p>
+
+                                                                <p>Tuy nhiên, Ban quản lý Sàn giao dịch TMĐT onchotto.com sẽ không chịu trách nhiệm giải quyết trong trường hợp thông báo của các Thành viên không đến được Ban quản lý, phát sinh từ lỗi kỹ thuật, lỗi đường truyền, phần mềm hoặc các lỗi khác không do Ban quản lý gây ra.</p>
+
+                                                                <p><strong>IX. QUYỀN VÀ NGHĨA VỤ CỦA BAN QUẢN LÝ WEBSITE TMĐT onchotto.com</strong></p>
+
+                                                                <p><strong>1.Quyền và nghĩa vụ Ban quản lý sàn giao dịch TMĐT Smua:</strong></p>
+
+                                                                <p>a) Từ chối, tạm ngừng hoặc chấm dứt cung cấp dịch vụ cho Thành viên trong trường hợp có cơ sở chứng minh Thành viên cung cấp thông tin cho Sàn giao dịch TMĐT onchotto.com không chính xác, không đầy đủ, vi phạm pháp luật, đạo đức, thuần phong mỹ tục Việt Nam;</p>
+
+                                                                <p>b) Từ chối cung cấp một hoặc tất cả dịch vụ nếu Thành viên không đủ năng lực tài chính thực hiện nghĩa vụ khi tham gia giao dịch trên Sàn hoặc/và có những hoạt động lừa đảo, giả mạo, gây rối loạn thị trường, gây mất đoàn kết đối với các Thành viên khác của Sàn giao dịch TMĐT onchotto.com.</p>
+
+                                                                <p>c) Sàn giao dịch TMĐT onchotto.com giữ bản quyền sử dụng dịch vụ và các nội dung trên Sàn giao dịch TMĐT onchotto.com theo luật bản quyền quốc tế và các quy dịnh pháp luật về bảo hộ sở hữu trí tuệ tại Việt Nam. “Sàn giao dịch TMĐT onchotto.com” và tất cả các biểu tượng, logo, nội dung theo các ngôn ngữ khác nhau đều thuộc quyền sở hữu của Sàn giao dịch TMĐT onchotto.com. Nghiêm cấm mọi hành vi sao chép, sử dụng và phổ biến bất hợp pháp các quyền sở hữu trên.</p>
+
+                                                                <p>d) Thẩm tra và xác thực thông tin đăng ký kinh doanh (đối với thương nhân) hoặc nhân thân (đối với cá nhân) tham gia bán hàng hóa hoặc cung ứng dịch vụ trên Sàn Giao dịch TMĐT;</p>
+
+                                                                <p>e) Lưu giữ thông tin đăng ký của thương nhân hoặc thông tin cá nhân của các cá nhân ngay từ ngày thương nhân hoặc cá nhân đăng ký tham gia Sàn giao dịch TMĐT và thường xuyên cập nhật các thông tin thay đổi, bổ sung có liên quan;</p>
+
+                                                                <p>f) Tích cực hỗ trợ cơ quan quản lý nhà nước điều tra các hành vi kinh doanh vi phạm pháp luật; cung cấp các tài liệu như thông tin đăng ký, lịch sử dữ liệu giao dịch, … của đối tượng có hành vi vi phạm pháp luật trên sàn giao dịch thương mại điện tử;</p>
+
+                                                                <p>g) Triển khai và hợp tác với các đối tác trong việc xây dựng hệ thống các dịch vụ, các công cụ tiện ích phục vụ cho việc giao dịch của các Thành viên tham gia và người sử dụng trên Sàn giao dịch TMĐT onchotto.com;</p>
+
+                                                                <p><strong>2.Quyền và nghĩa vụ thành viên:</strong></p>
+
+                                                                <p>a) Được miễn phí Thành viên khi &nbsp;tham gia hoạt động trên Sàn giao dịch TMĐT onchotto.com, nhưng không tính đến các khoản phí khác như phí thuê quảng cáo, các dịch vụ tư vấn, các khoản phí khác trên Sàn giao dịch TMĐT onchotto.com.</p>
+
+                                                                <p>b) Tuân thủ quy định của pháp luật có liên quan về thanh toán, quảng cáo, khuyến mại.</p>
+
+                                                                <p>c) Bảo mật và lưu giữ và mọi hoạt động sử dụng dịch vụ dưới tên đăng ký, mật khẩu và hộp thư điện tử của mình.</p>
+
+                                                                <p>d) Thông báo kịp thời cho Sàn giao dịch TMĐT onchotto.com về những hành vi sử dụng trái phép, lạm dụng, vi phạm bảo mật, lưu giữ tên đăng ký và mật khẩu của bên thứ ba để có biện pháp xử lý kịp thời.</p>
+
+                                                                <p>e) Không sử dụng dịch vụ của Sàn giao dịch TMĐT onchotto.com vào những mục đích bất hợp pháp, không hợp lý, lừa đảo, đe doạ, thăm dò thông tin bất hợp pháp, phá hoại, tạo ra và phát tán virus gây hư hại tới hệ thống, cấu hình, truyền tải thông tin của Sàn giao dịch TMĐT onchotto.com hay sử dụng dịch vụ của mình vào mục đích đầu cơ, lũng đoạn thị trường tạo những đơn đặt hàng, chào hàng giả, kể cả phục vụ cho việc phán đoán nhu cầu thị trường. Trong trường hợp vi phạm thì thành viên phải chịu trách nhiệm về các hành vi của mình trước pháp luật.</p>
+
+                                                                <p>f) Không được thay đổi, chỉnh sửa, gán gép, copy, truyền bá, phân phối, cung cấp và tạo những công cụ tương tự của dịch vụ do Sàn giao dịch TMĐT onchotto.com cung cấp cho một bên thứ ba nếu không được sự đồng ý của Sàn giao dịch TMĐT onchotto.com trong bản Quy chế này.</p>
+
+                                                                <p>g) Không được hành động gây mất uy tín của Sàn giao dịch TMĐT onchotto.com dưới mọi hình thức như gây mất đoàn kết giữa các thành viên bằng cách sử dụng tên đăng ký thứ hai, thông qua một bên thứ ba hoặc tuyên truyền, phổ biến những thông tin không có lợi cho uy tín của Sàn giao dịch TMĐT onchotto.com.</p>
+
+                                                                <p><strong>XI. ĐIỀU KHOẢN ÁP DỤNG</strong></p>
+
+                                                                <p>- Quy chế của Sàn giao dịch TMĐT có hiệu lực thi hành kể từ ngày đăng tải trên website&nbsp;<a href="http://www.sendo.vn/quy-che-hoat-dong/">http://www.onchotto.com</a>. onchotto.com có quyền thay đổi, bổ sung quy chế này cho phù hợp với hoạt động thực tiễn và có trách nhiệm thông báo lên Website TMĐT OnChotto cho các thành viên biết. Quy chế sửa đổi có hiệu lực kể từ ngày có thông báo sửa đổi.Việc thành viên tiếp tục sử dụng dịch vụ sau khi Quy chế sửa đổi được công bố và thực thi đồng nghĩa với việc họ đã chấp nhận Quy chế sửa đổi này</p>
+
+                                                                <p>- Quy chế hoạt động sẽ được&nbsp;onchotto.com&nbsp;cập nhật bổ sung liên tục mà không cần thông báo trước. Thành viên tham gia&nbsp;sàn TMĐT onchotto.com&nbsp;có trách nhiệm tuân theo quy chế hiện hành khi giao dịch trên website.</p>
+
+                                                                <p><strong>XII. ĐIỀU KHOẢN CAM KẾT</strong></p>
+
+                                                                <p>Mọi thắc mắc của khách hàng vui lòng liên hệ địa chỉ liên lạc chính thức của Sàn giao dịch/website TMĐT www.onchotto.com:</p>
+
+                                                                <p><strong>• Sàn giao dịch/Website Thương mại điện tử onchotto.com</strong></p>
+
+                                                                <p><strong>• &nbsp;Công ty/Tổ chức : Công Ty Cổ Phần Seabornes &amp; Đối tác</strong></p>
+
+                                                                <p><strong>• &nbsp;Địa chỉ: 85 Thăng Long, P4, Tân Bình, TP.HCM</strong></p>
+
+                                                                <p><strong>• &nbsp;Tel: 1800 5454 80 &nbsp;&nbsp; </strong></p>
+
+                                                                <ul>
+                                                                    <li><strong>Email:hotro@onchotto.com</strong></li>
+                                                                </ul>
+
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!-- /#myModal -->
+                            <style>
+                                .modal-body {
+                                    height: 400px;
+                                    overflow: auto;
+                                }
+                                .modal{
+                                    z-index:1050;
+                                }
+
+                                .modal-backdrop {
+                                    background-color: #424530;
+                                }
+
+                                    .modal-backdrop.fade.in {
+                                        opacity: .8;
+                                    }
+                            </style>
+    }
+
+    @Html.Action("Viewed", "Product")
+
+</div>
+
+@section scripts
+{
+    <script>
+        $('.btn-checkout').click(function (e) {
+            debugger
+            var flag = true;
+            $('.check-empty').each(function () {
+                if ($(this).val() == '') {
+                    flag = false;
+                    return ;
+                }
+            })
+            if (flag == true) {
+                if (!$('#accept').is(':checked')) {
+                    e.preventDefault();
+                    $("#myModal").modal("show");
+                } else {
+                    $("#Checkout").submit();
+                }
+            }
+        })
+        $('.btn-toggle').click(function (event) {
+            event.preventDefault();
+            var to = $(this).attr('href');
+            $(to).slideToggle();
+
+            return false;
+        });
+
+        // Hàm Ajax login
+        $("#btnLogin").click(function (e) {
+            e.preventDefault();
+            var data = {
+                Email: $("#UserName").val(),
+                Password: $("#Password").val()
+            };
+
+            var btn = $(this);
+
+            $.ajax({
+                url: '/Account/AjaxLogin',
+                type: 'POST',
+                dataType: 'json',
+                data: data,
+                beforeSend: function () {
+                    btn.find('i.fa').removeClass('fa-sign-in').addClass('fa-spinner fa-pulse fa-fw');
+                },
+                success: function (response) {
+
+                    btn.find('i.fa').addClass('fa-sign-in').removeClass('fa-spinner fa-pulse fa-fw');
+
+                    $('#status').text(response.Message);
+
+                    if (response.Status == 1) {
+                        location.href = "/Order/Checkout";
+                    }
+                },
+                error: function (err) {
+                    alert("Lỗi hệ thống, ấn F5 để refresh lại trình duyệt để tiếp tục.");
+                }
+            });
+        });
+
+        //Bật nhập địa chỉ nhận hàng khác
+        checkOtherAddressBox();
+        $('#OtherAddress').change(function () {
+            checkOtherAddressBox();
+        });
+
+        function checkOtherAddressBox() {
+            if ($('#OtherAddress')[0].checked === true) {
+                $("#otherAddressBox").slideDown();
+                getTransport('OtherDistrictId');
+            } else {
+                $("#otherAddressBox").slideUp();
+                getTransport('DistrictId');
+            }
+        }
+        // Hàm Ajax Lấy District
+        $("#ProvinceId, #OtherProvinceId").change(function (e) {
+            e.preventDefault();
+            var data = {
+                provinceId: $(this).val()
+            };
+
+            var thisctrl = $(this);
+
+            $.ajax({
+                url: '/Home/AjaxGetDistrictByProvice',
+                type: 'POST',
+                dataType: 'html',
+                data: data,
+                success: function (html) {
+
+                    if (thisctrl.attr('id') === "ProvinceId") {
+                        //alert(thisctrl.attr($('#provinceId').html(html)));
+                        $('#DistrictId').html(html);                        
+                    } else {
+                        $('#OtherDistrictId').html(html);
+                        
+                    }
+                    
+                },
+                complete: function () {
+                    //Lay danh sach nha van chuyen
+                    if (thisctrl.attr('id') === "OtherProvinceId") {
+                        getTransport('OtherDistrictId');
+                    }
+                    else if ($('#OtherAddress')[0].checked !== true) {
+                        getTransport('DistrictId');
+                    }
+                },
+                error: function (err) {
+                    alert("Lỗi hệ thống, ấn F5 để refresh lại trình duyệt để tiếp tục.");
+                }
+            });
+        });
+
+
+        //$("#ProvinceId,#OtherProvinceId").select2().on("change", function (e) {
+        //    getDistricts();
+        //    getWard();
+        //});
+
+        //$("#DistrictId,#OtherDistrictId").select2().on("change", function (e) {
+        //    getWard();
+        //});
+        
+        function getDistricts() {
+            var data = {
+                provinceId: $("#ProvinceId,#OtherProvinceId").val(),
+            };
+
+            $.ajax({
+                url: '/Home/AjaxGetDistrictByProvice',
+                type: 'POST',
+                dataType: 'html',
+                data: data,
+                success: function (html) {
+                    $('#DistrictId,#OtherDistrictId').html(html);
+                    $('#DistrictId,#OtherDistrictId').select2();
+                },
+                complete: function () {
+                    //Lay danh sach nha van chuyen
+                    getTransport();
+                },
+                error: function (err) {
+                    alert("Lỗi hệ thống, ấn F5 để refresh lại trình duyệt để tiếp tục.");
+                }
+            });
+        }
+
+        function getWard() {
+            var data = {
+                districtId: $("#DistrictId,#OtherDistrictId").val(),
+            };
+
+            $.ajax({
+                url: '/Home/AjaxGetWardsByDistrict',
+                type: 'POST',
+                dataType: 'html',
+                data: data,
+                success: function (html) {
+                    $('#WardId,#OtherWardId').html(html);
+                    $('#WardId,#OtherWardId').select2();
+                },
+                complete: function () {
+                    //Lay danh sach nha van chuyen
+                    getTransport();
+                },
+                error: function (err) {
+                    alert("Lỗi hệ thống, ấn F5 để refresh lại trình duyệt để tiếp tục.");
+                }
+            });
+        }
+
+        //Hàm Ajax Lấy Ward
+        $("#DistrictId, #OtherDistrictId").change(function (e) {
+            e.preventDefault();
+            var data = {
+                districtId: $(this).val()
+            };
+
+            var thisctrl = $(this);
+
+            $.ajax({
+                url: '/Home/AjaxGetWardsByDistrict',
+                type: 'POST',
+                dataType: 'html',
+                data: data,
+                success: function (html) {
+
+                    if (thisctrl.attr('id') === "DistrictId") {
+                        //alert(thisctrl.attr($('#provinceId').html(html)));
+                        $('#WardId').html(html);
+                    } else {
+                        $('#OtherWardId').html(html);
+                    }
+                },
+                //complete: function () {
+                //    //Lay danh sach nha van chuyen
+                //    if (thisctrl.attr('id') === "OtherDistrictId") {
+                //        getTransport('OtherWardId');
+                //    }
+                //    else if ($('#OtherAddress')[0].checked !== true) {
+                //        getTransport('WardId');
+                //    }
+                //},
+                error: function (err) {
+                    alert("Lỗi hệ thống, ấn F5 để refresh lại trình duyệt để tiếp tục.");
+                }
+            });
+        });
+
+
+        //Lấy và cập nhật nhà vận chuyển nhận hàng khác
+        getTransport('OtherDistrictId');
+        $('#OtherDistrictId').change(function (e) {
+            e.preventDefault();
+            getTransport($(this).attr('id'));
+        });
+
+        //Lấy và cập nhật nhà vận chuyển
+        getTransport('DistrictId');
+        $('#DistrictId').change(function (e) {
+            e.preventDefault();
+            getTransport($(this).attr('id'));
+        });
+
+
+        //Lấy và cập nhật nhà vận chuyển nhận hàng Xã Phường khác
+        //getTransport('OtherWardId');
+        //$('#OtherWardId').change(function (e) {
+        //    e.preventDefault();
+        //    getTransport($(this).attr('id'));
+        //});
+
+        ////Lấy và cập nhật nhà vận chuyển Theo Xã Phườnng
+        //getTransport('WardId');
+        //$('#WardId').change(function (e) {
+        //    e.preventDefault();
+        //    getTransport($(this).attr('id'));
+        //});
+       
+        //Lấy bảng nhà vận chuyển Theo Quận Huyện
+        function getTransport(id) {
+            var districtId = $('#' + id).val();
+            //alert(districtId);
+            if (districtId == undefined || districtId === "") return false;
+            //lấy bảng vận chuyển
+            var data = {
+                districtId: districtId
+            };
+
+            $.ajax({
+                url: '/Order/AjaxGetTransport',
+                type: 'GET',
+                dataType: 'html',
+                data: data,
+                beforeSend: function () {
+                    $("#transport-table").html('<i class="fa-spinner fa-pulse fa-fw"></i>');
+                },
+                success: function (html) {
+                    $("#transport-table").html(html);
+                },
+                complete: function () {
+                    updateOrderSummary();
+                },
+                error: function (err) {
+                    alert("Lỗi hệ thống, ấn F5 để refresh lại trình duyệt để tiếp tục.");
+                }
+            });
+        }
+
+        $("#FormPurchase").change(function () {
+            updateTransport();
+        });
+
+        function updateTransport() {
+            var transportid = $("input[name='TransportId']:checked").val();
+            //alert("TransportId: " + transportid);
+            if (transportid == undefined || transportid == "") return false;
+            //lấy bảng vận chuyển
+            var data = {
+                transportId: transportid,
+            };
+
+            $.ajax({
+                url: '/Order/UpdateTransport',
+                type: 'get',
+                dataType: 'text',
+                data: data,
+                success: function (result) {
+                    //alert(result);
+                },
+                error: function (err) {
+
+                }
+            });
+
+            updateOrderSummary();
+        }
+
+        //Tinh lai tam ung
+        $('#Deposit').change(function (e) {
+            e.preventDefault();
+            updateOrderSummary();
+        });
+        // Update Tổng đơn đặt hàng
+        updateOrderSummary();
+        function updateOrderSummary() {
+
+            $.ajax({
+                url: '/Order/getOrderInfo', // Get update khi trên form đặt hàng
+                type: 'Get',
+                dataType: 'json',
+                success: function (response) {
+                    $("#orderTransportCost").text($.number(response.TransportCost) + "đ");
+                    //$("#orderOverWeightCost").text($.number(response.OverWeightCost) + "kg")
+                    $("#orderOverWeightCost").text(response.OverWeightCost.toFixed(2) + "kg");
+                    $("#orderTotalWeight").text(response.TotalWeight.toFixed(2) + "kg");
+                    $("#orderDiscount").text($.number(response.Discount) + "đ");
+                    $("#totalOrder").text($.number(response.OrderTotal) + "đ");
+                    $("#discountDescription").html(response.DiscountDescription);
+
+                    //Tinh tiền tạm ứng, tiền thanh toán sau
+                    var deposit = $("#Deposit").val();
+                    if (deposit === '50') {
+                        $("#transactionFee").html($.number(response.TransactionFeeVN.toFixed(2)) + "đ");
+                        var depositPay = (response.OrderTotal * (deposit / 100)) + response.TransactionFeeVN;
+                        var secondPay = response.OrderTotal - depositPay;
+                    }
+                    else {
+                        $("#transactionFee").html($.number(response.TransactionFeeVN.toFixed(2) * 0) + "đ");
+                        var depositPay = response.OrderTotal * (deposit / 100);
+                        var secondPay = response.OrderTotal - depositPay;
+                    }
+                    console.log(deposit);
+                    //var depositPay = response.OrderTotal * (deposit / 100);
+                    //var secondPay = response.OrderTotal - depositPay;
+                    $("#totalOrderDepositPay").text($.number(depositPay) + "đ");
+                    $("#totalOrderSeconPay").text($.number(secondPay) + "đ");
+
+                    // update phí dịch vụ khi đăng nhập
+                    //$(".FederalTaxUSDetailt").html(response.FederalTaxUS.toFixed(2) + "đ");
+                    //$(".TaxExportVNDetailt").html(response.TaxExportVN.toFixed(2) + "đ");
+                    $(".federalTaxUS-cart-total").html($.number(response.FederalTaxUS.toFixed(2)) + "đ");
+                    $(".TaxExportVN-cart-total").html($.number(response.TaxExportVN.toFixed(2)) + "đ");
+                    $(".ShippingInLandUS-cart-total").html($.number(response.ShippingInLandUS.toFixed(2)) + "đ");
+                    $(".AFFeeVN-cart-total").html($.number(response.AFFeeVN.toFixed(2)) + "đ");
+                    $(".TECSServicesFeeVN-cart-total").html($.number(response.TECSServicesFeeVN.toFixed(2)) + "đ");
+                },
+                error: function (err) {
+                    alert("Lỗi hệ thống, ấn F5 để refresh lại trình duyệt để tiếp tục.");
+                }
+            });
+        }
+        // Update xử lý Coupon
+        $("#applyCoupon").click(function (event) {
+            event.preventDefault();
+
+            var data = {
+                code: $("#couponCode").val(),
+            };
+
+            $.ajax({
+                url: '/Order/UpdateCoupon',
+                type: 'Get',
+                dataType: 'text',
+                data: data,
+                beforeSend: function () {
+                    $("#applyCoupon i.fa").addClass("fa-spinner fa-pulse fa-fw");
+                },
+                success: function (response) {
+                    //alert(response);
+                    $("#applyCoupon i.fa").removeClass("fa-spinner fa-pulse fa-fw");
+
+                    if ($("#couponbox .status").hasClass("alert")) {
+                        $("#couponbox .status").removeClass("alert").removeClass("alert-danger").removeClass("alert-success");
+                    }
+
+                    if (response == "True") {
+                        $("#couponbox .status").text("Nhập mã KM thành công!").addClass('alert alert-success');
+                        updateOrderSummary();
+                    } else {
+                        $("#couponbox .status").text("Nhập mã KM không tồn tại!").addClass('alert alert-danger');
+                    }
+                },
+                error: function (err) {
+                    alert("Lỗi hệ thống, ấn F5 để refresh lại trình duyệt để tiếp tục.");
+                }
+            });
+
+        });
+
+    </script>
+
+}
+
+
+<style>
+    .select2-container--default .select2-selection--single {
+        border: 1px solid #eee;
+    }
+
+    .select2-container .select2-selection--single {
+        height: 34px;
+        line-height: 34px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 31px;
+        position: absolute;
+        top: 1px;
+        right: 1px;
+        width: 20px;
+    }
+</style>

@@ -1,0 +1,262 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.OrderDetail>
+@{
+    ViewBag.Title = "Cập nhật sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+    decimal total = 0;
+}
+
+<div class="box">
+    <div class="box-body">
+
+        <div class="form-horizontal">
+            <h4>Danh sách sản phẩm</h4>
+            <hr />
+            <input type="hidden" value="@ViewBag.OrderId" name="OrderId" id="OrderId" />
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <th>#</th>
+                    <th>Sản phẩm</th>
+                    @*<th>Giá gốc</th>*@
+                    <th>Giá bán</th>
+                    @*<th>Giảm %</th>*@
+                    <th>Trạng thái</th>
+                    <th>Số lượng</th>
+                    <th>Trọng lượng(Kg)</th>
+                    <th>Tổng lượng</th>
+                    <th>Thành tiền</th>
+                    <th>Thuế bang %</th>
+                    @*<th>Vận chuyển bang</th>*@
+                    <th>HScode</th>
+                    <th>Thuế xuất %</th>
+                    <th>VAT %</th>
+                    <th>Nhập khẩu</th>
+                    <th> Ghi Chú</th>
+                    <th>Thao tác</th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    var p = item.Product;
+                    var o = item.OrderStatus;
+                    //total += (item.Amount ?? 0) * (@item.PriceAfter ?? 0);
+                    <tr>
+                        <td class="text-center"><img src="@p.FeaturedImage" width="48" /><br /> @p.Id</td>
+                        <td><a href="@p.DetailPageURL" target="_blank"> @p.Name</a> </td>
+                        @*<td>@Html.FormatValue(p.Price, "{0:0,00}")<sup>đ</sup></td>*@
+                        <td>@Html.FormatValue(@item.PriceAfter, "")</td>
+                        <td >@Html.FormatValue(@o.Name, "")</td>
+                        <td>
+                           
+                        </td>
+                        <td><input class="Amount text-center" value="@item.Amount" data-id="@p.Id" size="3" id="Amount_@p.Id" /></td>
+                        <td><input class="Weightkg text-center" value="@p.WeightKG" data-id="@p.Id" size="3" id="WeightKG_@p.Id" /></td>
+                        <td id="TotalWeight_@p.Id">@Html.FormatValue(@item.Amount * p.WeightKG, "{0:0,0.00}")<sup>Kg</sup></td>
+                        <td id="AmountTotal_@p.Id">@Html.FormatValue((@item.PriceAfter) * @item.Amount, "{0:0,0}")<sup>đ</sup></td>
+                        @*<td><input class="Federaltax text-center" value="@item.FederalTax" data-id="@p.Id" size="6" id="Federaltax_@p.Id" /></td>*@
+                        <td id="Federaltax_@p.Id">@Html.FormatValue(@item.FederalTax, "{0:0,0.00}")<sup>đ</sup></td>
+                        @*<td><input class="Shippinginland text-center" value="@item.ShippingInLand" data-id="@p.Id" size="6" id="Shippinginland_@p.Id" /></td>*@
+                        @if (@p.HsCodeId == null)
+                        {
+                            <td tyle="text-align:right"> - </td>
+                        }
+                        else
+                        {
+                            <td id="hsCode_@p.Id">@Html.FormatValue(@p.ProductTaxHscodes.HsCode, "")</td>
+                        }
+
+                        @if (@p.HsCodeId == null)
+                        {
+                            <td>0</td>
+                        }
+                        else
+                        {
+                            <td id="taxpercentage_@p.Id" class="text-center">@Html.FormatValue(@p.ProductTaxHscodes.TaxPercentage, "")</td>
+                        }
+                        
+                        @if (@p.HsCodeId == null)
+                        {
+                            <td>0</td>
+                        }
+                        else
+                        {
+                            <td id="vatpercentage_@p.Id" class="text-center">@Html.FormatValue(@p.ProductTaxHscodes.VATPercentage, "")</td>
+                        }
+                        @*<td><input class="Taxexport text-center" value="@item.TaxExport" data-id="@p.Id" size="6" id="Taxexport_@p.Id" /></td>*@
+                        <td id="Taxexport_@p.Id" class="Taxexport text-center">@Html.FormatValue(@item.TaxExport, "{0:0,0.00}")<sup>đ</sup></td>
+                        <td><input class="Note text-center" value="@item.Note" data-id="@p.Id" size="6" id="Note_@p.Id" /></td>
+                        
+                        <td>                           
+                            @*<button id="button_1" data-id="@p.Id" type="button" class="btn btn-success">
+                                (+) Cập nhật
+                            </button>*@
+                            <a href="#" id="button_1" class="btn-updatehscode text-success" data-id="@p.Id"><i class="fa fa-refresh"></i></a>
+                            <a href="#" class="remove-product text-danger" data-id="@p.Id"><i class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <th  hidden colspan="12" style="text-align: right">Tổng:</th>
+                    <th hidden class="order-total">@Html.FormatValue(total, "{0:0,00}") <sup>đ</sup></th>
+                </tr>
+            </table>
+            <div class="form-group">
+            <div class="col-md-offset-10 col-md-8">
+                <button  value="val_1" type="button" class="btn btn-success">
+                    (+) Cập nhật
+                </button>
+            </div>
+        </div>
+
+            @*Thêm sản phẩm*@
+            @*<div class="form-group">
+                <div class="col-md-offset-2 col-md-8">
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#add-product">
+                        (+) Thêm sản phẩm
+                    </button>
+                </div>
+            </div>*@
+        </div>
+        <div>
+            @Html.ActionLink("Quay lại đơn hàng", "Index")
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="add-product">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Thêm sản phẩm vào đơn hàng</h4>
+            </div>
+            <div class="modal-body">
+                <div id="status"></div>
+                <div class="form-horizontal">
+                    <div class="form-group">
+
+                        @Html.Label("ProductId", "Chọn sản phẩm", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownList("ProductId", null, htmlAttributes: new { @class = "form-control select2", @style = "width: 100%" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Quatity", "Số lượng", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.TextBox("Quatity", "1", new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng lại</button>
+                <button type="button" class="btn btn-primary btn-add-product">Thêm</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+    $(function () {
+        // Xóa khỏi giỏ
+
+        //$(".remove-product").click(function (event) {
+        //    event.preventDefault();
+        //    var id = $("#OrderId").val();
+        //    var pid = $(this).attr("data-id");
+        //    var tr = $(this).parents("tr");// tim <tr> chua <img> bi click
+        //    $.ajax({
+        //        url: "/Admin/Orders/RemoveProduct",
+        //        data: { id, pid},
+        //        success: function (response) {
+        //            $(".order-total").text($.number(response.Total) + "đ");
+        //            tr.hide(500);
+        //        }
+        //    });
+        //});
+
+        // Sửa sản phẩm order detail
+        $(document).delegate(".Amount,.Federaltax,.Taxexport,.Note,.Weightkg", "change", function () {
+            var id = $("#OrderId").val();
+            var pid = $(this).attr("data-id");
+            var qty = $('#Amount_' + pid).val();
+            var fe = parseFloat($('#Federaltax_' + pid).val()).toFixed(2);
+            //var sh = parseFloat($('#Shippinginland_' + pid).val()).toFixed(2);
+            var fe = parseFloat($('#Federaltax_' + pid).val()).toFixed(2);
+            var ta = parseFloat($('#Taxexport_' + pid).val()).toFixed(2);
+            var we = parseFloat($('#WeightKG_' + pid).val()).toFixed(2);
+            var no = $('#Note_' + pid).val();
+            $.ajax({
+                url: "/Admin/Orders/ChangeOrderDetail",
+                data: { id, pid, qty, fe, ta, no, we},
+                success: function (response) {
+                    $(".order-total").text((response.Total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + "đ");
+                    //$(".order-total").html($.number(response.Total) + "đ");
+                    $("#AmountTotal_" + pid).text((response.AmountTotal).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + "đ");
+                    $("#TotalWeight_" + pid).text((response.TotalWeights).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + "Kg");
+                    $('#Federaltax_' + pid).text((response.FederalTaxs).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                    $('#Taxexport_' + pid).text((response.Taxexports).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                    //$('#Taxexport_' + pid).val((response.TaxExports).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                }
+            });
+        });
+
+        // Thêm sản phẩm
+        //$(document).delegate(".btn-add-product", "click", function () {
+        //    var id = $("#OrderId").val();
+        //    var pid = $("#ProductId").val();
+        //    var qty = $("#Quatity").val();
+        //    $.ajax({
+        //        url: "/Admin/Orders/AddProduct",
+        //        data: { id, pid, qty },
+        //        success: function (response) {
+        //            $(".order-total").html($.number(response.Total) + "đ");
+
+        //            $("#status").html("<p class='alert alert-success'>Thêm thành công!</p>");
+
+        //            setTimeout(function () {
+        //                location.reload();
+        //            }, 1000);
+        //        }
+        //    });
+        //});
+    });
+
+        //UPDATE HSCODE
+    $(".btn-updatehscode").click(function (event) {
+        debugger
+      event.preventDefault();
+      var id = $("#OrderId").val();
+      var pid = $(this).attr("data-id");
+      var qty = $('#Amount_' + pid).val();
+      //var fe = parseFloat($('#Federaltax_' + pid).val()).toFixed(2);
+      //var sh = parseFloat($('#Shippinginland_' + pid).val()).toFixed(2);
+      var fe = parseFloat($('#Federaltax_' + pid).val()).toFixed(2);
+      var ta = parseFloat($('#Taxexport_' + pid).val()).toFixed(2);
+      var we = parseFloat($('#WeightKG_' + pid).val()).toFixed(2);
+      var no = $('#Note_' + pid).val();
+      var tr = $(this).parents("tr");
+      $.ajax({type: "POST",
+          url: "/Admin/Orders/ChangeOrderDetail",
+          data: { id, pid, qty, fe, ta, no, we},
+          success: function (response) {
+              $(".order-total").text((response.Total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + "đ");
+              //$(".order-total").html($.number(response.Total) + "đ");
+              $("#AmountTotal_" + pid).text((response.AmountTotal).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + "đ");
+              $("#TotalWeight_" + pid).text((response.TotalWeights).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + "Kg");
+              $('#Federaltax_' + pid).text((response.FederalTaxs).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+              $('#Taxexport_' + pid).text((response.Taxexports).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+              alert('Cập nhật Hscode thành công!');
+          },
+          error: function (result) {
+              alert('Lỗi! cập nhật Hscode thành công!');
+          }
+    });
+});
+    </script>
+}

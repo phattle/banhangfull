@@ -1,0 +1,11 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.Transport>
+@using System.Runtime;
+@{
+    Layout = null;
+}
+
+@foreach (var item in Model)
+{
+    <option value="@item.Id">@item.Transporter.Name - @item.Cost.Value.ToString("C") vnd</option>
+}
+

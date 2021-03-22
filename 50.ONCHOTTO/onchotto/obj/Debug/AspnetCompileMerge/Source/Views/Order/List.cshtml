@@ -1,0 +1,80 @@
+﻿@using OnChotto.Models.Entities
+@using PagedList.Mvc
+@model PagedList.IPagedList<Order>
+
+@*@{
+    ViewBag.Title = "Danh sách đơn hàng";
+    Layout = "~/Views/Shared/_ClearLayout.cshtml";
+}*@
+@{
+    ViewBag.Title = "Overview";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+<div class="box">
+    <h3 class="block-title"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i> Danh sách đơn hàng của Bạn</h3>
+    <table id ="example"class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Mã đơn hàng</th>
+                <th>Trạng thái</th>
+                <th>Ngày đặt</th>
+                <th>Sản phẩm</th>
+                <th>Tổng cộng</th>
+                <th>Nhà vận chuyển</th>
+                <th>Giảm giá</th>
+                <th>Tổng tiền thanh toán</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody class="table-bordered">
+            @foreach (var m in Model)
+            {
+                <tr>
+                    <td>#@m.Id</td>
+                    <td>@m.OrderStatus.Name</td>
+                    <td>@m.OrderDate</td>
+                    <td>
+                        @foreach (OrderDetail d in m.OrderDetails)
+                        {
+                            <p>@d.Product.Name <span style="color:red">(@Html.FormatValue(d.PriceAfter, "{0:0,0}")<sup>đ</sup> x @d.Amount)</span></p>
+                        }
+                    </td>
+                    <td>@Html.FormatValue(m.TotalAmount, "{0:0,0}")<sup>đ</sup></td>
+                    <td>@m.Transport.Transporter.Name (@Html.FormatValue(m.Transport.Cost, "{0:0,0}")<sup>đ</sup>)</td>
+                    <td>-@Html.FormatValue(m.Discount, "{0:0,0}")<sup>đ</sup></td>
+                    <td style="color: orangered">@Html.FormatValue(m.TotalOrder, "{0:0,0}")<sup>đ</sup></td> @*m.TotalAmount + m.Transport.Cost*@
+                    <td>@Html.ActionLink("Xem", "Detail", new { id = m.Id }, new { @class = "btn btn-primary" })</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+</div>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
+
+<tfoot>
+    <tr>
+        <td colspan="8" class="text-center">
+            @Html.PagedListPager(Model, page => Url.Action("List", "Order", new { page = page }))
+        </td>
+    </tr>
+</tfoot>
+
+
+
+

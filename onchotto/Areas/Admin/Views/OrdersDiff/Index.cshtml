@@ -1,0 +1,136 @@
+﻿@model List<OnChotto.Models.ViewModel.OrderDiffViewModel> 
+
+@{
+    ViewBag.Title = "Quản lý đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+
+<div class="box">
+    <table class="table table-bordered table-striped datatable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().OrderStatusName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().ReceiveName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().TransType)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.Transport.Transporter.Name)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().TotalAmount)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.TotalOrder)
+                </th>*@
+                @*<th>
+                    @Html.DisplayNameFor(model => model.Deposit)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().OrderDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Note)
+                </th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @if (item.OrderStatusName == "Đơn hàng hủy")
+                        {
+                            <p class="label label-danger">@Html.DisplayFor(modelItem => item.OrderStatusName)</p>
+                        }
+                        else if (item.OrderStatusName == "Đang hoàn trả")
+                        {
+                            <p class="label label-warning">@Html.DisplayFor(modelItem => item.OrderStatusName)</p>
+                        }
+                        else
+                        {
+                            <p class="label label-success">@Html.DisplayFor(modelItem => item.OrderStatusName)</p>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReceiveName)
+                        <br />
+                        @Html.DisplayFor(modelItem => item.ReceivePhone)
+                        <br />
+                        @Html.DisplayFor(modelItem => item.ReceiveEmail)
+                        <br />
+                        @*@Html.DisplayFor(modelItem => item.Transport.District.Province.Name)*@
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem=>item.TransType)
+                    </td>
+                    @*<td>
+                        <img src="@item.Transport.Transporter.Logo" alt="@item.Transport.Transporter.Name" width="32" />
+                        <br />
+                        @Html.FormatValue(item.Transport.Cost, "{0:0,0}")
+                    </td>*@
+                    @*<td>
+                        @Html.FormatValue(item.TotalAmount, "{0:0,0}")
+                        @if (item.Discount.HasValue && item.Discount.Value > 0)
+                        {
+                            <br />
+                            <span>Mã KM: @item.Coupon - (@item.CouponDescription)) </span>
+                            <br />
+                            <span>Giảm: -</span>@Html.FormatValue(item.Discount, "{0:0,0}")
+                        }
+                    </td>*@
+                    <td>
+                        @*@Html.FormatValue(item.TotalOrder, "{0:0,0}")*@
+                        @Html.FormatValue(item.TotalAmount, "{0:0,0}")
+                        <br />
+                        @if (item.Ispayenough.HasValue && item.Ispayenough.Value)
+                        {
+                            <span class="label label-success">Thanh toán đủ</span>
+                        }
+                        else
+                        {
+                            <span class="label label-danger">Chưa thanh toán đủ</span>
+                        }
+                    </td>
+                    @*<td>
+                        @Html.FormatValue(item.TotalOrder * item.Deposit / 100, "{0:0,0}") đ (@item.Deposit<i>%</i>)
+                        <br />
+                        @if (item.IsDeposit.HasValue && item.IsDeposit.Value)
+                        {
+                            <span class="label label-success">Đã thanh toán</span>
+                        }
+                        else
+                        {
+                            <span class="label label-danger">Chưa thanh toán</span>
+                        }
+                    </td>*@
+                    <td>
+                        @if (item.OrderDate.HasValue)
+                        {
+                            @item.OrderDate.Value.ToString("d");
+                        }
+                    </td>
+                    <td>
+                        @if (item.PaymentMethodId != null)
+                        {
+                            @item.PaymentMethodsName
+                            <hr />
+                        }
+                        @Html.DisplayFor(modelItem => item.Note)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Xem", "Details", new { id = item.OrderDiffId }, new { @class = "btn btn-xs btn-primary" })
+                        @Html.ActionLink("Sửa", "Edit", new { id = item.OrderDiffId }, new { @class = "btn btn-xs btn-warning" })
+                        @Html.ActionLink("Sửa SP", "EditOrdersDetail", new { id = item.OrderDiffId }, new { @class = "btn btn-xs btn-warning" })
+                        @Html.ActionLink("Xóa", "Delete", new { id = item.OrderDiffId }, new { @class = "btn btn-xs btn-danger", onclick = "return confirm('Bạn có chắc muốn xóa?')" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,107 @@
+﻿@using OnChotto.Models.Entities
+@using Commons.Libs
+
+<!-- ============================================== HOT DEALS: END ============================================== -->
+<!-- ==============================================Giới thiệu============================================== -->
+<div class="sidebar-widget outer-bottom-xs wow fadeInUp animated" style="visibility: visible; animation-name: fadeInUp;">
+    <h3 class="section-title heading-title ud-line">Giới thiệu</h3>
+    <div class="sidebar-widget-body m-t-10">
+        <div class="accordion">
+            @foreach (Menu m in ViewBag.MenuGioiThieu)
+            {
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a href="@m.Url" class="accordion-toggle collapsed" title="@Html.Raw(m.Text)">
+                            @Html.Raw(m.Text)
+                        </a>
+                    </div><!-- /.accordion-heading -->
+                </div><!-- /.accordion-group -->
+            }
+        </div><!-- /.accordion -->
+    </div><!-- /.sidebar-widget-body -->
+</div><!-- /.sidebar-widget -->
+<!-- ============================================== CATEGORY : END ============================================== -->
+<!-- ============================================== Trợ giúp ============================================== -->
+<div class="sidebar-widget outer-bottom-xs wow fadeInUp animated" style="visibility: visible; animation-name: fadeInUp;">
+    <h3 class="section-title heading-title ud-line">Hướng dẫn - Trợ giúp</h3>
+    <div class="sidebar-widget-body m-t-10">
+        <div class="accordion">
+            @foreach (Menu m in ViewBag.MenuTroGiup)
+            {
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a href="@m.Url" class="accordion-toggle collapsed" title="@Html.Raw(m.Text)">
+                            @Html.Raw(m.Text)
+                        </a>
+                    </div><!-- /.accordion-heading -->
+                </div><!-- /.accordion-group -->
+            }
+        </div><!-- /.accordion -->
+    </div><!-- /.sidebar-widget-body -->
+</div><!-- /.sidebar-widget -->
+<!-- ============================================== CATEGORY : END ============================================== -->
+<!-- ============================================== HOT DEALS ============================================== -->
+@if (ViewBag.SpecialProducts != null)
+{
+    <section class="section  hot-deals featured-product wow fadeInUp">
+        <h3 class="section-title heading-title ud-line"> DEAL NỔI BẬT</h3>
+        <div class="owl-carousel sidebar-carousel custom-carousel owl-theme outer-top-xs">
+            @foreach (Product p in ViewBag.SpecialProducts)
+            {
+                <div class="item">
+                    <div class="products">
+                        <div class="product">
+                            <div class="hot-deal-wrapper">
+                                <div class="image">
+                                    <a href="/san-pham/@p.Name.ToAscii()-@p.Id" title="@Html.Raw(p.Name)">
+                                        <img src="@p.FeaturedImage" alt="@Html.Raw(p.Name)" class="img-responsive">
+                                    </a>
+                                </div>
+                                <div class="sale-offer-tag tag"><span>-@p.Discount%</span></div>
+                            </div><!-- /.hot-deal-wrapper -->
+                            <div class="product-info text-left m-t-20">
+                                <h3 class="name"><a href="/san-pham/@p.Name.ToAscii()-@p.Id" title="@Html.Raw(p.Name)">@Html.Raw(p.Name)</a></h3>
+                                <div class="product-price">
+                                    <span class="price">
+                                        @{
+                                            var price = (p.Price * (100 - p.Discount) / 100);
+                                            price = price - (price % 1000);
+                                        }
+                                        @Html.FormatValue(price, "{0:0,0}") <span class="price_symbol">đ</span>
+                                    </span>
+                                    <span class="price-before-discount">@Html.FormatValue(p.Price, "{0:0,0}") <span class="price_symbol">đ</span></span>
+                                </div><!-- /.product-price -->
+                            </div><!-- /.product-info -->
+                            @if (p.EndDate != null)
+                            {
+                                var unixTimestamp = (Int32)(p.EndDate.Value.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                                <div class="countdown">
+                                    <i class="fa fa-clock-o"></i> Còn <span data-time="@unixTimestamp" class="kkcountdown"></span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+             }
+        </div>
+    </section>
+}
+<div class="sidebar-widget newsletter wow fadeInUp outer-bottom-small animated" style="visibility: visible; animation-name: fadeInUp;">
+    <h3 class="section-title heading-title ud-line">NHẬN DEAL MỚI NHẤT</h3>
+    <div class="sidebar-widget-body outer-top-xs">
+        <p>Nhập Email để nhận thông tin mới!</p>
+        <form role="form" action="https://sendmass.com/app/my_contacts/sign_add" class="form-horizontal" method="post">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <input type="email" class="form-control" name="email" id="email" />
+                        <input type="hidden" name="my_sign_up_form_id" value="7cda6efbf35dcf414a7ab6af10e0a4d7">
+                        <span class="input-group-btn">
+                            <button class="btn btn-success" type="submit">Gửi!</button>
+                        </span>
+                    </div><!-- /input-group -->
+                </div>
+            </div>
+        </form>
+    </div><!-- /.sidebar-widget-body -->
+</div>

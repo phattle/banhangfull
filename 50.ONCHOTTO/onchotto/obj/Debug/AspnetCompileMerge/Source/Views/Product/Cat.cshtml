@@ -1,0 +1,150 @@
+﻿@using OnChotto.Models.Entities
+@using OnChotto.Models.Dao
+@model IEnumerable<OnChotto.Models.Entities.ProductCategory>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = Html.Raw(string.IsNullOrEmpty(ViewBag.Category.MetaTitle) ? ViewBag.Category.Name : ViewBag.Category.MetaTitle);
+    Random rd = new Random();
+    ProductCategoryDao dao = new ProductCategoryDao();
+}
+
+@section HeaderMeta{
+<meta name="description" content="@Html.Raw(ViewBag.Category.MetaDescription)">
+<meta name="keywords" content="@Html.Raw(ViewBag.Category.MetaKeyword)">
+<meta property="og:type" content="Category" />
+<meta property="og:title" content="@Html.Raw(ViewBag.Category.MetaTitle)" />
+<meta property="og:description" content="@Html.Raw(ViewBag.Category.MetaDescription)"/>
+}
+
+@section BreadCrumbs{
+    <li><a href="#" class="active" title="@Html.Raw(ViewBag.Category.Name)">@Html.Raw(ViewBag.Category.Name)</a></li>
+}
+
+ 
+
+<style>
+  
+</style>     
+
+@if (Model != null)
+{
+    foreach (var m in Model)
+    {
+        var products = dao.AllProducts(m, 40);
+
+        //Nếu chuyên mục không có sp thì next
+        if (products.Count == 0) { continue; }
+
+        var count = 0;
+        var startItem = "<div class='item item-carousel'><div class='products'>";
+        var endItem = "</div></div>";
+        var has_banner = string.IsNullOrEmpty(m.Banner) ? "" : "product-category-has-banner";
+
+        <style>
+            #product-tabs-slider-@m.CatId .more-info-tab{
+                background-image: url(@m.Image);
+            }
+        </style>
+        <div  class="product-tabs-slider @has_banner scroll-tabs">
+            <div class="more-info-tab clearfix ">
+                <h3 class="section-title pull-left"><a href="/danh-muc/@m.Name.ToAscii()-@m.CatId" title="@m.Name">@m.Name</a></h3>
+               <!-- <ul class="nav nav-tabs nav-tab-line pull-right" id="new-products-1">
+                    <li class="active"><a href="/danh-muc/@m.Name.ToAscii()-@m.CatId">Xem tất cả</a></li>
+                    @foreach (var sub in m.SubCategories)
+                    {
+                        <li><a href="/danh-muc/@sub.Name.ToAscii()-@sub.CatId">@sub.Name</a></li>
+                    }
+                </ul> /.nav-tabs -->
+            </div>
+
+            @if (string.IsNullOrEmpty(m.Banner) == false)
+            {
+                <div class="wide-banners">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="wide-banner cnt-strip">
+                                <div class="image">
+                                    <a href="/danh-muc/@m.Name.ToAscii()-@m.CatId" title="@m.Name">
+                                        <img data-echo="@m.Banner" src="~/Assets/Frontend/images/blank.gif" alt="@m.Description" class="img-responsive">
+                                    </a>
+                                </div>
+                                <div class="new-label">
+                                    <div class="text">NEW</div>
+                                </div><!-- /.new-label -->
+                            </div><!-- /.wide-banner -->
+                        </div><!-- /.col -->
+
+                    </div><!-- /.row -->
+                </div><!-- /.wide-banners -->
+            }
+
+            <div class="tab-content outer-top-xs">
+                <div class="tab-pane in active" id="all">
+                    <div class="product-slider">
+                        <div class="owl-carousel home-owl-carousel custom-carousel owl-theme" data-item="4">
+                            @foreach (var p in products)
+                            {
+                                count++;
+
+                                if (products.Count < 8 || count % 2 == 1)
+                                {
+                                    @Html.Raw(startItem);
+                                }
+
+                                <div class="product">
+                                    <div class="product-image">
+                                        <div class="image">
+                                            <a href="/san-pham/@p.Name.ToAscii()-@p.Id">
+                                                <img src="@p.FeaturedImage" data-echo="@p.FeaturedImage" alt="" class="imgFull" id="@p.Id">
+                                            </a>
+                                        </div><!-- /.Image -->
+
+                                        <div class="cart text-center animate-effect">
+                                            <div class="action">
+                                                <a class="btn btn-success" href="/san-pham/@p.Name.ToAscii()-@p.Id" title="Xem ngay"><i class="icon fa fa-eye"></i> XEM NGAY</a>
+                                                <a class="btn btn-warning" href="/danh-dau-yeu-thich/@p.Id" title="Wishlist"><i class="icon fa fa-heart"></i> YÊU THÍCH</a>
+                                            </div><!-- /.action -->
+                                        </div><!-- /.cart -->
+
+                                    </div><!-- /.product-image -->
+
+                                    <div class="product-info">
+                                        <div class="info-header">
+                                            <h3 class="name"><a href="/san-pham/@p.Name.ToAscii()-@p.Id" title="@Html.Raw(p.Name)">@Html.Raw(p.Name)</a></h3>
+                                        </div>
+                                        <div class="product-price">
+                                            <meta itemprop="priceCurrency" content="VND">
+                                            <span class="price">
+                                                <span class="price_value" itemprop="price">@Html.FormatValue(p.PriceAfter, "{0:0,0}") <span class="price_symbol">đ</span></span>
+                                                <span class="price_discount">-@p.Discount%</span>
+                                            </span>
+                                            <div class="price-before-discount"> @Html.FormatValue(p.Price, "{0:0,0}") <span class="price_symbol">đ</span></div>
+                                        </div><!-- /.product-price -->
+                                        <div class="product_views">
+                                            <i class="fa fa-user"></i> @rd.Next(p.Views, 100 + p.Views)
+                                        </div>
+                                    </div><!-- /.product-info -->
+
+                                    @if (p.EndDate != null)
+                                    {
+                                        var unixTimestamp = (Int32)(p.EndDate.Value.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                                        <div class="countdown">
+                                            <i class="fa fa-clock-o"></i> Còn <span data-time="@unixTimestamp" class="kkcountdown"></span>
+                                        </div>
+                                    }
+                                </div><!-- /.product -->
+
+                                if (products.Count < 8 || count % 2 == 0 || count == products.Count)
+                                {
+                                    @Html.Raw(endItem);
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+}
+

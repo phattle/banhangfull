@@ -1,0 +1,76 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.Banner>
+
+@{
+    ViewBag.Title = "Quản lý banner";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+
+<div class="box box-default">
+    <div class="box-header with-border">
+        <h3 class="box-title"><i class="fa fa-list"></i> Danh sách banner</h3>
+        <div class="box-tools pull-right">
+            @Html.ActionLink("Thêm mới", "Create", null, new { @class = "btn btn-primary" })
+        </div>
+        <!-- /.box-tools -->
+    </div>
+    <div class="box-body">
+        <table class="table">
+            <tr>
+                <th>Hình</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    Loại Banner
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Url)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Active)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="@item.Image" width="120" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BannerType.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Url)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Active)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Sửa", "Edit", new { id = item.BannerId }, new { @class = "btn btn-warning" })
+                        @Html.ActionLink("Xoá", "Delete", new { id = item.BannerId }, new { @onclick = "return prompt('Nhap chua XOA de xac nhan?') === 'XOA';", @class = "btn btn-danger" })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+
+

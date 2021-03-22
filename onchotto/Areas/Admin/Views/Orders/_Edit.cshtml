@@ -1,0 +1,349 @@
+﻿@using OnChotto.Models
+@using OnChotto.Models.Dao
+@model OnChotto.Models.ViewModel.OrderEditViewModel
+
+@{
+    ViewBag.Title = "Cập nhật đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Đơn hàng</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <label class="control-label">User đăng nhập</label>
+                @Html.DropDownList("UserId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                <label class="control-label">Tình trạng</label>
+                @Html.DropDownList("StatusId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.StatusId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <label class="control-label">Mã giảm hàng</label>
+                @Html.EditorFor(model => model.Coupon, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Coupon, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <label class="control-label">Mô tả giảm giá</label>
+                @Html.EditorFor(model => model.CouponDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CouponDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Discount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TotalAmount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TotalAmount, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TotalAmount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TotalOrder, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TotalOrder, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TotalOrder, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Deposit, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Deposit, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Deposit, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsDeposit, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IsDeposit, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.IsDeposit, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TransportId, "TransportId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("TransportId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TransportId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PaymentMethodId, "PaymentMethodId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("PaymentMethodId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.PaymentMethodId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ReceiveName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ReceiveName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ReceiveName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ReceiveEmail, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ReceiveEmail, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ReceiveEmail, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ReceiveAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ReceiveAddress, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ReceiveAddress, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ReceivePhone, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ReceivePhone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ReceivePhone, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.OrderDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.OrderDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.OrderDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RequireDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.RequireDate, new { htmlAttributes = new { @class = "form-control" } })
+                @*@Html.ValidationMessageFor(model => model.RequireDate, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.HandlingFee, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.HandlingFee, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.HandlingFee, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ClearanceFee, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ClearanceFee, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ClearanceFee, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AFFee, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.AFFee, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.AFFee, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TECSServicesFee, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TECSServicesFee, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TECSServicesFee, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CustomFee, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CustomFee, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CustomFee, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TransactionFee, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TransactionFee, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TransactionFee, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+@*using OnChotto.Models.Entities;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Web;
+
+namespace OnChotto.Models.ViewModel
+{
+    public class OrderEditViewModel
+    {
+        public int Id { get; set; }
+
+        [Display(Name = "Khách hàng")]
+        public string UserId { get; set; }
+
+        [Display(Name = "Trạng thái")]
+        public int? StatusId { get; set; }
+
+        [Display(Name = "Mã Giảm giá")]
+        public string Coupon { get; set; }
+
+        [Display(Name = "Mô tả giảm giá")]
+        public string CouponDescription { get; set; }
+
+        [Display(Name = "Giảm giá")]
+        public decimal? Discount { get; set; }
+
+        [Display(Name = "Khuyến mãi thêm")]
+        public decimal? ExtraDiscount { get; set; }
+
+        [Display(Name = "Tổng trọng lượng(kg)")]
+        public decimal? TotalWeight { get; set; }
+
+        [Display(Name = "Tổng tiền hàng(đ)")]
+        public decimal? TotalAmount { get; set; }
+
+        [Display(Name = "Tổng đơn hàng(đ)")]
+        public decimal? TotalOrder { get; set; }
+
+        [Display(Name = "% Tạm ứng")]
+        public int Deposit { get; set; }
+
+        [Display(Name = "Thanh toán tạm ứng")]
+        public bool? IsDeposit { get; set; }
+        [Display(Name = "Thanh toán đủ")]
+        public bool? Ispayenough { get; set; }
+        [Required]
+        public int? TransportId { get; set; }
+
+        public int? PaymentMethodId { get; set; }
+
+        [StringLength(250)]
+        [Required(ErrorMessage = "Bạn chưa nhập tên người nhận.")]
+        [Display(Name = "Người nhận")]
+        public string ReceiveName { get; set; }
+
+        [StringLength(250)]
+        [Required(ErrorMessage = "Bạn chưa nhập Email người nhận."), EmailAddress]
+        [Display(Name = "Email Người nhận")]
+        public string ReceiveEmail { get; set; }
+
+        [Required(ErrorMessage = "Bạn chưa nhập địa chỉ nhận hàng.")]
+        [StringLength(255)]
+        public string ReceiveAddress { get; set; }
+
+        [Required(ErrorMessage = "Bạn chưa nhập số điện thoại người nhận.")]
+        [StringLength(50)]
+        [Display(Name = "Số điện thoại")]
+        public string ReceivePhone { get; set; }
+
+        [Column(TypeName = "ntext")]
+        [Display(Name = "Ghi chú đơn hàng")]
+        public string Note { get; set; }
+
+        [Display(Name = "Ngày đặt")]
+        public DateTime? OrderDate { get; set; }
+
+        [Display(Name = "Ngày giao")]
+        public DateTime? RequireDate { get; set; }
+
+        [Display(Name = "Thuế liên bang")]
+        public decimal? FederalTax { get; set; }
+
+        [Display(Name = "Shipping In Land")]
+        public decimal? ShippingInLand { get; set; }
+
+        [Display(Name = "Handling Fee")]
+        public decimal? HandlingFee { get; set; }
+
+        [Display(Name = "A/F Fee  ")]
+        public decimal? AFFee { get; set; }
+
+        [Display(Name = "Phí DV thông quan VN")]
+        public decimal? ClearanceFee { get; set; }
+
+        [Display(Name = "Phí phát hàng")]
+        public decimal? ShippingFee { get; set; }
+
+        [Display(Name = "Phí dịch vụ TECS ")]
+        public decimal? TECSServicesFee { get; set; }
+
+        [Display(Name = "Phí giao dịch")]
+        public decimal? TransactionFee { get; set; }
+
+        [Display(Name = "Phí VAT")]
+        public decimal? VATFee { get; set; }
+
+        [Display(Name = "Thuế nhập khẩu")]
+        public decimal? ImportTax { get; set; }
+
+        [Display(Name = "Phí hải quan")]
+        public decimal? CustomFee { get; set; }
+
+        [Display(Name = "Mã khuyến mãi")]
+        public string PromotionCode { get; set; }
+
+        [Display(Name = "Giá trị khuyến mãi")]
+        public string PromotionValue { get; set; }
+
+    }
+}*@

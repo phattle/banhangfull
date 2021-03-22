@@ -1,0 +1,296 @@
+﻿@model OnChotto.Models.Entities.Product
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "Thêm sản phẩm mới";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+    Random rd = new Random();
+
+}
+
+<link href="/Assets/Frontend/css/select2.min.css" rel="stylesheet" />
+@section scripts{
+    @*<script src="/Scripts/jquery-1.10.2.min.js"></script>*@
+    @*<script src="/Scripts/jquery.unobtrusive-ajax.js"></script>*@
+    @*<script src="/Scripts/jquery.validate.min.js"></script>
+        <script src="/Scripts/jquery.validate.unobtrusive.min.js"></script>*@
+    <script src="/Assets/Frontend/css/select2/select2.min.js"></script>
+    <script>
+        $(".CBB").select2({
+            ajax: {
+                url: "/Products/GetData",
+                dataType: 'json',
+                type: 'POST',
+                delay: 1000,
+                data: function (params) {
+                    console.log(params)
+                    return {
+                        keyword: params.term,
+                        page: params.page
+                    };
+                },
+                processResults: function (result, params) {
+                    params.page = params.page || 1;
+
+                    return {
+                        results: $.map(result.data, function (item) {
+                            return {
+                                text: item.PoductName,
+                                id: item.HsCodeId
+                            }
+                        }),
+                        pagination: {
+                            more: (params.page * 10) < result.total
+                        }
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+            minimumInputLength: 2,
+            formatResult: contractFormatResult,
+            formatSelection: contractFormatSelection
+        });
+        function contractFormatResult(contract) {
+            var markup = "<table class='contract-result'><tr>";
+            if (contract.name !== undefined) {
+                markup += "<div class='contract-name'>" + contract.name + "</div>";
+            }
+            markup += "</td></tr></table>"
+            return markup;
+        }
+
+        function contractFormatSelection(contract) {
+            return contract.name;
+        }
+
+       function FillPriceCurrency(_this) {
+            var selectedValue = $(_this).val();
+            if (selectedValue != "VND" && selectedValue.length != 0) {
+                $('#AmountPriceCurrRank :input').attr("disabled", false);
+                $('#PriceCurrRank :input').attr("disabled", false);
+                $('#PriceAfter :input').attr("readonly", true);
+                $('#AmountPriceCurrRank :input').val('1');
+                $('#PriceAfter :input').val('0');
+                $('#PriceCurrRank :input').val(Math.round(@ViewBag.currenrak + "e+3").toLocaleString('it-IT').replace('.',','));
+            }
+            else if (selectedValue == "VND" && selectedValue.length != 0) {
+                $('#AmountPriceCurrRank :input').attr("disabled", true);
+                $('#PriceCurrRank :input').attr("disabled", true);
+                $('#PriceAfter :input').attr("readonly", false);
+                $('#PriceCurrRank :input').val('0');
+                $('#AmountPriceCurrRank :input').val('0');
+                $('#PriceAfter :input').val('0');
+            }
+            else {
+                $('#AmountPriceCurrRank :input').attr("disabled", true);
+                $('#PriceCurrRank :input').attr("disabled", true);
+                $('#PriceAfter :input').attr("readonly", true);
+                $('#PriceCurrRank :input').val('0');
+                $('#AmountPriceCurrRank :input').val('0');
+                $('#PriceAfter :input').val('0');
+            }
+        }
+
+
+        $('#AmountPriceCurrRank').change(function () {
+            var selection = $('#AmountPriceCurrRank :input').val();
+            var CurrRankInput = $('#PriceCurrRank :input').val().replace(',', '.');
+            var valuetextbox = $('#UnitCurrRank').val();
+            if (valuetextbox == "USD") {
+                $('#PriceAfter :input').attr("readonly", true);
+                $('#PriceAfter :input').val((selection * Math.round(CurrRankInput + "e+3")).toLocaleString('it-IT').replace('.', ','));
+            }
+
+        });
+
+        $('#PriceCurrRank').change(function () {
+            var selection = $('#AmountPriceCurrRank :input').val();
+            var CurrRankInput = $('#PriceCurrRank :input').val().replace(',', '.');
+            var valuetextbox = $('#UnitCurrRank').val();
+            if (valuetextbox == "USD") {
+                $('#PriceAfter :input').attr("readonly", true);
+                $('#PriceAfter :input').val((selection * Math.round(CurrRankInput + "e+3")).toLocaleString('it-IT').replace('.', ','));
+            }
+
+        });
+
+        function roundToTwo(num) {
+            return +(Math.round(num + "e+2") + "e-2");
+        }
+
+        function format_number(pnumber, decimals) {
+            if (isNaN(pnumber)) { return 0 };
+            if (pnumber == '') { return 0 };
+            var snum = new String(pnumber);
+            var sec = snum.split('.');
+            var whole = parseFloat(sec[0]);
+            var result = '';
+
+            if (sec.length > 1) {
+                var dec = new String(sec[1]);
+                dec = String(parseFloat(sec[1]) / Math.pow(10, (dec.length - decimals)));
+                dec = String(whole + Math.round(parseFloat(dec)) / Math.pow(10, decimals));
+                var dot = dec.indexOf('.');
+                if (dot == -1) {
+                    dec += '.';
+                    dot = dec.indexOf('.');
+                }
+                while (dec.length <= dot + decimals) { dec += '0'; }
+                result = dec;
+            } else {
+                var dot;
+                var dec = new String(whole);
+                if (decimals) {
+                    dec += '.';
+                    dot = dec.indexOf('.');
+                    while (dec.length <= dot + decimals) { dec += '0'; }
+                }
+                result = dec;
+            }
+            return result;
+        }
+
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && ((charCode < 48 || charCode > 57) && charCode != 44))
+                return false;
+            return true;
+        }
+
+
+    </script>
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.Hidden("UserId", User.Identity.GetUserId())
+
+    @Html.Hidden("Views", @rd.Next(100))
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+         
+        <div class="form-group">
+            @Html.LabelFor(model => model.CatId, "Nhóm SP", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-2">
+                @Html.DropDownList("CatId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CatId, "", new { @class = "text-danger" })
+            </div>
+
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+   
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-9">
+                @Html.TextAreaFor(model => model.Description, htmlAttributes: new { @class = "form-control", @rows = "3" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+         
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Detail, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-9">
+                @Html.TextAreaFor(model => model.Detail, new { htmlAttributes = new { @class = "form-control" }, id = "ckeditor3" })
+                @Html.ValidationMessageFor(model => model.Detail, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        
+         
+        <div class="form-group">
+            @Html.LabelFor(model => model.FeaturedImage, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-9">
+                <div id="preview">
+                </div>
+                <p><a href="#" upload-to="#FeaturedImage" previewTo="#preview" class="uploadfile btn btn-default">Upload</a></p>
+                @Html.HiddenFor(model => model.FeaturedImage)
+                @Html.ValidationMessageFor(model => model.FeaturedImage, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Images, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-9">
+                <ul id="previews" class="list-inline list-unstyled"></ul>
+                <p>
+                    <a href="#" upload-to="#Images" previewTo="#previews" class="multiuploadfile btn btn-default">Upload</a>
+                </p>
+                @Html.HiddenFor(model => model.Images)
+                @Html.ValidationMessageFor(model => model.Images, "", new { @class = "text-danger" })
+            </div>
+        </div>
+         
+          
+
+        <div class="form-group">
+            <div class="col-md-2 col-md-offset-2">
+                @Html.CheckBox("IsFeatured", false, new { htmlAttributes = new { @class = "minimal" } })
+                @Html.LabelFor(model => model.IsFeatured)
+                @Html.ValidationMessageFor(model => model.IsFeatured, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-2">
+                @Html.CheckBox("IsSpecial", false, new { htmlAttributes = new { @class = "minimal" } })
+                @Html.LabelFor(model => model.IsSpecial)
+                @Html.ValidationMessageFor(model => model.IsSpecial, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-2">
+                @Html.CheckBox("Actived", true, new { htmlAttributes = new { @class = "minimal" } })
+                @Html.LabelFor(model => model.Actived)
+                @Html.ValidationMessageFor(model => model.Actived, "", new { @class = "text-danger" })
+            </div>
+
+        </div>
+         
+
+        <h4>Nội dung SEO:</h4>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MetaTitle, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.MetaTitle, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MetaTitle, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MetaDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.MetaDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MetaDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MetaKeyword, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.MetaKeyword, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MetaKeyword, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-9">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+

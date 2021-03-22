@@ -1,0 +1,35 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.Product>
+@{
+    ViewBag.Title = "Giỏ hàng";
+}
+
+@if (!Model.Any())
+{
+    <div class="outer-top-xs"> Bạn chưa có sp nào trong giỏ!</div>
+}
+else
+{
+    foreach (var p in Model)
+    {
+        <div class="row" id="@p.Id">
+            <div class="col-xs-4">
+                <div class="image">
+                    <a href="/san-pham/@p.Name.ToAscii()-@p.Id"><img src="@p.FeaturedImage" alt="@p.Name" class="img-responsive"></a>
+                </div>
+            </div>
+            <div class="col-xs-7">
+
+                <h3 class="name"><a href="/san-pham/@p.Name.ToAscii()-@p.Id">@p.Name</a></h3>
+                <div class="price">
+                    <label>@Html.FormatValue(p.PriceAfter, "{0:0,0}")<span class="price_symbol">đ</span> X <input class="quantity spquantity" value="@p.Amount" data-id="@p.Id" size="2"></label>
+                </div>
+            </div>
+            <div class="col-xs-1 action removeProduct">
+                <a href="#" class="removeProduct">
+                    <i class="removeProduct fa fa-trash" data-id="@p.Id" data-id-remove="@p.Id"></i>
+                </a>
+            </div>
+        </div>
+
+     }
+}

@@ -1,0 +1,98 @@
+﻿@using OnChotto.Models.Dao
+
+@{
+    ViewBag.Title = "Cài đặt trang chủ";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+
+@using (Html.BeginForm("saveOption", "Options"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <div class="box box-default">
+            <h4 class="box-header with-border">Nhập các thông tin hiển thị trang chủ</h4>
+            <div class="box-body">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.Hidden("return_url", "HomeSettings")
+                <div class="form-group">
+                    <label for="text_welcome_one" class="control-label col-md-2">Text Chào mừng Line 1</label>
+                    <div class="col-md-6">
+                        <input type="text" name="text_welcome_one" id="text_welcome_one" class="form-control" value="@OptionDao.GetOption("TEXT_WELCOME_ONE")" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="text_welcome_two" class="control-label col-md-2">Text Chào mừng Line 2</label>
+                    <div class="col-md-6">
+                        <input type="text" name="text_welcome_two" id="text_welcome_two" class="form-control" value="@OptionDao.GetOption("TEXT_WELCOME_TWO")" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="text_welcome_thr" class="control-label col-md-2">Text Chào mừng 3</label>
+                    <div class="col-md-6">
+                        <textarea name="text_welcome_thr" id="text_welcome_thr" class="form-control" rows="3">@OptionDao.GetOption("TEXT_WELCOME_THR")</textarea>
+                    </div>
+                </div>
+            </div>  
+            <div class="form-group">
+                <label for="home_banner_1" class="control-label col-md-2">BANNER FLASH 1</label>
+                <div class="col-md-6">
+                    <div id="preview_banner_1">
+                        @if (OptionDao.GetOption("HOME_BANNER_1", "") != "")
+                        {
+                            <img src="@OptionDao.GetOption("HOME_BANNER_1", "")" style="max-width: 200px" />
+                        }
+                    </div>
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" name="home_banner_1" id="home_banner_1" value="@OptionDao.GetOption("HOME_BANNER_1", "")" readonly />
+                        <span class="input-group-btn">
+                            <a href="#" upload-to="#home_banner_1" previewTo="#preview_banner_1" class="uploadfile btn btn-info btn-flat">Upload</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="home_banner_1_url" class="control-label col-md-2">Banner 1 URL</label>
+                <div class="col-md-6">
+                    <input type="text" name="home_banner_1_url" id="home_banner_1_url" value="@OptionDao.GetOption("HOME_BANNER_1_URL", "")" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="home_banner_2" class="control-label col-md-2">BANNER FLASH 2</label>
+                <div class="col-md-6">
+                    <div id="preview_banner_2">
+                        @if (OptionDao.GetOption("HOME_BANNER_2", "") != "")
+                        {
+                            <img src="@OptionDao.GetOption("HOME_BANNER_2", "")" style="max-width: 200px" />
+                        }
+                    </div>
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" name="home_banner_2" id="home_banner_2" value="@OptionDao.GetOption("HOME_BANNER_2", "")" readonly />
+                        <span class="input-group-btn">
+                            <a href="#" upload-to="#home_banner_2" previewTo="#preview_banner_2" class="uploadfile btn btn-info btn-flat">Upload</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="home_banner_2_url" class="control-label col-md-2">Banner 2 URL</label>
+                <div class="col-md-6">
+                    <input type="text" name="home_banner_2_url" id="home_banner_2_url" value="@OptionDao.GetOption("HOME_BANNER_2_URL", "")" class="form-control" />
+                </div>
+            </div>
+
+            <div class="box-footer">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-6">
+                        <input type="submit" value="Lưu lại" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+

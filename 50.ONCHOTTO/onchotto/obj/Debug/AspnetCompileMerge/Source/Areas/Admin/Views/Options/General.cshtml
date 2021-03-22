@@ -1,0 +1,138 @@
+﻿@using OnChotto.Models.Dao
+
+@{
+    ViewBag.Title = "Cài đặt chung";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+
+@using (Html.BeginForm("SaveOption", "Options"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <div class="box box-default">
+            <h4 class="box-header with-border">Thông tin website</h4>
+            <div class="box-body">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.Hidden("return_url", "General")
+                <div class="form-group">
+                    <label for="logo" class="control-label col-md-2">Logo</label>
+                    <div class="col-md-6">
+                        <div id="preview">
+                            @if (OptionDao.GetOption("LOGO", "") != "")
+                            {
+                                <img src="@OptionDao.GetOption("LOGO", "")" style="max-width: 200px" />
+                            }
+                        </div>
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" name="logo" id="logo" value="@OptionDao.GetOption("LOGO", "")" readonly />
+                            <span class="input-group-btn">
+                                <a href="#" upload-to="#logo" previewTo="#preview" class="uploadfile btn btn-info btn-flat">Upload</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="footer_logo" class="control-label col-md-2">Footer Logo</label>
+                    <div class="col-md-6">
+                        <div id="preview_footer_logo">
+                            @if (OptionDao.GetOption("FOOTER_LOGO", "") != "")
+                            {
+                                <img src="@OptionDao.GetOption("FOOTER_LOGO", "")" style="max-width: 200px" />
+                            }
+                        </div>
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" name="footer_logo" id="footer_logo" value="@OptionDao.GetOption("FOOTER_LOGO", "")" readonly />
+                            <span class="input-group-btn">
+                                <a href="#" upload-to="#footer_logo" previewTo="#preview_footer_logo" class="uploadfile btn btn-info btn-flat">Upload</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="favicon" class="control-label col-md-2">Favicon</label>
+                    <div class="col-md-6">
+                        <div id="previewF">
+                            @if (OptionDao.GetOption("FAVICON", "") != "")
+                            {
+                                <img src="@OptionDao.GetOption("FAVICON", "")" style="max-width: 36px" />
+                            }
+                        </div>
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" name="favicon" id="favicon" value="@OptionDao.GetOption("FAVICON", "")" readonly/>
+                            <span class="input-group-btn">
+                                <a href="#" upload-to="#favicon" previewTo="#previewF" class="uploadfile btn btn-info btn-flat">Upload</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="site_name" class="control-label col-md-2">Tên Website</label>
+                    <div class="col-md-6">
+                        <input type="text" name="site_name" id="site_name" value="@OptionDao.GetOption("SITE_NAME", "")" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="slogan" class="control-label col-md-2">Slogan</label>
+                    <div class="col-md-6">
+                        <input type="text" name="slogan" id="slogan" value="@OptionDao.GetOption("SLOGAN", "")" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="site_description" class="control-label col-md-2">Giới thiệu ngắn</label>
+                    <div class="col-md-6">
+                        <input type="text" name="site_description" id="site_description" value="@OptionDao.GetOption("SITE_DESCRIPTION", "")" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="box-header with-border">Thông tin liên hệ</h4>
+
+            <div class="box-body">
+                <div class="form-group">
+                    <label for="header_hotline" class="control-label col-md-2">Hotline</label>
+                    <div class="col-md-6">
+                        <input type="text" name="hotline" id="header_hotline" value="@OptionDao.GetOption("HOTLINE", "")" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="hotline_description" class="control-label col-md-2">Hotline description</label>
+                    <div class="col-md-6">
+                        <input type="text" name="hotline_description" id="hotline_description" value="@OptionDao.GetOption("HOTLINE_DESCRIPTION", "")" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="footer_hotline" class="control-label col-md-2">Footer Hotline</label>
+                    <div class="col-md-6">
+                        <input type="text" name="footer_hotline" id="footer_hotline" value="@OptionDao.GetOption("FOOTER_HOTLINE", "")" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="contact_address" class="control-label col-md-2">Địa chỉ liên hệ</label>
+                    <div class="col-md-6">
+                        <input type="text" name="contact_address" id="contact_address" value="@OptionDao.GetOption("CONTACT_ADDRESS", "")" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="contact_email" class="control-label col-md-2">Email liên hệ</label>
+                    <div class="col-md-6">
+                        <input type="text" name="contact_email" id="contact_email" value="@OptionDao.GetOption("CONTACT_EMAIL", "")" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="box-footer">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-6">
+                        <input type="submit" value="Lưu lại" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}

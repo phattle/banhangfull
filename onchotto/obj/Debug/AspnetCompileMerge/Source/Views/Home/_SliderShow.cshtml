@@ -1,0 +1,32 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.Slider>
+@{
+    int langid = SessionManager.CurrentCulture;
+
+ } 
+<aside id="fh5co-hero" class="js-fullheight">
+    <div class="flexslider js-fullheight">
+        <ul class="slides">
+            @foreach (var s in Model)
+            { 
+                <li style="background-image: url(@s.Image);">
+                    <div class="overlay-gradient"></div>
+                    <div class="container">
+                        <div class="col-md-6 col-md-offset-9 col-md-pull-3 js-fullheight slider-text">
+                            <div class="slider-text-inner">
+                                <div class="desc">
+                                    @*<span class="price">@s.Url</span>*@
+                                    <h1>@s.Caption</h1>
+                                    <p>@s.CaptionSmall</p>
+                                    <p><a href="@s.Url" target="@s.Target" class="btn btn-primary btn-outline btn-lg">Xem Bảng Giá</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            }
+              
+        </ul>
+    </div>
+</aside>
+
+

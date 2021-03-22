@@ -1,0 +1,14 @@
+﻿@model OnChotto.Models.Entities.Page
+
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Shared/_PageLayout.cshtml";
+}
+
+<div class="blog-post  wow fadeInUp animated" >
+    <h2>@ViewBag.Title.</h2>
+    <div class="content">
+        @Html.Raw(Model.Content)
+    </div>
+</div>
+

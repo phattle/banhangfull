@@ -1,0 +1,124 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.ProductTaxHscode>
+
+@{
+    ViewBag.Title = "Quản lý Thuế nhập khẩu";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+
+<h2>Danh sách</h2>
+
+<p>
+    @Html.ActionLink("Thêm mới", "Create")
+</p>
+<div class="box">
+    <table class="table table-bordered table-striped datatable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.HsCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PoductName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TaxPercentage)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VATPercentage)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FederalTaxPercentage)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Pricehandling)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ShippinglandPercentage)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PriceClearanceFee)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PriceAF)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PriceTECSServicesFee)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PriceCustomFee)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TransactionPercentage)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VATFeeTransaction)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Note)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreateDate)
+                </th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HsCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PoductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TaxPercentage)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VATPercentage)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FederalTaxPercentage)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Pricehandling)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ShippinglandPercentage)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PriceClearanceFee)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PriceAF)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PriceTECSServicesFee)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PriceCustomFee)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TransactionPercentage)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VATFeeTransaction)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Note)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreateDate)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Xem", "Details", new { id = item.HsCodeId }, new { @class = "btn btn-xs btn-primary" })
+                        @Html.ActionLink("Sửa", "Edit", new { id = item.HsCodeId }, new { @class = "btn btn-xs btn-warning" })
+                        @Html.ActionLink("Xóa", "Delete", new { id = item.HsCodeId }, new { @class = "btn btn-xs btn-danger", onclick = "return confirm('Bạn có chắc muốn xóa?')" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+</table>
+</div>
+

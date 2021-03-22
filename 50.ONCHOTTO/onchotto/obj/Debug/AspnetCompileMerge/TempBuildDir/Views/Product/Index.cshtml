@@ -1,0 +1,49 @@
+﻿@model IEnumerable<OnChotto.Models.Entities.Product>
+
+@{
+    ViewBag.Title = "Sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    //ViewBag.Title = Html.Raw(string.IsNullOrEmpty(ViewBag.Category.MetaTitle) ? ViewBag.Category.Name : ViewBag.Category.MetaTitle);
+    Random rd = new Random();
+}
+<div id="fh5co-product">
+    <div class="container">
+        <div class="row ">
+            <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
+                <strong>ONCHOTTO Uniform Là Thương Hiệu Cung Cấp Đồng Phục Uy Tín Tại Tp.HCM</strong>
+                <h2>Sản Phẩm</h2>
+                
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var p in Model)
+            {
+                <div class="col-md-4 text-center">
+                    <div class="product">
+
+                        <div class="product-grid">
+                            @if (p.IsFeatured == true)
+                            {
+                                <span class="sale">Nổi bật</span>
+                            }
+
+                            <a href="/san-pham/@p.Name.ToAscii()-@p.Id">
+                            <img style="max-height:360px" src="@p.FeaturedImage" alt="@p.Name" /></a>
+                        </div>
+
+                        <div class="desc">
+                            <h3><a href="/san-pham/@p.Name.ToAscii()-@p.Id">@p.Name</a></h3>
+                            <span class="price">@p.Description</span>
+                        </div>
+                    </div>
+                </div>
+
+               
+            }
+
+        </div>
+    </div>
+</div>

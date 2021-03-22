@@ -1,0 +1,20 @@
+﻿@using Commons.Libs
+@using OnChotto.Models.Entities;
+@model IEnumerable<ProductCategory>
+
+@{
+    var count = 0;
+    string menuClasses = "";
+    string menuStyle = "";
+    int langid = SessionManager.CurrentCulture;
+}
+ 
+ <li class="has-dropdown">
+    <a href="/product/index">Sản Phẩm</a>
+    @*<ul class="dropdown">
+        @foreach (var item in Model)
+        { 
+            <li><a href="/danh-muc/@item.Name.ToAscii()-@item.CatId">@Html.Raw(langid == 0 ? item.NameEN : item.Name)</a></li>
+        } 
+    </ul>*@
+</li>

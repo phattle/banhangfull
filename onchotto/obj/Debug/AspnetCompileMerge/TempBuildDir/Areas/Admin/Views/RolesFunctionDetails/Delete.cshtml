@@ -1,0 +1,24 @@
+﻿@model OnChotto.Models.Entities.RolesFunctionDetail
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+
+<div class="row">
+      <div class="col-sm-12">
+          <div class="text-center">
+              <h5>Bạn có chắc muốn xóa nhóm quyền @ViewBag.RoleName chức năng @ViewBag.FunctionName</h5>
+              @using (Html.BeginForm())
+              {
+                  @Html.AntiForgeryToken()
+
+                  <div class="form-actions no-color">
+                      <input type="submit" value="Delete" class="btn btn-default" /> |
+                      @Html.ActionLink("Back to List", "Index")
+                  </div>
+              }
+          </div>
+      </div>
+   
+</div>
